@@ -1,0 +1,62 @@
+:root {
+  --green: green;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0%;
+  padding: 0%;
+  height: 100vh;
+  font-family: "Cormorant", serif;
+  font-weight: 400;
+  animation: animate 16s ease-in-out infinite;
+  background-size: cover;
+  color: var(--white);
+}
+
+h1 {
+  font-size: 95px;
+}
+
+h2 {
+  font-size: 48px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+.btn {
+  cursor: pointer;
+  background-color: var(--green);
+  margin: 15px 0px;
+}
+
+@keyframes animate {
+  0%,
+  100% {
+    background-image: url(../assets/bg/dog1.png);
+  }
+
+  25% {
+    background-image: url(../assets/bg/dog2.png);
+  }
+
+  50% {
+    background-image: url(../assets/bg/dog3.png);
+  }
+
+  75% {
+    background-image: url(../assets/bg/dog4.png);
+  }
+}
+
+/* Banner CSS */
+
+.banner-div {
+  max-width: 55%;
+}
+
+.banner-btn {
+  border-radius: 30px;
+}
