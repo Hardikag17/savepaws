@@ -29,7 +29,6 @@ h3 {
 .btn {
   cursor: pointer;
   background-color: var(--green);
-  margin: 15px 0px;
 }
 
 @keyframes animate {
@@ -55,6 +54,8 @@ h3 {
 
 .banner-div {
   max-width: 55%;
+  position: absolute;
+  bottom: 30%;
 }
 
 .banner-btn {
