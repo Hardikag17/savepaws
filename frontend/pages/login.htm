@@ -25,9 +25,83 @@
     <div id="nav-placeholder"></div>
 
     <!-- Login -->
+    <div class="container-fluid m-0 p-0 d-flex">
+      <div class="image-div">
+        <img
+          class="img-fluid mx-auto h-100"
+          src="../assets/register/login.jpg"
+          alt="animal help"
+        />
+      </div>
+      <div class="content-div container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="card h-100">
+            <div class="card-body my-5">
+              <h2 class="text-uppercase text-center mb-5">Welcome, User</h2>
+              <form>
+                <div class="form-outline mb-4">
+                  <input
+                    type="email"
+                    id="form3Example3cg"
+                    class="form-control form-control-lg"
+                  />
+                  <label class="form-label" for="form3Example3cg"
+                    >Your Email</label
+                  >
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input
+                    type="password"
+                    id="form3Example4cg"
+                    class="form-control form-control-lg"
+                  />
+                  <label class="form-label" for="form3Example4cg"
+                    >Password</label
+                  >
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-success btn-block btn-lg"
+                  >
+                    Login
+                  </button>
+                </div>
+
+                <h4 class="text-center my-4">OR, Login using</h4>
+                <div class="form-outline mb-4">
+                  <div class="text-center">
+                    <button
+                      type="button"
+                      class="btn btn-link btn-floating mx-1"
+                      style="font-size: xx-large; color: green"
+                    >
+                      <i class="fab fa-google"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">
+                  Don't have an account?
+                  <a href="./register.htm" class="fw-bold text-body"
+                    ><u>Register here</u></a
+                  >
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- JS scripts -->
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script
+      src="https://kit.fontawesome.com/7412c21e0d.js"
+      crossorigin="anonymous"
+    ></script>
     <script>
       $("#nav-placeholder").load("navbar.htm");
     </script>

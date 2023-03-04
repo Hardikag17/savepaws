@@ -3,6 +3,7 @@ body {
   padding: 0%;
   height: 100vh;
   font-family: "Cormorant", serif;
+  background-color: antiquewhite;
   font-weight: 400;
   width: 100%;
   overflow: hidden;
@@ -10,11 +11,22 @@ body {
 
 .image-div {
   width: 70%;
-  background-color: antiquewhite;
   height: 100vh;
 }
 
 .content-div {
   width: 30%;
   height: 100vh;
+}
+
+@media screen and (max-width: 900px) {
+  
+  .content-div {
+    width: 90%;
+    height: 90vh;
+    margin-top: 2%;
+  }
+  .image-div {
+    display: none;
+  }
 }

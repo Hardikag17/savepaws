@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "Frontend for non-profit animal help & adoption application POS ",
+  "description": "Paws adoption is a non-profit Open-source, animal help & adoption platform.",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
