@@ -11,6 +11,7 @@ body {
   font-weight: 400;
   animation: animate 16s ease-in-out infinite;
   background-size: cover;
+  background-position: center;
   color: var(--white);
 }
 
@@ -60,4 +61,39 @@ h3 {
 
 .banner-btn {
   border-radius: 30px;
+}
+
+@media screen and (max-width: 900px) {
+  body {
+    background-position: center;
+    animation: animate 16s ease-in-out infinite;
+  }
+
+  .banner-div {
+    max-width: 90%;
+    position: absolute;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  @keyframes animate {
+    0%,
+    100% {
+      background-image: url(../assets/bg/dog4.png);
+    }
+
+    50% {
+      background-image: url(../assets/bg/dog2.png);
+    }
+  }
 }
