@@ -1,17 +1,23 @@
-import { Router } from "express";
-import { body, query } from "express-validator";
-import { Register } from "./controllers/userRegister";
-import multer from "multer";
+const express = require("express");
+const { body, query } = require("express-validator");
+const { Register, Login } = require("./controllers/userRegister");
+const multer = require("multer");
+
+const routes = express.Router();
 
 // upload Images to diskStorage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-});
-var upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./uploads");
+//   },
+// });
+// var upload = multer({ storage: storage });
 
-const routes = Router();
+// Register & Login
+routes.post("/login", Login);
+routes.post("/register", Register);
+routes.get("/:email/forgetpassword");
 
-// Register/ Login
-routes.post("/login", Register);
+// Pet
+
+module.exports = routes;

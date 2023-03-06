@@ -4,17 +4,23 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const userRoutes = require("./routes");
 
 const app = express();
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/user", userRoutes);
 
-// Mongoose connect
-// const { connectDB } = require("./connect");
+//PORT
+const PORT = 9000 || process.env.PORT;
 
-app.listen(9000, function () {
+//Mongoose connect
+const { connectDB } = require("./connect");
+connectDB();
+
+app.listen(PORT, function () {
   console.log("Server is running");
 });
