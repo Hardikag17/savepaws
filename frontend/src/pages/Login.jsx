@@ -1,6 +1,28 @@
 import "../styles/login.css";
+import axios from "axios";
+import { useState } from "react";
+import { API_ROOT } from "../api-config";
 
 export default function Login() {
+  const [error, setError] = useState("");
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const login = async () => {
+    try {
+      const res = await axios.post(`${API_ROOT}/user/login`, {
+        email: user.email,
+        password: user.password,
+      });
+      console.log(res.status, res.data);
+    } catch (error) {
+      console.log("error");
+      setError(error);
+    }
+  };
+
   return (
     <div id="Login" className="container-fluid m-0 p-0 d-flex">
       <div className="image-div">
@@ -15,11 +37,20 @@ export default function Login() {
           <div className="card h-100">
             <div className="card-body my-5">
               <h2 className="text-uppercase text-center mb-5">Welcome, User</h2>
+              {error.length ? (
+                <div class="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              ) : (
+                <div></div>
+              )}
               <form>
                 <div className="form-outline mb-4">
                   <input
                     type="email"
-                    id="form3Example3cg"
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example3cg">
@@ -30,7 +61,9 @@ export default function Login() {
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    id="form3Example4cg"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example4cg">
@@ -41,6 +74,7 @@ export default function Login() {
                 <div className="d-flex justify-content-center">
                   <button
                     type="button"
+                    onClick={login}
                     className="btn btn-success btn-block btn-lg"
                   >
                     Login

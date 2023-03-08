@@ -1,5 +1,27 @@
+import { useState } from "react";
+import axios from "axios";
 import "../styles/register.css";
+import { API_ROOT } from "../api-config";
 export default function Register() {
+  const [check, setCheck] = useState(false);
+  const [error, setError] = useState("");
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const newUser = async () => {
+    try {
+      const res = await axios.post(`${API_ROOT}/user/register`, { user });
+      console.log(res.status, res.data);
+    } catch (error) {
+      console.log("error");
+      setError(error);
+    }
+  };
+
   return (
     <div id="Register" className="container-fluid m-0 p-0 d-flex">
       <div className="image-div d-none d-md-block">
@@ -16,11 +38,19 @@ export default function Register() {
               <h2 className="text-uppercase text-center mb-5">
                 Create an account
               </h2>
-              <form onsu>
+              {error.length ? (
+                <div class="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              ) : (
+                <div></div>
+              )}
+
+              <form>
                 <div className="form-outline mb-4">
                   <input
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                     type="text"
-                    id="form3Example1cg"
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example1cg">
@@ -31,7 +61,9 @@ export default function Register() {
                 <div className="form-outline mb-4">
                   <input
                     type="email"
-                    id="form3Example3cg"
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example3cg">
@@ -42,7 +74,9 @@ export default function Register() {
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    id="form3Example4cg"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example4cg">
@@ -53,7 +87,9 @@ export default function Register() {
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    id="form3Example4cdg"
+                    onChange={(e) =>
+                      setUser({ ...user, confirmPassword: e.target.value })
+                    }
                     className="form-control form-control-lg"
                   />
                   <label className="form-label" for="form3Example4cdg">
@@ -65,8 +101,8 @@ export default function Register() {
                   <input
                     className="form-check-input me-2"
                     type="checkbox"
-                    value=""
-                    id="form2Example3cg"
+                    name="terms"
+                    onChange={(e) => setCheck(e.target.checked)}
                   />
                   <label className="form-check-label" for="form2Example3g">
                     I agree all statements in
@@ -79,6 +115,7 @@ export default function Register() {
                 <div className="d-flex justify-content-center">
                   <button
                     type="button"
+                    onClick={newUser}
                     className="btn btn-success btn-block btn-lg gradient-custom-4 "
                   >
                     Register
