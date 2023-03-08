@@ -14,17 +14,6 @@ body {
   width: 20%;
   background-color: antiquewhite;
 }
-
-.cards {
-  width: 80%;
-  display: flex;
-  display: -webkit-flex;
-  -webkit-justify-content: start;
-  -webkit-align-items: start;
-  justify-content: start;
-  align-items: start;
-}
-
 /* card Styles */
 
 .card--1 .card__img,
