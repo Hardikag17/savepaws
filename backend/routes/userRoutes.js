@@ -1,6 +1,6 @@
 const express = require("express");
 const { body, query } = require("express-validator");
-const { Register, Login } = require("./controllers/userRegister");
+const { Register, Login } = require("../controllers/userRegister");
 const multer = require("multer");
 
 const routes = express.Router();
@@ -17,7 +17,5 @@ const routes = express.Router();
 routes.post("/login", Login);
 routes.post("/register", Register);
 routes.get("/:email/forgetpassword");
-
-// Pet
 
 module.exports = routes;

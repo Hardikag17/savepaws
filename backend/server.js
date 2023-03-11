@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const userRoutes = require("./routes");
+const userRoutes = require("./routes/userRoutes");
+const petRoutes = require("./routes/petRoutes");
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
+app.use("/pets", petRoutes);
 
 //PORT
 const PORT = 9000 || process.env.PORT;
