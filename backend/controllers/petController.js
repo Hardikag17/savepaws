@@ -74,12 +74,12 @@ const getPets = async (req, res) => {
 
   let response;
   if (searchText && searchText.trim() !== "") {
-    response = search(searchText, filterOptions);
+    response = await search(searchText, filterOptions);
   } else {
-    response = filterPets(filterOptions);
+    response = await search("", filterOptions);
   }
 
-  console.log(searchText, filterOptions);
+  console.log("response", response);
 
   return res.json({
     response: response,
