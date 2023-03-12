@@ -9,6 +9,7 @@ const Landing = lazy(() => import("./pages/Landing"));
 const Main = lazy(() => import("./pages/Main"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
+const PetViewPage = lazy(() => import("./pages/PetViewPage"));
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
               <Route path="/home" element={<Main />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/PetView" element={<PetViewPage />} />
             </Routes>
           </Suspense>
         </Layout>

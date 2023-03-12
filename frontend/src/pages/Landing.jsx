@@ -13,7 +13,7 @@ export default function Landing() {
           animals.Find your new best friend and give a pet a loving home.
         </h3>
         <a href="/home" class="btn btn-success btn-lg banner-btn mt-3">
-          Find a home
+          Find a buddy
         </a>
       </div>
     </div>
