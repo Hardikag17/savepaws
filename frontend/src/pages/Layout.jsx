@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../utils/userContext";
 
 const Layout = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [state, setState] = useState({
     user: false,
     email: "",
@@ -15,13 +11,14 @@ const Layout = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!state.loaded) {
+    if (state.loaded == false) {
       console.log("user not found!!");
     }
 
     if (state.loaded) {
+      console.log("user", state.email);
     }
-  }, [state, navigate, location.pathname]);
+  }, [state]);
 
   return (
     <UserContext.Provider value={{ state, setState }}>

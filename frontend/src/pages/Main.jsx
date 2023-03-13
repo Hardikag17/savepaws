@@ -34,7 +34,7 @@ export default function Main() {
             <div className=" d-flex flex-wrap justify-content-between">
               {posts.map((element, key) => {
                 return (
-                  <div id={key} onClick={() => showCard(key)}>
+                  <div key={key} onClick={() => showCard(key)}>
                     <Card
                       name={element.Name}
                       description={element.description}
