@@ -1468,3 +1468,7 @@ a[class*="card"]:hover .title {
 .schema-ul .schema-li {
   display: inline !important;
 }
+
+.heart-hover:hover {
+  color: red;
+}
