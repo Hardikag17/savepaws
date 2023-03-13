@@ -5,4 +5,11 @@
   padding: 2%;
 }
 
+.filterOptions{
+  height: 100vh;
+  background-color: #F6F6F6;
+  width: 40% !important;
+}
+
+
 

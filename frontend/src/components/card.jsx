@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
+import truncateString from "../utils/truncate";
 import "../styles/card.css";
 
 library.add(fab);
@@ -39,10 +40,10 @@ export default function Card({
             <h4 className="card__title">{description}</h4>
             <span className="card__by">
               Posted by
-              <a href="/" className="card__author" title="author">
-                {rescuerId}
+              <a href="/" className="card__author px-2" title="author">
+                {truncateString(rescuerId, 5)}...
               </a>
-              <span className="comments">
+              <span className="comments px-2">
                 <FontAwesomeIcon icon={faComments} />
                 {comments} Comments
               </span>

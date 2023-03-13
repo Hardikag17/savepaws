@@ -1,50 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Card from "../components/card";
 import "../styles/Main.css";
+import PetView from "./PetView";
 
 export default function Main() {
-  const [posts, setPosts] = useState([
-    {
-      Type: 2,
-      Name: "Timmy",
-      Age: 7,
-      Breed1: 247,
-      Breed2: 266,
-      Gender: 3,
-      Color1: 2,
-      Color2: 4,
-      Color3: 5,
-      Vaccinated: 1,
-      Sterilized: 1,
-      Health: 1,
-      Fee: 0,
-      State: 41326,
-      RescuerID: "df3f86a2d783512e0d863a47c55a86b7",
-      Description:
-        "Saya ada 2 ekor kitten untuk diberi secara PERCUMA. Semua kitten dah vaksin & deworm. Umur = 7 Bulan Jantan = 2 Ekor (Dah dimandulkan) Lokasi = Puchong Perdana Prefer untuk let go kedua2 sekali coz kitten2 nie tak pernah berpisah. Sesiapa yang berminat, boleh hubungi saya di talian 3 .",
-      PetID: "0f82cea1e",
-      PhotoAmt: 2,
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+  const [card, setCard] = useState(0);
+
+  const getPets = useCallback(async () => {
+    const res = await axios.get("http://localhost:9000/pets");
+    setPosts(res.data.response);
+    console.log(posts);
+  }, []);
+
+  const showCard = (value) => {
+    setCard(value + 1);
+  };
+
+  useEffect(() => {
+    getPets();
+  }, []);
 
   return (
-    <div id="Main">
-      <div className="cards">
-        {posts.map((element, key) => {
-          return (
-            <div id={key}>
-              <Card
-                name={element.Name}
-                description={element.description}
-                rescuerId={element.RescuerID}
-                comments="5"
-                postedOn="4/3/2023"
-              />
+    <div id="Main" style={{ backgroundColor: "#FFF" }}>
+      {card == 0 ? (
+        <div className="d-flex">
+          <div className="filterOptions p-2">This is a filterOptions</div>
+          <div className="cards d-flex flex-column">
+            <div>
+              <h3>This is cards misc bar</h3>
             </div>
-          );
-        })}
-      </div>
+            <div className=" d-flex flex-wrap justify-content-between">
+              {posts.map((element, key) => {
+                return (
+                  <div id={key} onClick={() => showCard(key)}>
+                    <Card
+                      name={element.Name}
+                      description={element.description}
+                      rescuerId={element.RescuerID}
+                      comments="5"
+                      postedOn="4/3/2023"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div style={{ backgroundColor: "red", height: "100vh", width: "100%" }}>
+          <PetView />
+        </div>
+      )}
     </div>
   );
 }
