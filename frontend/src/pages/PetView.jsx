@@ -1,7 +1,12 @@
 import "../styles/ui.css";
 import "../styles/responsive.css";
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
 
+library.add(fab);
 function PetViewPage() {
   const handleOnClick = (event) => {
     setimgS(event.target.src);
@@ -65,6 +70,16 @@ function PetViewPage() {
                 <main className="col-md-6">
                   <article>
                     <h3 className="title">Name of the pet</h3>
+                    <div>
+                      <span>
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          className="heart-hover"
+                        />{" "}
+                        Like
+                      </span>
+                    </div>
+                    <hr />
                     <div>
                       <ul className="rating-stars">
                         <li className="stars-active">
