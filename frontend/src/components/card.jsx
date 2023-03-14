@@ -36,12 +36,14 @@ export default function Card({
             <div className="card__img--hover"></div>
           </a>
           <div className="card__info">
-            <span className="card__category"> {name}</span>
+            <span>
+              <b>{name}</b>
+            </span>
             <h4 className="card__title">{description}</h4>
             <span className="card__by">
               Posted by
               <a href="/" className="card__author px-2" title="author">
-                {truncateString(rescuerId, 7)}...
+                {truncateString(rescuerId, 7)}
               </a>
               <span className="comments px-2">
                 <FontAwesomeIcon icon={faComments} />

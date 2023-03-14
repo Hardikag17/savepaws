@@ -2,7 +2,6 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 60vh;
 }
 
 .profile-img {
@@ -56,6 +55,7 @@ textarea {
     flex-direction: column;
   }
   .profile-img {
-    width: 100%;
+    width: 60%;
+    align-self: center;
   }
 }
