@@ -1186,3 +1186,11 @@ a[class*="pet"]:hover .title {
   padding-top: 10px;
   padding-left: 10px;
 }
+
+.sp_heart {
+  margin-right: 10px;
+}
+
+.like_adopt {
+  margin-right: 70px;
+}
