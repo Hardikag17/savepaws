@@ -69,18 +69,19 @@ function PetViewPage() {
                 </aside>
                 <main className="col-md-6">
                   <article>
-                    <span>
-                      <h3 className="title">Name of the pet</h3>
-                    </span>
-
-                    <div>
-                      <span>
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          className="heart-hover"
-                        />{" "}
-                        Like
-                      </span>
+                    <div className=" d-flex justify-content-between w-full align-items-center me-2 ms-2">
+                      <div>
+                        <h3 className="title">Name of the pet</h3>
+                      </div>
+                      <div className="like_adopt">
+                        <span className="sp_heart">
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            className="heart-hover"
+                          />{" "}
+                          Like
+                        </span>
+                      </div>
                     </div>
 
                     <hr width="90%" />
