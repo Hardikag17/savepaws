@@ -28,13 +28,14 @@ function PetViewPage() {
                     <div className="pet img-big-wrap">
                       <a href="/">
                         {" "}
-                        <img src={imgS} width="300px" alt="error" />
+                        <img src={imgS} alt="Selected view" />
                       </a>
                     </div>
                     <div className="thumbs-wrap">
                       <a href="#" className="item-thumb">
                         {" "}
                         <img
+                          className="cover"
                           src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=662&q=80"
                           onClick={handleOnClick}
                           alt="error"
@@ -43,6 +44,7 @@ function PetViewPage() {
                       <a href="#" className="item-thumb">
                         {" "}
                         <img
+                          className="cover"
                           src="https://images.unsplash.com/photo-1529472119196-cb724127a98e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=672&q=80"
                           onClick={handleOnClick}
                           alt="error"
@@ -51,6 +53,7 @@ function PetViewPage() {
                       <a href="#" className="item-thumb">
                         {" "}
                         <img
+                          className="cover"
                           src="https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1856&q=80"
                           onClick={handleOnClick}
                           alt="error"
@@ -59,6 +62,7 @@ function PetViewPage() {
                       <a href="#" className="item-thumb">
                         {" "}
                         <img
+                          className="cover"
                           src="https://images.unsplash.com/photo-1536809188428-e8ecf663d0be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
                           onClick={handleOnClick}
                           alt="error"
