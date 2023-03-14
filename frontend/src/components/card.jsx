@@ -41,7 +41,7 @@ export default function Card({
             <span className="card__by">
               Posted by
               <a href="/" className="card__author px-2" title="author">
-                {truncateString(rescuerId, 5)}...
+                {truncateString(rescuerId, 7)}...
               </a>
               <span className="comments px-2">
                 <FontAwesomeIcon icon={faComments} />

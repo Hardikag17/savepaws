@@ -35,11 +35,11 @@ export default function Navbar() {
                   Adopt
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="/">
                   Shop
                 </a>
-              </li>
+              </li> */}
             </ul>
 
             <form className="d-flex mx-auto" role="search">
@@ -112,11 +112,11 @@ export default function Navbar() {
                   Adopt
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="/">
                   Shop
                 </a>
-              </li>
+              </li> */}
             </ul>
 
             <form className="d-flex mx-auto" role="search">
@@ -150,6 +150,7 @@ export default function Navbar() {
                   width="40"
                   height="40"
                   className="rounded-circle dropdown-toggle"
+                  alt="Placeholder profile pic"
                 />
                 <ul class="dropdown-menu dropdown-menu-end text-center">
                   <li>

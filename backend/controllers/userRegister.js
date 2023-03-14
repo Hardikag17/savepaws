@@ -1,5 +1,6 @@
 const { User } = require("../models/schemas/userSchema");
 const uniqid = require("uniqid");
+const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
   const name = req.body.user.name;

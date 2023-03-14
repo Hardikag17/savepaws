@@ -1,4 +1,61 @@
-.profile{
-    background-color: white;
+.profile {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 60vh;
+}
+
+.profile-img {
+  position: relative;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  padding: 2%;
+  margin-top: 7%;
+  border: 2px solid rgba(0, 0, 0, 0.073);
+  cursor: pointer;
+}
+
+.edit {
+  display: none;
+}
+
+.profile-img:hover .edit {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.406);
+  font-size: 30px;
+  font-weight: 800;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.details {
+  padding: 5%;
+  width: 100%;
+}
+
+.personal-details-content {
+  width: 85%;
+}
+textarea {
+  resize: none;
+}
+
+@media screen and (max-width: 900px) {
+  .profile {
+    flex-direction: column;
+  }
+  .profile-img {
     width: 100%;
+  }
 }
