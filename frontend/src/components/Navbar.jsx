@@ -6,11 +6,11 @@ export default function Navbar() {
 
   const notLoggedIn = (
     <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary z-5">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            <img alt="logo" src="../assets/brand/logo.png" height="20" /> Paws
-            Adoption
+            <img alt="logo" src="../assets/brand/logo.png" height="20" />
+            <b> Paws Adoption</b>
           </a>
           <button
             className="navbar-toggler"
@@ -31,7 +31,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/home">
+                <a className="nav-link active" href="/home">
                   Adopt
                 </a>
               </li>
@@ -70,7 +70,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li className="nav-item">
-                <a href="/login" className="nav-link">
+                <a href="/login" className="nav-link active">
                   Login
                 </a>
               </li>
@@ -83,7 +83,7 @@ export default function Navbar() {
 
   const LoggedIn = (
     <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary z-5">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img alt="logo" src="../assets/brand/logo.png" height="20" /> Paws
@@ -108,7 +108,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/home">
+                <a className="nav-link active" href="/home">
                   Adopt
                 </a>
               </li>
@@ -137,7 +137,7 @@ export default function Navbar() {
             </form>
             <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <a className="nav-link active" href="/">
                   Chat
                 </a>
               </li>

@@ -10,6 +10,7 @@ body {
   height: 100vh;
   font-family: "Cormorant", serif;
   font-weight: 400;
-  background-color: var(--bg-color);
+  font-size: large;
+  /* background-color: var(--bg-color); */
   color: var(--black);
 }
