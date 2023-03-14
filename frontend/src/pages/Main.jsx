@@ -49,7 +49,7 @@ export default function Main() {
           </div>
         </div>
       ) : (
-        <div style={{ backgroundColor: "red", height: "100vh", width: "100%" }}>
+        <div>
           <PetView />
         </div>
       )}

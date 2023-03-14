@@ -19,13 +19,13 @@ function PetViewPage() {
   return (
     <div>
       <section className="section-content padding-y bg">
-        <div className="container">
-          <article className="card">
-            <div className="card-body">
+        <div className="container-fluid">
+          <article className="pet">
+            <div className="pet-body">
               <div className="row">
                 <aside className="col-md-6">
                   <article className="gallery-wrap">
-                    <div className="card img-big-wrap">
+                    <div className="pet img-big-wrap">
                       <a href="/">
                         {" "}
                         <img src={imgS} width="300px" alt="error" />
@@ -69,7 +69,10 @@ function PetViewPage() {
                 </aside>
                 <main className="col-md-6">
                   <article>
-                    <h3 className="title">Name of the pet</h3>
+                    <span>
+                      <h3 className="title">Name of the pet</h3>
+                    </span>
+
                     <div>
                       <span>
                         <FontAwesomeIcon
@@ -79,33 +82,11 @@ function PetViewPage() {
                         Like
                       </span>
                     </div>
-                    <hr />
-                    <div>
-                      <ul className="rating-stars">
-                        <li className="stars-active">
-                          <i className="fa fa-star"></i>{" "}
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa fa-star"></i>{" "}
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>{" "}
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                        </li>
-                      </ul>
-                      <span className="label-rating mr-3 text-muted">7/10</span>
-                      <a href="/" className="btn-link  mr-3 text-muted">
-                        {" "}
-                        <i className="fa fa-heart"></i> Save for later{" "}
-                      </a>
-                    </div>
 
-                    <hr />
+                    <hr width="90%" />
 
                     <div className="mb-3">
-                      <h6>Basic Information</h6>
+                      <h5>Basic Information</h5>
                       <ul className="schema-ul">
                         <li>Id: </li>
                         <li>Age: </li>
@@ -115,25 +96,25 @@ function PetViewPage() {
                         <li>Status: </li>
                       </ul>
 
-                      <hr />
+                      <hr width="90%" />
 
-                      <h6>Health</h6>
+                      <h5>Health</h5>
                       <ul>
                         <li>Vaccinated: </li>
                         <li>Status: </li>
                         <li>Sterilized: </li>
                       </ul>
 
-                      <hr />
-                      <h6>Location</h6>
+                      <hr width="90%" />
+                      <h5>Location</h5>
                       <ul>
                         <li>City: </li>
                         <li>State: </li>
                       </ul>
 
-                      <hr />
+                      <hr width="90%" />
 
-                      <h6>Description</h6>
+                      <h5>Description</h5>
                       <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
@@ -144,7 +125,6 @@ function PetViewPage() {
                         electronic typesetting, remaining essentially unchanged
                       </p>
                     </div>
-                    <hr />
 
                     <div className="mb-4">
                       <a href="/" className="btn btn-success mr-1">
@@ -157,8 +137,8 @@ function PetViewPage() {
             </div>
           </article>
 
-          <article className="card mt-5">
-            <div className="card-body">
+          <article className="pet mt-5">
+            <div className="pet-body">
               <div className="row">
                 <aside className="col-md-6">
                   <h3>Comments</h3>
