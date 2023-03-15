@@ -10,6 +10,11 @@ a:hover {
   text-decoration: none;
 }
 
+.cover {
+  width: max-content;
+  height: max-content;
+}
+
 .img-wrap {
   text-align: center;
   display: block;

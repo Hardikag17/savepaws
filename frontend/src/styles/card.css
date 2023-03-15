@@ -72,11 +72,6 @@
   top: 0;
 }
 
-.cover {
-  width: max-content;
-  height: max-content;
-}
-
 .card:hover {
   box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.073);
   transform: scale(1.1, 1.1);
