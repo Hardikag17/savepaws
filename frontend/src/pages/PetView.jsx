@@ -115,7 +115,6 @@ function PetViewPage() {
                       </h5>
                       <ul>
                         <li>Vaccinated: </li>
-                        <li>Status: </li>
                         <li>Sterilized: </li>
                       </ul>
 

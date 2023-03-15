@@ -8,7 +8,7 @@ library.add(fab);
 
 export default function Profile() {
   return (
-    <div>
+    <div className="profile-box container">
       <div className="profile container ">
         <div
           className="profile-img "
