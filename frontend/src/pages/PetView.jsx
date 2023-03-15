@@ -75,10 +75,15 @@ function PetViewPage() {
                   <article>
                     <div className=" d-flex justify-content-between w-full align-items-center me-2 ms-2">
                       <div>
-                        <h3 className="title">Name of the pet</h3>
+                        <h3 className="title" style={{ color: "green" }}>
+                          <b>Name of the pet, </b>
+                          <span style={{ fontSize: "20px", color: "black" }}>
+                            (City, State)
+                          </span>
+                        </h3>
                       </div>
                       <div className="like_adopt">
-                        <span className="sp_heart">
+                        <span className="sp_heart" role="button">
                           <FontAwesomeIcon
                             icon={faHeart}
                             className="heart-hover"
@@ -91,7 +96,9 @@ function PetViewPage() {
                     <hr width="90%" />
 
                     <div className="mb-3">
-                      <h5>Basic Information</h5>
+                      <h5>
+                        <b>Basic Information</b>
+                      </h5>
                       <ul className="schema-ul">
                         <li>Id: </li>
                         <li>Age: </li>
@@ -103,7 +110,9 @@ function PetViewPage() {
 
                       <hr width="90%" />
 
-                      <h5>Health</h5>
+                      <h5>
+                        <b>Health</b>
+                      </h5>
                       <ul>
                         <li>Vaccinated: </li>
                         <li>Status: </li>
@@ -111,15 +120,10 @@ function PetViewPage() {
                       </ul>
 
                       <hr width="90%" />
-                      <h5>Location</h5>
-                      <ul>
-                        <li>City: </li>
-                        <li>State: </li>
-                      </ul>
 
-                      <hr width="90%" />
-
-                      <h5>Description</h5>
+                      <h5>
+                        <b>Description</b>
+                      </h5>
                       <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
@@ -132,9 +136,12 @@ function PetViewPage() {
                     </div>
 
                     <div className="mb-4">
-                      <a href="/" className="btn btn-success mr-1">
+                      <button
+                        className="btn btn-success mr-1"
+                        style={{ color: "white" }}
+                      >
                         Adopt now
-                      </a>
+                      </button>
                     </div>
                   </article>
                 </main>

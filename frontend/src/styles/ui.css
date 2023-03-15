@@ -1101,7 +1101,7 @@ a[class*="pet"]:hover .title {
   border-radius: 0.37rem;
   border: 1px solid rgb(115, 105, 105);
   overflow: hidden;
-  background-color: #fff;
+  background-color: rgba(0, 128, 0, 0.074);
 }
 .gallery-wrap .img-big-wrap a {
   text-align: center;
