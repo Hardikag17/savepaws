@@ -2,7 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import "../styles/register.css";
 import { API_ROOT } from "../api-config";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
+  const navigate = useNavigate();
   const [check, setCheck] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useState({
@@ -16,6 +18,7 @@ export default function Register() {
     try {
       const res = await axios.post(`${API_ROOT}/user/register`, { user });
       console.log(res.status, res.data);
+      if (res.status === 200) navigate("/login");
     } catch (error) {
       console.log("error");
       setError(error);

@@ -68,6 +68,7 @@ const petSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  //  purpose: "", Adoption OR Sell
 });
 
 const Pet = mongoose.model("Pet", petSchema);

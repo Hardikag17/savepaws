@@ -2,8 +2,13 @@ import "../styles/login.css";
 import axios from "axios";
 import { useState } from "react";
 import { API_ROOT } from "../api-config";
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { state, setState } = useContext(UserContext);
   const [error, setError] = useState("");
   const [user, setUser] = useState({
     email: "",
@@ -17,6 +22,18 @@ export default function Login() {
         password: user.password,
       });
       console.log(res.status, res.data);
+
+      if (res.status === 200) {
+        setState({
+          user: true,
+          email: user.email,
+          name: "",
+          userPosts: [],
+          token: false,
+        });
+
+        navigate("/home");
+      }
     } catch (error) {
       console.log("error");
       setError(error);

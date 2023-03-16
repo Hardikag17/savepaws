@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 
 import "../src/styles/App.css";
 import Navbar from "./components/Navbar";
@@ -15,12 +15,12 @@ const AddPet = lazy(() => import("./pages/AddPet"));
 
 const App = () => {
   return (
-    <Layout>
-      <div>
-        {/* Navbar */}
-        <Navbar />
-        {/* Routing */}
-        <Router>
+    <div>
+      <Router>
+        <Layout>
+          {/* Navbar */}
+          <Navbar />
+          {/* Routing */}
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route exact path="/" element={<Landing />} />
@@ -32,9 +32,9 @@ const App = () => {
               <Route path="/PetView" element={<PetView />} />
             </Routes>
           </Suspense>
-        </Router>
-      </div>
-    </Layout>
+        </Layout>
+      </Router>
+    </div>
   );
 };
 

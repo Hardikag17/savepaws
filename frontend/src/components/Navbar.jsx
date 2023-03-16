@@ -1,16 +1,30 @@
 import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const { state } = useContext(UserContext);
+  const { state, setState } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const Logout = () => {
+    setState({
+      user: false,
+      email: "",
+      name: "",
+      userPosts: [],
+      token: false,
+    });
+
+    navigate("/");
+  };
 
   const notLoggedIn = (
     <nav className="navbar navbar-expand-lg bg-light sticky-top z-5 ">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+        <Link className="navbar-brand" to="/">
           <img alt="logo" src="../assets/brand/logo.png" height="20" />
           <b> Paws Adoption</b>
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -25,14 +39,14 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Help
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="/home">
+              <Link className="nav-link active" to="/home">
                 Adopt
-              </a>
+              </Link>
             </li>
             {/* <li className="nav-item">
                 <a className="nav-link" href="/">
@@ -60,18 +74,18 @@ export default function Navbar() {
 
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
-              <a
-                href="/register"
+              <Link
+                to="/register"
                 className="nav-link active"
                 aria-current="page"
               >
                 Register
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/login" className="nav-link active">
+              <Link to="/login" className="nav-link active">
                 Login
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -82,10 +96,10 @@ export default function Navbar() {
   const LoggedIn = (
     <nav className="navbar navbar-expand-lg sticky-top z-5 bg-light">
       <div className="container-fluid ">
-        <a className="navbar-brand" href="/">
+        <Link className="navbar-brand" to="/">
           <img alt="logo" src="../assets/brand/logo.png" height="20" /> Paws
           Adoption
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -100,14 +114,14 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Help
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="/home">
+              <Link className="nav-link active" to="/home">
                 Adopt
-              </a>
+              </Link>
             </li>
             {/* <li className="nav-item">
                 <a className="nav-link" href="/">
@@ -134,9 +148,9 @@ export default function Navbar() {
           </form>
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" href="/">
+              <Link className="nav-link active" to="/">
                 Chat
-              </a>
+              </Link>
             </li>
             <li className=" px-2 cursor-pointer dropdown">
               <img
@@ -150,19 +164,19 @@ export default function Navbar() {
               />
               <ul class="dropdown-menu dropdown-menu-end text-center">
                 <li>
-                  <a class="dropdown-item" href="/addpet">
+                  <Link class="dropdown-item" to="/addpet">
                     Add Pet
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="/profile">
+                  <Link class="dropdown-item" to="/profile">
                     Profile
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">
+                  <button class="dropdown-item" onClick={Logout}>
                     Logout
-                  </a>
+                  </button>
                 </li>
               </ul>
             </li>
@@ -171,5 +185,5 @@ export default function Navbar() {
       </div>
     </nav>
   );
-  return !state.user ? LoggedIn : notLoggedIn;
+  return state.user ? LoggedIn : notLoggedIn;
 }

@@ -2,11 +2,48 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
 import "../styles/addPet.css";
+const elephant = require("../icons-profile/elephant.jpg");
 
 library.add(fab);
 
 export default function AddPet() {
+  const [selectedImage, setSelectedImage] = useState();
+  const [preview, setPreview] = useState(
+    elephant || URL.createObjectURL(selectedImage)
+  );
+
+  const numbers = Array.from(new Array(20), (val, index) => index + 1);
+  const [pet, setPet] = useState({
+    name: "",
+    type: "",
+    age: "",
+    breed: "",
+    gender: "",
+    vaccinated: "",
+    sterilized: "",
+    health: "",
+    state: "",
+    city: "",
+    pincode: "",
+    address: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    if (!selectedImage) {
+      setPreview(elephant);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedImage);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedImage]);
+
   return (
     <div className="container p-2 ">
       <form className="add-pet">
@@ -69,21 +106,61 @@ export default function AddPet() {
                   Select
                 </button>
                 <ul class="dropdown-menu dropdown-menu-start text-center">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Husky
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Labra
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Himalyan
-                    </a>
-                  </li>
+                  <li class="dropdown-item">Husky</li>
+                  <li class="dropdown-item">Labra</li>
+                  <li class="dropdown-item">Himalyan</li>
+                </ul>
+                &nbsp; &nbsp;
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Gender"
+                  aria-label="Gender"
+                  aria-describedby="basic-addon2"
+                  disabled
+                />
+                <button
+                  data-bs-toggle="dropdown"
+                  className="btn btn-success btn-lg banner-btn dropdown-toggle"
+                  style={{ fontSize: "15px" }}
+                  type="submit"
+                >
+                  Select
+                </button>
+                <ul class="dropdown-menu dropdown-menu-start text-center">
+                  <li class="dropdown-item">Male</li>
+                  <li class="dropdown-item">Female</li>
+                  <li class="dropdown-item">Not Known</li>
+                </ul>
+                &nbsp; &nbsp;
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Age"
+                  aria-label="Age"
+                  aria-describedby="basic-addon2"
+                  disabled
+                />
+                <button
+                  data-bs-toggle="dropdown"
+                  className="btn btn-success btn-lg banner-btn dropdown-toggle"
+                  style={{ fontSize: "15px" }}
+                  type="submit"
+                >
+                  Select
+                </button>
+                <ul class="dropdown-menu dropdown-menu-start text-center">
+                  {numbers.map((year, index) => {
+                    return (
+                      <li
+                        key={`year${index}`}
+                        value={year}
+                        class="dropdown-item"
+                      >
+                        {year}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
               <div className="input-group mb-3">
@@ -259,11 +336,41 @@ export default function AddPet() {
             </div>
             {/* Images */}
             <div className="imgs">
-              <div className="insert-img">
-                <h5>
-                  5 max in form of grid with remove button on each one of them
-                </h5>
+              <div class="image-upload">
+                <label for="file-input" className="img-div">
+                  <img
+                    src={preview}
+                    width={100}
+                    height={100}
+                    alt="Pet's pics (max-4)"
+                  />
+                  {/* <button className=" btn absolute z-5">*</button> */}
+                </label>
+                <input
+                  onChange={(e) => {
+                    if (e.target.files?.[0]) {
+                      setSelectedImage(e.target.files[0]);
+                    }
+                  }}
+                  id="file-input"
+                  multiple
+                  type="file"
+                />
               </div>
+              {/* <div className="insert-img">
+                <label>
+                  <img className="img-div" src={preview} alt="avtar" />
+                </label>
+
+                <input
+                  
+                  id="file-upload z-2"
+                  className=" edit cursor-pointer "
+                  type="file"
+                  accept="image/*"
+                  required
+                />
+              </div> */}
               <div class="alert alert-success my-2" role="alert">
                 Color, Doesn't matter, Period!
               </div>
