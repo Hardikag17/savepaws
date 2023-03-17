@@ -1,9 +1,12 @@
-import { useContext } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "../utils/userContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import { API_ROOT } from "../api-config";
+import axios from "axios";
 export default function Navbar() {
   const { state, setState } = useContext(UserContext);
+  const [searchText, setSearchText] = useState(null);
+  const [pets, setPets] = useState([]);
   const navigate = useNavigate();
 
   const Logout = () => {
@@ -17,6 +20,41 @@ export default function Navbar() {
 
     navigate("/");
   };
+
+  const getPets = useCallback(async (event) => {
+    setSearchText(event.target.value);
+    const res = await axios.get(
+      `${API_ROOT}/pets?searchText=${event.target.value}`
+    );
+    //console.log(res.data);
+    setPets(res.data);
+
+    pets.length
+      ? [...pets.response].map((val) => {
+          console.log("Value...", val);
+        })
+      : console.log("OOPs! No Pet Found");
+  });
+
+  const search = (
+    <div className="d-flex mx-auto" role="search">
+      <input
+        className="form-control me-3"
+        style={{ width: "250px" }}
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        value={searchText}
+        onChange={getPets}
+      />
+      <button
+        className="btn btn-success btn-lg banner-btn"
+        style={{ fontSize: "15px" }}
+      >
+        Search
+      </button>
+    </div>
+  );
 
   const notLoggedIn = (
     <nav className="navbar navbar-expand-lg bg-light sticky-top z-5 ">
@@ -55,22 +93,7 @@ export default function Navbar() {
               </li> */}
           </ul>
 
-          <form className="d-flex mx-auto" role="search">
-            <input
-              className="form-control me-3"
-              style={{ width: "250px" }}
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button
-              className="btn btn-success btn-lg banner-btn"
-              style={{ fontSize: "15px" }}
-              type="submit"
-            >
-              Search
-            </button>
-          </form>
+          {search}
 
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
@@ -130,7 +153,7 @@ export default function Navbar() {
               </li> */}
           </ul>
 
-          <form className="d-flex mx-auto" role="search">
+          {/* <form className="d-flex mx-auto" role="search">
             <input
               className="form-control me-3"
               style={{ width: "250px" }}
@@ -145,7 +168,8 @@ export default function Navbar() {
             >
               Search
             </button>
-          </form>
+          </form> */}
+          {search}
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
               <Link className="nav-link active" to="/">
