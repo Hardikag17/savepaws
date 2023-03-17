@@ -79,6 +79,25 @@ const getPets = async (req, res) => {
     response = await search("", filterOptions);
   }
 
+  // Pagination
+  let limit = parseInt(req.query.limit);
+  if (!limit) {
+    limit = 12;
+  }
+
+  let page = parseInt(req.query.page);
+  if (!page) {
+    page = 1;
+  }
+
+  const pageCount = Math.ceil(response.length / limit);
+
+  if (page > pageCount) {
+    page = pageCount;
+  }
+
+  response = response.slice(page * limit - limit, page * limit);
+
   console.log("response", response);
 
   return res.json({
@@ -87,9 +106,7 @@ const getPets = async (req, res) => {
 };
 
 // Add Pet
-const addPet = async (req, res) => {
-  
-};
+const addPet = async (req, res) => {};
 
 // Update Pet
 const updatePet = async (req, res) => {};
