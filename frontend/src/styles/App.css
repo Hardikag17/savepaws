@@ -14,3 +14,9 @@ body {
   /* background-color: var(--bg-color); */
   color: var(--black);
 }
+
+.btn {
+  cursor: pointer;
+  background-color: var(--green);
+  color: white;
+}

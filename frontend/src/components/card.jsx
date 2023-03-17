@@ -16,7 +16,7 @@ export default function Card({
   return (
     <div className="cards">
       <section className="cards container-fluid">
-        <article className="card card--2">
+        <article className="card-pet card--2">
           <div className="card__info-hover">
             <a id="heart">
               <span className="like">

@@ -3,16 +3,26 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
 const elephant = require("../icons-profile/elephant.jpg");
 
 library.add(fab);
 
 export default function AddPet() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [selectedImage, setSelectedImage] = useState();
   const [preview, setPreview] = useState(
     elephant || URL.createObjectURL(selectedImage)
   );
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
@@ -45,8 +55,8 @@ export default function AddPet() {
   }, [selectedImage]);
 
   return (
-    <div className="container p-2 ">
-      <form className="add-pet">
+    <div className="container-fluid p-2 add-pet-container ">
+      <form onSubmit={handleSubmit(onSubmit)} className="add-pet">
         <div
           className="d-flex flex-row-reverse me-2"
           style={{ color: "green" }}
@@ -75,9 +85,14 @@ export default function AddPet() {
                   placeholder="Pet's Name"
                   aria-label="Name"
                   aria-describedby="basic-addon2"
-                  disabled
+                  {...register("name", { required: true, maxLength: 20 })}
                 />
               </div>
+              {errors.name && (
+                <div class="alert alert-danger py-0" role="alert">
+                  Name can be not more than 20 characters
+                </div>
+              )}
               <div className="input-group mb-3">
                 <input
                   type="text"
@@ -85,9 +100,14 @@ export default function AddPet() {
                   placeholder="Eg: Dog, Cat etc"
                   aria-label="Type"
                   aria-describedby="basic-addon2"
-                  disabled
+                  {...register("type", { required: true, maxLength: 15 })}
                 />
               </div>
+              {errors.type && (
+                <div class="alert alert-danger py-0" role="alert">
+                  Please give a valid input
+                </div>
+              )}
               <div className="input-group mb-3  cursor-pointer dropdown">
                 <input
                   type="text"
@@ -392,13 +412,14 @@ export default function AddPet() {
               </a>
             </label>
           </div>
-          <a
+          <button
             style={{ fontSize: "14px" }}
             href="#"
+            type="submit"
             className="btn btn-success btn-lg banner-btn "
           >
             Voila, Submit
-          </a>
+          </button>
         </div>
       </form>
     </div>

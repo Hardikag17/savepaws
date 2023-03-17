@@ -17,14 +17,16 @@ export default function Main() {
   const [posts, setPosts] = useState([]);
   const [card, setCard] = useState(0);
   const [page, setPage] = useState(1);
+  const [element, setElement] = useState();
 
   const getPets = useCallback(async () => {
     const res = await axios.get(`http://localhost:9000/pets?page=${page}`);
     setPosts(res.data.response);
   }, [page]);
 
-  const showCard = (value) => {
+  const showCard = (element, value) => {
     setCard(value + 1);
+    setElement(element);
   };
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function Main() {
             <div className=" d-flex flex-wrap justify-content-between">
               {posts.map((element, key) => {
                 return (
-                  <div key={key} onClick={() => showCard(key)}>
+                  <div key={key} onClick={() => showCard(element, key)}>
                     <Card
                       name={element.Name}
                       description={element.description}
@@ -89,7 +91,7 @@ export default function Main() {
         </div>
       ) : (
         <div>
-          <PetView />
+          <PetView element={element} />
         </div>
       )}
     </div>

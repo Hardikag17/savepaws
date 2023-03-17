@@ -1,12 +1,15 @@
-body {
+.add-pet-container {
   background-image: url(../../public/assets/addPet.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  color: black;
 }
 .add-pet {
   border: 2px solid green;
   margin-top: 3%;
+  margin-left: 3%;
+  margin-right: 3%;
   padding: 2%;
   background-color: #f3f3f3;
 }

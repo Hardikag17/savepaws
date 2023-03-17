@@ -1,10 +1,7 @@
-body {
-  margin: 0%;
-  padding: 0%;
-  height: 100vh;
+#Login {
   font-family: "Cormorant", serif;
   background-color: antiquewhite;
-  font-weight: 400;
+
   color: black;
   background-color: antiquewhite;
 }

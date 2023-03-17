@@ -100,7 +100,7 @@ export default function Register() {
                   </label>
                 </div>
 
-                <div className="form-check d-flex justify-content-center mb-5">
+                <div className="form-check d-flex justify-content-center mb-3">
                   <input
                     className="form-check-input me-2"
                     type="checkbox"
@@ -125,7 +125,7 @@ export default function Register() {
                   </button>
                 </div>
 
-                <p className="text-center text-muted mt-5 mb-0">
+                <p className="text-center text-muted mt-3 mb-0">
                   Have already an account?
                   <a href="/login" className="fw-bold text-body">
                     <u>Login here</u>

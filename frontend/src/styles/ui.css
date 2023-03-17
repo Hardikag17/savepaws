@@ -1,11 +1,6 @@
-@charset "UTF-8";
-/* ==== BASE STYLES ====*/
-/* ==================== GLOBAL STYLES ======================= */
-
-/* ========================
-INCLUDE STYLES AND COMPONENTS
-===================== */
-/* ================== HELPERS  =================== */
+.pet-view {
+  color: #000;
+}
 a:hover {
   text-decoration: none;
 }

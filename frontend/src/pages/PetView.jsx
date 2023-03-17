@@ -7,7 +7,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
 
 library.add(fab);
-function PetViewPage() {
+function PetViewPage({ element }) {
   const handleOnClick = (event) => {
     setimgS(event.target.src);
   };
@@ -17,7 +17,7 @@ function PetViewPage() {
   );
 
   return (
-    <div>
+    <div className="pet-view">
       <section className="section-content padding-y bg">
         <div className="container-fluid">
           <article className="pet">
@@ -76,7 +76,7 @@ function PetViewPage() {
                     <div className=" d-flex justify-content-between w-full align-items-center me-2 ms-2">
                       <div>
                         <h3 className="title" style={{ color: "green" }}>
-                          <b>Name of the pet, </b>
+                          <b>{element.Name}, </b>
                           <span style={{ fontSize: "20px", color: "black" }}>
                             (City, State)
                           </span>
@@ -100,11 +100,22 @@ function PetViewPage() {
                         <b>Basic Information</b>
                       </h5>
                       <ul className="schema-ul">
-                        <li>Id: </li>
-                        <li>Age: </li>
-                        <li>gender: </li>
-                        <li>Breed: type1 (type2)</li>
-                        <li>Color: type1, (type2)</li>
+                        <li>Age: {element.Age} </li>
+                        <li>
+                          gender:{" "}
+                          {element.Gender ? (
+                            <span>Male</span>
+                          ) : (
+                            <div>
+                              {element.Gender == 2 ? (
+                                <span>Female</span>
+                              ) : (
+                                <span>Not Sure</span>
+                              )}
+                            </div>
+                          )}
+                        </li>
+                        <li>Breed: {element.Breed1} </li>
                         <li>Status: </li>
                       </ul>
 
@@ -114,8 +125,28 @@ function PetViewPage() {
                         <b>Health</b>
                       </h5>
                       <ul>
-                        <li>Vaccinated: </li>
-                        <li>Sterilized: </li>
+                        <li>
+                          Vaccinated:{" "}
+                          {element.Vaccinated == 1 ? (
+                            <span>True</span>
+                          ) : (
+                            <span>False</span>
+                          )}
+                        </li>
+                        <li>
+                          Sterilized:{" "}
+                          {element.Sterilized ? (
+                            <span>Yes</span>
+                          ) : (
+                            <div>
+                              {element.Gender == 2 ? (
+                                <span>No</span>
+                              ) : (
+                                <span>Not Sure</span>
+                              )}
+                            </div>
+                          )}
+                        </li>
                       </ul>
 
                       <hr width="90%" />
@@ -123,15 +154,7 @@ function PetViewPage() {
                       <h5>
                         <b>Description</b>
                       </h5>
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged
-                      </p>
+                      <p>{element.Description}</p>
                     </div>
 
                     <div className="mb-4">
