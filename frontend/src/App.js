@@ -12,6 +12,7 @@ const Login = lazy(() => import("./pages/Login"));
 const PetView = lazy(() => import("./pages/PetView"));
 const Profile = lazy(() => import("./pages/Profile"));
 const AddPet = lazy(() => import("./pages/AddPet"));
+const Chat = lazy(() => import("./pages/Chat"));
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
               <Route path="/Profile" element={<Profile />} />
               <Route path="/addpet" element={<AddPet />} />
               <Route path="/PetView" element={<PetView />} />
+              <Route path="/chat" element={<Chat />} />
             </Routes>
           </Suspense>
         </Layout>
