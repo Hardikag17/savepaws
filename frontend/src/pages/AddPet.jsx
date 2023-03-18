@@ -5,6 +5,8 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
+import axios from "axios";
+import { API_ROOT } from "../api-config";
 const elephant = require("../icons-profile/elephant.jpg");
 
 library.add(fab);
@@ -65,12 +67,21 @@ export default function AddPet() {
     data.health = pet.health;
     data.photoamt = selectedImages.length;
     setPet(data);
-    uploadImages();
+    uploadImages(data);
+    data.petID = pet.petID;
     newPetData(data);
   };
 
   const uploadImages = async () => {
-    // upload images to aws-s3
+    // uploading images to aws-s3
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < selectedImages.length; i++) {
+        formData.append("files", selectedImages[i]);
+      }
+      let res = await axios.post(`${API_ROOT}/pets/upload`, formData);
+      setPet({ ...pet, petID: res.data });
+    } catch (error) {}
   };
 
   const newPetData = async (data) => {
