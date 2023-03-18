@@ -3,9 +3,9 @@ const uniqid = require("uniqid");
 const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
-  const name = req.body.user.name;
-  const email = req.body.user.email;
-  const password = req.body.user.password;
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
   const userId = uniqid();
 
   // Check if user already exists, else create a account

@@ -9,18 +9,6 @@ export default function Navbar() {
   const [pets, setPets] = useState([]);
   const navigate = useNavigate();
 
-  const Logout = () => {
-    setState({
-      user: false,
-      email: "",
-      name: "",
-      userPosts: [],
-      token: false,
-    });
-
-    navigate("/");
-  };
-
   const getPets = useCallback(async (event) => {
     setSearchText(event.target.value);
     const res = await axios.get(
@@ -35,6 +23,18 @@ export default function Navbar() {
         })
       : console.log("OOPs! No Pet Found");
   });
+
+  const Logout = () => {
+    setState({
+      user: false,
+      email: "",
+      name: "",
+      userPosts: [],
+      token: false,
+    });
+
+    navigate("/login");
+  };
 
   const search = (
     <div className="d-flex mx-auto" role="search">

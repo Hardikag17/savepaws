@@ -5,6 +5,9 @@ import { API_ROOT } from "../api-config";
 import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,11 +18,33 @@ export default function Login() {
     password: "",
   });
 
-  const login = async () => {
+  const formSchema = yup.object().shape({
+    password: yup
+      .string()
+      .required("Password is mandatory")
+      .min(6, "Password must be at 6 char long"),
+    email: yup.string().required("Email is required"),
+  });
+
+  const formOptions = { resolver: yupResolver(formSchema) };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm(formOptions);
+
+  const formSubmit = (data) => {
+    console.log(data);
+    login(data);
+  };
+
+  const login = async (data) => {
     try {
       const res = await axios.post(`${API_ROOT}/user/login`, {
-        email: user.email,
-        password: user.password,
+        email: data.email,
+        password: data.password,
       });
       console.log(res.status, res.data);
 
@@ -61,37 +86,47 @@ export default function Login() {
               ) : (
                 <div></div>
               )}
-              <form>
+              <form onSubmit={handleSubmit(formSubmit)}>
                 <div className="form-outline mb-4">
                   <input
                     type="email"
-                    onChange={(e) =>
-                      setUser({ ...user, email: e.target.value })
-                    }
-                    className="form-control form-control-lg"
+                    {...register("email")}
+                    className={`form-control form-control-lg ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                   />
                   <label className="form-label" for="form3Example3cg">
                     Your Email
                   </label>
+                  {errors.email && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.email.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
-                    }
-                    className="form-control form-control-lg"
+                    name="password"
+                    {...register("password")}
+                    className={`form-control form-control-lg ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
                   />
                   <label className="form-label" for="form3Example4cg">
                     Password
                   </label>
+                  {errors.password && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.password.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="d-flex justify-content-center">
                   <button
-                    type="button"
-                    onClick={login}
+                    type="submit"
                     className="btn btn-success btn-block btn-lg"
                   >
                     Login

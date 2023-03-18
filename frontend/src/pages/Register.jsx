@@ -3,20 +3,49 @@ import axios from "axios";
 import "../styles/register.css";
 import { API_ROOT } from "../api-config";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 export default function Register() {
   const navigate = useNavigate();
-  const [check, setCheck] = useState(false);
   const [error, setError] = useState("");
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+
+  const formSchema = yup.object().shape({
+    password: yup
+      .string()
+      .required("Password is mandatory")
+      .min(6, "Password must be at 6 char long"),
+    confirmPwd: yup
+      .string()
+      .required("Password is mandatory")
+      .oneOf([yup.ref("password")], "Password does not match"),
+    name: yup
+      .string()
+      .required("Name is mandatory")
+      .min(6, "Name must be at 6 char long"),
+    email: yup.string().required("Email is required"),
+    checkBox: yup.bool().oneOf([true], "Checkbox selection is required"),
   });
 
-  const newUser = async () => {
+  const formOptions = { resolver: yupResolver(formSchema) };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(formOptions);
+
+  const formSubmit = (data) => {
+    newUser(data);
+  };
+
+  const newUser = async (data) => {
     try {
-      const res = await axios.post(`${API_ROOT}/user/register`, { user });
+      const res = await axios.post(`${API_ROOT}/user/register`, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
       console.log(res.status, res.data);
       if (res.status === 200) navigate("/login");
     } catch (error) {
@@ -49,63 +78,90 @@ export default function Register() {
                 <div></div>
               )}
 
-              <form>
+              <form onSubmit={handleSubmit(formSubmit)}>
                 <div className="form-outline mb-4">
                   <input
-                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                     type="text"
-                    className="form-control form-control-lg"
+                    {...register("name")}
+                    className={`form-control form-control-lg ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                   />
+
                   <label className="form-label" for="form3Example1cg">
                     Your Name
                   </label>
+                  {errors.name && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.name.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-outline mb-4">
                   <input
                     type="email"
-                    onChange={(e) =>
-                      setUser({ ...user, email: e.target.value })
-                    }
-                    className="form-control form-control-lg"
+                    name="email"
+                    {...register("email")}
+                    className={`form-control form-control-lg ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                   />
                   <label className="form-label" for="form3Example3cg">
                     Your Email
                   </label>
+                  {errors.email && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.email.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
-                    }
-                    className="form-control form-control-lg"
+                    name="password"
+                    {...register("password")}
+                    className={`form-control form-control-lg ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
                   />
                   <label className="form-label" for="form3Example4cg">
                     Password
                   </label>
+                  {errors.password && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.password.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    onChange={(e) =>
-                      setUser({ ...user, confirmPassword: e.target.value })
-                    }
-                    className="form-control form-control-lg"
+                    {...register("confirmPwd")}
+                    className={`form-control form-control-lg ${
+                      errors.confirmPwd ? "is-invalid" : ""
+                    }`}
                   />
                   <label className="form-label" for="form3Example4cdg">
-                    Repeat your password
+                    Confirm password
                   </label>
+                  {errors.confirmPwd && (
+                    <div class="alert alert-danger py-0" role="alert">
+                      {errors.confirmPwd.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-check d-flex justify-content-center mb-3">
                   <input
-                    className="form-check-input me-2"
+                    {...register("checkBox")}
+                    className={`form-check-input me-2 ${
+                      errors.checkBox ? "is-invalid" : ""
+                    }`}
                     type="checkbox"
-                    name="terms"
-                    onChange={(e) => setCheck(e.target.checked)}
+                    name="checkBox"
                   />
                   <label className="form-check-label" for="form2Example3g">
                     I agree all statements in
@@ -114,11 +170,15 @@ export default function Register() {
                     </a>
                   </label>
                 </div>
+                {errors.checkBox && (
+                  <div class="alert alert-danger py-0" role="alert">
+                    {errors.checkBox.message}
+                  </div>
+                )}
 
                 <div className="d-flex justify-content-center">
                   <button
-                    type="button"
-                    onClick={newUser}
+                    type="submit"
                     className="btn btn-success btn-block btn-lg gradient-custom-4 "
                   >
                     Register
