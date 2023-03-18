@@ -82,7 +82,7 @@ export default function AddPet() {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Pet's Name"
+                  placeholder="* Pet's Name"
                   aria-label="Name"
                   aria-describedby="basic-addon2"
                   {...register("name", { required: true, maxLength: 20 })}
@@ -90,14 +90,14 @@ export default function AddPet() {
               </div>
               {errors.name && (
                 <div class="alert alert-danger py-0" role="alert">
-                  Name can be not more than 20 characters
+                  Name can not be more than 20 characters
                 </div>
               )}
               <div className="input-group mb-3">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Eg: Dog, Cat etc"
+                  placeholder="* Type: Eg: Dog, Cat etc"
                   aria-label="Type"
                   aria-describedby="basic-addon2"
                   {...register("type", { required: true, maxLength: 15 })}
@@ -115,7 +115,9 @@ export default function AddPet() {
                   placeholder="Breed's Name"
                   aria-label="Breed name"
                   aria-describedby="basic-addon2"
+                  {...register("breed", { required: true })}
                   disabled
+                  value={`Breed: ${pet.breed}`}
                 />
                 <button
                   data-bs-toggle="dropdown"
@@ -126,9 +128,24 @@ export default function AddPet() {
                   Select
                 </button>
                 <ul class="dropdown-menu dropdown-menu-start text-center">
-                  <li class="dropdown-item">Husky</li>
-                  <li class="dropdown-item">Labra</li>
-                  <li class="dropdown-item">Himalyan</li>
+                  <li
+                    onClick={() => setPet({ ...pet, breed: "Husky" })}
+                    class="dropdown-item"
+                  >
+                    Husky
+                  </li>
+                  <li
+                    onClick={() => setPet({ ...pet, breed: "Labra" })}
+                    class="dropdown-item"
+                  >
+                    Labra
+                  </li>
+                  <li
+                    onClick={() => setPet({ ...pet, breed: "Himalayan" })}
+                    class="dropdown-item"
+                  >
+                    Himalyan
+                  </li>
                 </ul>
                 &nbsp; &nbsp;
                 <input
@@ -137,6 +154,8 @@ export default function AddPet() {
                   placeholder="Gender"
                   aria-label="Gender"
                   aria-describedby="basic-addon2"
+                  value={`Gender: ${pet.gender}`}
+                  {...register("gender", { required: true })}
                   disabled
                 />
                 <button
@@ -148,9 +167,24 @@ export default function AddPet() {
                   Select
                 </button>
                 <ul class="dropdown-menu dropdown-menu-start text-center">
-                  <li class="dropdown-item">Male</li>
-                  <li class="dropdown-item">Female</li>
-                  <li class="dropdown-item">Not Known</li>
+                  <li
+                    onClick={() => setPet({ ...pet, gender: "Male" })}
+                    class="dropdown-item"
+                  >
+                    Male
+                  </li>
+                  <li
+                    onClick={() => setPet({ ...pet, gender: "Female" })}
+                    class="dropdown-item"
+                  >
+                    Female
+                  </li>
+                  <li
+                    onClick={() => setPet({ ...pet, gender: "Not Known" })}
+                    class="dropdown-item"
+                  >
+                    Not Known
+                  </li>
                 </ul>
                 &nbsp; &nbsp;
                 <input
@@ -159,6 +193,8 @@ export default function AddPet() {
                   placeholder="Age"
                   aria-label="Age"
                   aria-describedby="basic-addon2"
+                  value={`Age: ${pet.age}`}
+                  {...register("age", { required: true })}
                   disabled
                 />
                 <button
@@ -174,6 +210,7 @@ export default function AddPet() {
                     return (
                       <li
                         key={`year${index}`}
+                        onClick={() => setPet({ ...pet, age: year })}
                         value={year}
                         class="dropdown-item"
                       >
@@ -189,9 +226,21 @@ export default function AddPet() {
                   rows="3"
                   className="form-control"
                   aria-label="description:"
-                  disabled
+                  onChange={(e) =>
+                    setPet({ ...pet, description: e.target.value })
+                  }
+                  {...register("description", {
+                    required: true,
+                    maxLength: 100,
+                    minLength: 30,
+                  })}
                 ></textarea>
               </div>
+              {errors.description && (
+                <div class="alert alert-danger py-0" role="alert">
+                  Requires min 30 characters
+                </div>
+              )}
               <div className=" pt-2">
                 <b>
                   <h3>
@@ -206,11 +255,14 @@ export default function AddPet() {
                     placeholder="Status"
                     aria-label="health status"
                     aria-describedby="basic-addon2"
+                    value={`Status: ${pet.health}`}
+                    {...register("health", { required: true })}
                     disabled
                   />
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
+                    onClick={() => setPet({ ...pet, health: "Healthy" })}
                     id="basic-addon2"
                   >
                     Healthy
@@ -218,6 +270,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
+                    onClick={() => setPet({ ...pet, health: "Minor Injury" })}
                     id="basic-addon2"
                   >
                     Minor Injury
@@ -225,6 +278,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
+                    onClick={() => setPet({ ...pet, health: "Serious Injury" })}
                     id="basic-addon2"
                   >
                     Serious Injury
@@ -232,6 +286,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
+                    onClick={() => setPet({ ...pet, health: "Not Specified" })}
                     id="basic-addon2"
                   >
                     Not Specified
@@ -244,11 +299,20 @@ export default function AddPet() {
                     placeholder="Vaccination"
                     aria-label="vaccination status"
                     aria-describedby="basic-addon2"
+                    value={
+                      pet.vaccinated === 1
+                        ? "Vaccination: Yes"
+                        : pet.vaccinated === 2
+                        ? "Vaccination: No"
+                        : "Vaccination: No Idea"
+                    }
+                    {...register("Vaccination", { required: true })}
                     disabled
                   />
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, vaccinated: 1 })}
                     id="basic-addon2"
                   >
                     Yes
@@ -256,6 +320,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, vaccinated: 2 })}
                     id="basic-addon2"
                   >
                     No
@@ -263,9 +328,10 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, vaccinated: 3 })}
                     id="basic-addon2"
                   >
-                    Not Idea
+                    No Idea
                   </span>
                 </div>
                 <div className="input-group mb-3">
@@ -275,11 +341,20 @@ export default function AddPet() {
                     placeholder="Sterilized"
                     aria-label="Sterilized status"
                     aria-describedby="basic-addon2"
+                    value={
+                      pet.sterilized === 1
+                        ? "Sterilized: Yes"
+                        : pet.sterilized === 2
+                        ? "Sterilized: No"
+                        : "Sterilized: No Idea"
+                    }
+                    {...register("Sterilized", { required: true })}
                     disabled
                   />
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, sterilized: 1 })}
                     id="basic-addon2"
                   >
                     Yes
@@ -287,6 +362,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, sterilized: 2 })}
                     id="basic-addon2"
                   >
                     No
@@ -294,6 +370,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
+                    onClick={() => setPet({ ...pet, sterilized: 3 })}
                     id="basic-addon2"
                   >
                     Not Idea
@@ -308,11 +385,16 @@ export default function AddPet() {
                 </b>
                 <hr />
                 <div className="input-group mb-3">
-                  <span className="input-group-text">Address:</span>
+                  <span className="input-group-text">* Address:</span>
                   <textarea
                     rows="3"
                     className="form-control"
                     aria-label="address:"
+                    {...register("address", {
+                      required: true,
+                      maxLength: 80,
+                      minLength: 20,
+                    })}
                     disabled
                   ></textarea>
                   <span
@@ -323,6 +405,11 @@ export default function AddPet() {
                     Click me &nbsp; <FontAwesomeIcon icon={faLocationDot} />
                   </span>
                 </div>
+                {errors.address && (
+                  <div class="alert alert-danger py-0" role="alert">
+                    Common, This is a mandatory field
+                  </div>
+                )}
                 <div>
                   <h6>
                     * City, State, Pincode - (auto fill using geolocation)
@@ -331,15 +418,21 @@ export default function AddPet() {
                     <span className="input-group-text">City:</span>
                     <input
                       className="form-control"
-                      aria-label="City"
-                      disabled
+                      aria-label="city"
+                      {...register("city", {
+                        required: true,
+                        maxLength: 20,
+                      })}
                     ></input>
                     &nbsp; &nbsp;
                     <span className="input-group-text">State:</span>
                     <input
                       className="form-control"
                       aria-label="State"
-                      disabled
+                      {...register("state", {
+                        required: true,
+                        maxLength: 20,
+                      })}
                     ></input>
                     &nbsp; &nbsp;
                     <span className="input-group-text" disabled>
@@ -348,10 +441,18 @@ export default function AddPet() {
                     <input
                       className="form-control"
                       aria-label="Pincode"
-                      disabled
+                      {...register("pincode", {
+                        required: true,
+                        maxLength: 20,
+                      })}
                     ></input>
                   </div>
                 </div>
+                {(errors.city || errors.state || errors.pincode) && (
+                  <div class="alert alert-danger py-0" role="alert">
+                    Please fill the above row
+                  </div>
+                )}
               </div>
             </div>
             {/* Images */}
@@ -377,22 +478,8 @@ export default function AddPet() {
                   type="file"
                 />
               </div>
-              {/* <div className="insert-img">
-                <label>
-                  <img className="img-div" src={preview} alt="avtar" />
-                </label>
-
-                <input
-                  
-                  id="file-upload z-2"
-                  className=" edit cursor-pointer "
-                  type="file"
-                  accept="image/*"
-                  required
-                />
-              </div> */}
               <div class="alert alert-success my-2" role="alert">
-                Color, Doesn't matter, Period!
+                Color, Doesn't matter!
               </div>
             </div>
           </div>
