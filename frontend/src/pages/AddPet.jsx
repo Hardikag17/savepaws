@@ -15,40 +15,47 @@ export default function AddPet() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [selectedImage, setSelectedImage] = useState();
-  const [preview, setPreview] = useState(
-    elephant || URL.createObjectURL(selectedImage)
-  );
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [preview, setPreview] = useState([]);
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
+    petID: "",
+    rescuerID: "",
     name: "",
-    type: "",
-    age: "",
+    type: null,
+    age: null,
     breed: "",
     gender: "",
-    vaccinated: "",
-    sterilized: "",
+    vaccinated: null,
+    sterilized: null,
     health: "",
     state: "",
     city: "",
-    pincode: "",
+    pincode: null,
     address: "",
     description: "",
+    photoamt: null,
+    status: false,
   });
 
   useEffect(() => {
-    if (!selectedImage) {
-      setPreview(elephant);
+    if (!selectedImages[0]) {
+      setPreview([elephant, elephant, elephant, elephant]);
       return;
     }
 
-    const objectUrl = URL.createObjectURL(selectedImage);
-    setPreview(objectUrl);
+    console.log(selectedImages);
+
+    setPreview([]);
+    [...selectedImages].forEach((element) => {
+      const objectUrl = URL.createObjectURL(element);
+      setPreview((preview) => [...preview, objectUrl]);
+    });
 
     // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedImage]);
+    //return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedImages]);
 
   const onSubmit = (data) => {
     data.breed = pet.breed;
@@ -56,8 +63,14 @@ export default function AddPet() {
     data.vaccinated = pet.vaccinated;
     data.sterilized = pet.sterilized;
     data.health = pet.health;
+    data.photoamt = selectedImages.length;
     setPet(data);
+    uploadImages();
     newPetData(data);
+  };
+
+  const uploadImages = async () => {
+    // upload images to aws-s3
   };
 
   const newPetData = async (data) => {
@@ -476,19 +489,45 @@ export default function AddPet() {
             </div>
             {/* Images */}
             <div className="imgs">
-              <div className="image-upload">
+              <div className="image-upload container text-center">
                 <label for="file-input" className="img-div">
-                  <img
-                    src={preview}
-                    width={100}
-                    height={100}
-                    alt="Pet's pics (max-4)"
-                  />
+                  <div class="row border border-dark">
+                    <div class="col">
+                      <img
+                        src={preview[0]}
+                        height={260}
+                        class="w-100 shadow-1-strong p-2 pe-0 img-1"
+                        alt="Pet's pics (max-4)"
+                      />
+                      <img
+                        src={preview[1]}
+                        class="w-100 shadow-1-strong p-2 pb-0 img-2"
+                        alt="Pet's pics (max-4)"
+                      />
+                    </div>
+                    <div class="col">
+                      <img
+                        src={preview[2]}
+                        class="w-100 shadow-1-strong p-2 img-3"
+                        alt="Pet's pics (max-4)"
+                      />
+                      <img
+                        src={preview[3]}
+                        height={260}
+                        class="w-100  shadow-1-strong p-2 pt-0 ps-0 img-4"
+                        alt="Pet's pics (max-4)"
+                      />
+                    </div>
+                  </div>
                 </label>
                 <input
                   onChange={(e) => {
-                    if (e.target.files?.[0]) {
-                      setSelectedImage(e.target.files[0]);
+                    if (e.target.files.length > 4)
+                      alert("You can upload only 4 images");
+                    else {
+                      if (e.target.files?.[0]) {
+                        setSelectedImages(e.target.files);
+                      }
                     }
                   }}
                   id="file-input"
@@ -496,9 +535,9 @@ export default function AddPet() {
                   type="file"
                 />
               </div>
-              <div className="alert alert-success my-2" role="alert">
+              {/* <div className="alert alert-success my-2" role="alert">
                 Color, Doesn't matter!
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
