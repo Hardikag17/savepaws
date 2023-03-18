@@ -20,10 +20,6 @@ export default function AddPet() {
     elephant || URL.createObjectURL(selectedImage)
   );
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
     name: "",
@@ -54,6 +50,19 @@ export default function AddPet() {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedImage]);
 
+  const onSubmit = (data) => {
+    data.breed = pet.breed;
+    data.gender = pet.gender;
+    data.vaccinated = pet.vaccinated;
+    data.sterilized = pet.sterilized;
+    data.health = pet.health;
+    setPet(data);
+    newPetData(data);
+  };
+
+  const newPetData = async (data) => {
+    console.log(data);
+  };
   return (
     <div className="container-fluid p-2 add-pet-container ">
       <form onSubmit={handleSubmit(onSubmit)} className="add-pet">
@@ -81,6 +90,7 @@ export default function AddPet() {
               <div className="input-group mb-3">
                 <input
                   type="text"
+                  name="name"
                   className="form-control"
                   placeholder="* Pet's Name"
                   aria-label="Name"
@@ -89,13 +99,14 @@ export default function AddPet() {
                 />
               </div>
               {errors.name && (
-                <div class="alert alert-danger py-0" role="alert">
+                <div className="alert alert-danger py-0" role="alert">
                   Name can not be more than 20 characters
                 </div>
               )}
               <div className="input-group mb-3">
                 <input
                   type="text"
+                  name="type"
                   className="form-control"
                   placeholder="* Type: Eg: Dog, Cat etc"
                   aria-label="Type"
@@ -111,11 +122,11 @@ export default function AddPet() {
               <div className="input-group mb-3  cursor-pointer dropdown">
                 <input
                   type="text"
+                  name="breed"
                   className="form-control"
                   placeholder="Breed's Name"
                   aria-label="Breed name"
                   aria-describedby="basic-addon2"
-                  {...register("breed", { required: true })}
                   disabled
                   value={`Breed: ${pet.breed}`}
                 />
@@ -123,26 +134,28 @@ export default function AddPet() {
                   data-bs-toggle="dropdown"
                   className="btn btn-success btn-lg banner-btn dropdown-toggle"
                   style={{ fontSize: "15px" }}
-                  type="submit"
                 >
                   Select
                 </button>
-                <ul class="dropdown-menu dropdown-menu-start text-center">
+                <ul className="dropdown-menu dropdown-menu-start text-center">
                   <li
                     onClick={() => setPet({ ...pet, breed: "Husky" })}
-                    class="dropdown-item"
+                    {...register("breed", { required: true })}
+                    className="dropdown-item"
                   >
                     Husky
                   </li>
                   <li
                     onClick={() => setPet({ ...pet, breed: "Labra" })}
-                    class="dropdown-item"
+                    {...register("breed", { required: true })}
+                    className="dropdown-item"
                   >
                     Labra
                   </li>
                   <li
                     onClick={() => setPet({ ...pet, breed: "Himalayan" })}
-                    class="dropdown-item"
+                    {...register("breed", { required: true })}
+                    className="dropdown-item"
                   >
                     Himalyan
                   </li>
@@ -150,38 +163,40 @@ export default function AddPet() {
                 &nbsp; &nbsp;
                 <input
                   type="text"
+                  name="gender"
                   className="form-control"
                   placeholder="Gender"
                   aria-label="Gender"
                   aria-describedby="basic-addon2"
                   value={`Gender: ${pet.gender}`}
-                  {...register("gender", { required: true })}
                   disabled
                 />
                 <button
                   data-bs-toggle="dropdown"
                   className="btn btn-success btn-lg banner-btn dropdown-toggle"
                   style={{ fontSize: "15px" }}
-                  type="submit"
                 >
                   Select
                 </button>
-                <ul class="dropdown-menu dropdown-menu-start text-center">
+                <ul className="dropdown-menu dropdown-menu-start text-center">
                   <li
                     onClick={() => setPet({ ...pet, gender: "Male" })}
-                    class="dropdown-item"
+                    {...register("gender", { required: true })}
+                    className="dropdown-item"
                   >
                     Male
                   </li>
                   <li
                     onClick={() => setPet({ ...pet, gender: "Female" })}
-                    class="dropdown-item"
+                    {...register("gender", { required: true })}
+                    className="dropdown-item"
                   >
                     Female
                   </li>
                   <li
                     onClick={() => setPet({ ...pet, gender: "Not Known" })}
-                    class="dropdown-item"
+                    {...register("gender", { required: true })}
+                    className="dropdown-item"
                   >
                     Not Known
                   </li>
@@ -189,30 +204,30 @@ export default function AddPet() {
                 &nbsp; &nbsp;
                 <input
                   type="text"
+                  name="age"
                   className="form-control"
                   placeholder="Age"
                   aria-label="Age"
                   aria-describedby="basic-addon2"
                   value={`Age: ${pet.age}`}
-                  {...register("age", { required: true })}
                   disabled
                 />
                 <button
                   data-bs-toggle="dropdown"
                   className="btn btn-success btn-lg banner-btn dropdown-toggle"
                   style={{ fontSize: "15px" }}
-                  type="submit"
                 >
                   Select
                 </button>
-                <ul class="dropdown-menu dropdown-menu-start text-center">
+                <ul className="dropdown-menu dropdown-menu-start text-center">
                   {numbers.map((year, index) => {
                     return (
                       <li
                         key={`year${index}`}
                         onClick={() => setPet({ ...pet, age: year })}
+                        {...register("age", { required: true })}
                         value={year}
-                        class="dropdown-item"
+                        className="dropdown-item"
                       >
                         {year}
                       </li>
@@ -224,6 +239,7 @@ export default function AddPet() {
                 <span className="input-group-text">Description:</span>
                 <textarea
                   rows="3"
+                  name="description"
                   className="form-control"
                   aria-label="description:"
                   onChange={(e) =>
@@ -237,7 +253,7 @@ export default function AddPet() {
                 ></textarea>
               </div>
               {errors.description && (
-                <div class="alert alert-danger py-0" role="alert">
+                <div className="alert alert-danger py-0" role="alert">
                   Requires min 30 characters
                 </div>
               )}
@@ -251,12 +267,12 @@ export default function AddPet() {
                 <div className="input-group mb-3">
                   <input
                     type="text"
+                    name="health"
                     className="form-control"
                     placeholder="Status"
                     aria-label="health status"
                     aria-describedby="basic-addon2"
                     value={`Status: ${pet.health}`}
-                    {...register("health", { required: true })}
                     disabled
                   />
                   <span
@@ -295,6 +311,7 @@ export default function AddPet() {
                 <div className="input-group mb-3">
                   <input
                     type="text"
+                    name="vaccination"
                     className="form-control"
                     placeholder="Vaccination"
                     aria-label="vaccination status"
@@ -306,7 +323,6 @@ export default function AddPet() {
                         ? "Vaccination: No"
                         : "Vaccination: No Idea"
                     }
-                    {...register("Vaccination", { required: true })}
                     disabled
                   />
                   <span
@@ -338,6 +354,7 @@ export default function AddPet() {
                   <input
                     type="text"
                     className="form-control"
+                    name="sterilized"
                     placeholder="Sterilized"
                     aria-label="Sterilized status"
                     aria-describedby="basic-addon2"
@@ -348,7 +365,6 @@ export default function AddPet() {
                         ? "Sterilized: No"
                         : "Sterilized: No Idea"
                     }
-                    {...register("Sterilized", { required: true })}
                     disabled
                   />
                   <span
@@ -389,13 +405,13 @@ export default function AddPet() {
                   <textarea
                     rows="3"
                     className="form-control"
+                    name="address"
                     aria-label="address:"
                     {...register("address", {
                       required: true,
                       maxLength: 80,
                       minLength: 20,
                     })}
-                    disabled
                   ></textarea>
                   <span
                     role="button"
@@ -406,7 +422,7 @@ export default function AddPet() {
                   </span>
                 </div>
                 {errors.address && (
-                  <div class="alert alert-danger py-0" role="alert">
+                  <div className="alert alert-danger py-0" role="alert">
                     Common, This is a mandatory field
                   </div>
                 )}
@@ -418,6 +434,8 @@ export default function AddPet() {
                     <span className="input-group-text">City:</span>
                     <input
                       className="form-control"
+                      name="city"
+                      type="text"
                       aria-label="city"
                       {...register("city", {
                         required: true,
@@ -428,6 +446,8 @@ export default function AddPet() {
                     <span className="input-group-text">State:</span>
                     <input
                       className="form-control"
+                      type="text"
+                      name="state"
                       aria-label="State"
                       {...register("state", {
                         required: true,
@@ -435,11 +455,10 @@ export default function AddPet() {
                       })}
                     ></input>
                     &nbsp; &nbsp;
-                    <span className="input-group-text" disabled>
-                      Pincode:
-                    </span>
+                    <span className="input-group-text">Pincode:</span>
                     <input
                       className="form-control"
+                      type="number"
                       aria-label="Pincode"
                       {...register("pincode", {
                         required: true,
@@ -449,7 +468,7 @@ export default function AddPet() {
                   </div>
                 </div>
                 {(errors.city || errors.state || errors.pincode) && (
-                  <div class="alert alert-danger py-0" role="alert">
+                  <div className="alert alert-danger py-0" role="alert">
                     Please fill the above row
                   </div>
                 )}
@@ -457,7 +476,7 @@ export default function AddPet() {
             </div>
             {/* Images */}
             <div className="imgs">
-              <div class="image-upload">
+              <div className="image-upload">
                 <label for="file-input" className="img-div">
                   <img
                     src={preview}
@@ -465,7 +484,6 @@ export default function AddPet() {
                     height={100}
                     alt="Pet's pics (max-4)"
                   />
-                  {/* <button className=" btn absolute z-5">*</button> */}
                 </label>
                 <input
                   onChange={(e) => {
@@ -478,7 +496,7 @@ export default function AddPet() {
                   type="file"
                 />
               </div>
-              <div class="alert alert-success my-2" role="alert">
+              <div className="alert alert-success my-2" role="alert">
                 Color, Doesn't matter!
               </div>
             </div>
@@ -501,7 +519,6 @@ export default function AddPet() {
           </div>
           <button
             style={{ fontSize: "14px" }}
-            href="#"
             type="submit"
             className="btn btn-success btn-lg banner-btn "
           >
