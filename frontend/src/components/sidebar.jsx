@@ -1,13 +1,13 @@
 import "../styles/sidebar.css";
 export default function SideBar() {
   return (
-    <div class="sticky-top">
-      <div class="d-flex flex-sm-column flex-row flex-nowrap  align-items-center sticky-top">
-        <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-          <li class="nav-item">
+    <div>
+      <div className="d-flex flex-sm-column flex-row flex-nowrap  align-items-center ">
+        <ul className="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
+          <li className="nav-item">
             <a
               href="#"
-              class="nav-link py-3 px-2"
+              className="nav-link py-3 px-2"
               title=""
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -19,7 +19,7 @@ export default function SideBar() {
           <li>
             <a
               href="#"
-              class="nav-link py-3 px-2"
+              className="nav-link py-3 px-2"
               title=""
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -31,7 +31,7 @@ export default function SideBar() {
           <li>
             <a
               href="#"
-              class="nav-link py-3 px-2"
+              className="nav-link py-3 px-2"
               title=""
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -43,7 +43,7 @@ export default function SideBar() {
           <li>
             <a
               href="#"
-              class="nav-link py-3 px-2"
+              className="nav-link py-3 px-2"
               title=""
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -55,7 +55,7 @@ export default function SideBar() {
           <li>
             <a
               href="#"
-              class="nav-link py-3 px-2"
+              className="nav-link py-3 px-2"
               title=""
               data-bs-toggle="tooltip"
               data-bs-placement="right"

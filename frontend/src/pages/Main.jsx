@@ -35,7 +35,7 @@ export default function Main() {
 
   return (
     <div id="Main" style={{ backgroundColor: "#FFF" }}>
-      {card == 0 ? (
+      {card === 0 ? (
         <div className="dashboard">
           <div className="filterOptions">
             <SideBar />
@@ -55,7 +55,7 @@ export default function Main() {
                       name={element.Name}
                       description={element.description}
                       rescuerId={element.RescuerID}
-                      comments="5"
+                      comments=" 5"
                       postedOn="4/3/2023"
                     />
                   </div>

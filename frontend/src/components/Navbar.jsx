@@ -3,25 +3,36 @@ import { UserContext } from "../utils/userContext";
 import { Link, useNavigate } from "react-router-dom";
 import { API_ROOT } from "../api-config";
 import axios from "axios";
+import SearchOverlay from "./searchOverlay";
 export default function Navbar() {
   const { state, setState } = useContext(UserContext);
   const [searchText, setSearchText] = useState(null);
   const [pets, setPets] = useState([]);
+  const [overlay, setOverlay] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchText && searchText.length > 0) setOverlay(true);
+    else setOverlay(false);
+
+    setState({ ...state, overlay: overlay });
+
+    console.log("overlay:", state.overlay);
+  }, [searchText, overlay]);
 
   const getPets = useCallback(async (event) => {
     setSearchText(event.target.value);
     const res = await axios.get(
       `${API_ROOT}/pets?searchText=${event.target.value}`
     );
-    //console.log(res.data);
-    setPets(res.data);
+    // console.log(res.data);
+    await setPets(res.data);
 
-    pets.length
-      ? [...pets.response].map((val) => {
-          console.log("Value...", val);
-        })
-      : console.log("OOPs! No Pet Found");
+    // pets.response?.length
+    //   ? [...pets.response].map((val) => {
+    //       console.log("Value..", val);
+    //     })
+    //   : console.log("OOPs! No Pet Found");
   });
 
   const Logout = () => {
@@ -57,7 +68,7 @@ export default function Navbar() {
   );
 
   const notLoggedIn = (
-    <nav className="navbar navbar-expand-lg bg-light sticky-top z-5 ">
+    <nav className="navbar navbar-expand-lg bg-light sticky-top z-5">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img alt="logo" src="../assets/brand/logo.png" height="20" />
@@ -209,5 +220,15 @@ export default function Navbar() {
       </div>
     </nav>
   );
-  return state.user ? LoggedIn : notLoggedIn;
+
+  return (
+    <div className=" sticky-top">
+      {state.user ? LoggedIn : notLoggedIn}
+      {state.overlay ? (
+        <SearchOverlay searchText={searchText} Pets={pets} />
+      ) : (
+        <div />
+      )}
+    </div>
+  );
 }

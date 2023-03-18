@@ -10,6 +10,7 @@ const Layout = ({ children }) => {
     name: "",
     userPosts: [],
     token: false,
+    overlay: false,
   });
 
   useEffect(() => {
