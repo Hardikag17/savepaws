@@ -1,5 +1,5 @@
 // Upload a bunch of images with a folder name to aws-s3
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const uniqid = require("uniqid");
 
 const s3Client = new S3Client({
@@ -13,24 +13,31 @@ const s3Client = new S3Client({
 const uploadImages = async (req, res) => {
   let files = req.files;
   let petID = uniqid();
-  let bucket = "Paws";
+  let bucket = "paws-adoption";
+  let contentType;
+  if (files) {
+    contentType = files[0].mimetype;
+  }
 
-  for (var i = 0; i < files.length; i++) {
-    let contentType = files[0].mimetype;
+  console.log(req.files);
 
-    if (contentType == "image/jpeg") extension = ".jpeg";
-    if (contentType == "image/webp") extension = ".webp";
-    if (contentType == "image/svg") extension = ".svg";
-    if (contentType == "image/jpg") extension = ".jpg";
-    if (contentType == "image/png") extension = ".png";
+  let buffers = [...files].map((element) => element.buffer);
 
-    const uploadCommand = new PutObjectCommand({
-      Bucket: bucket,
-      Key: `${petID}-${i}${extension}`,
-      ContentType: contentType,
-    });
+  if (contentType == "image/jpeg") extension = ".jpeg";
+  if (contentType == "image/webp") extension = ".webp";
+  if (contentType == "image/svg") extension = ".svg";
+  if (contentType == "image/jpg") extension = ".jpg";
+  if (contentType == "image/png") extension = ".png";
 
-    response = await s3Client.send(uploadCommand);
+  for (var i = 0; i < buffers.length; i++) {
+    var response = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: `${petID}-${i}${extension}`,
+        Body: buffers[i],
+        ContentType: contentType,
+      })
+    );
   }
 
   //  Public url to access aws-s3 uploads - aws-s3 Image url - s3.amazonaws.com/[BUCKET-NAME]/[FILE-NAME].[FILE-TYPE]

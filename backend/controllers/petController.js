@@ -106,7 +106,9 @@ const getPets = async (req, res) => {
 };
 
 // Add Pet
-const addPet = async (req, res) => {};
+const addPet = async (req, res) => {
+  console.log(req.body);
+};
 
 // Update Pet
 const updatePet = async (req, res) => {};

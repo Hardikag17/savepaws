@@ -7,12 +7,8 @@ const { uploadImages } = require("../controllers/fileUpload");
 const routes = express.Router();
 
 // upload images to diskStorage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-});
-var upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Pet
 routes.get("/", getPets);

@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
 import axios from "axios";
+import FormData from "form-data";
+
 import { API_ROOT } from "../api-config";
 const elephant = require("../icons-profile/elephant.jpg");
 
@@ -47,8 +49,6 @@ export default function AddPet() {
       return;
     }
 
-    console.log(selectedImages);
-
     setPreview([]);
     [...selectedImages].forEach((element) => {
       const objectUrl = URL.createObjectURL(element);
@@ -67,25 +67,43 @@ export default function AddPet() {
     data.health = pet.health;
     data.photoamt = selectedImages.length;
     setPet(data);
-    uploadImages(data);
+    //uploadImages();
     data.petID = pet.petID;
     newPetData(data);
   };
-
+  const formData = new FormData();
   const uploadImages = async () => {
     // uploading images to aws-s3
+
     try {
-      const formData = new FormData();
-      for (let i = 0; i < selectedImages.length; i++) {
-        formData.append("files", selectedImages[i]);
-      }
-      let res = await axios.post(`${API_ROOT}/pets/upload`, formData);
+      for (let i = 0; i < selectedImages.length; i++)
+        formData.append(`files`, selectedImages[i]);
+
+      // for (var pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
+
+      let res = await axios({
+        method: "POST",
+        url: `${API_ROOT}/pets/upload`,
+        body: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setPet({ ...pet, petID: res.data });
-    } catch (error) {}
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const newPetData = async (data) => {
-    console.log(data);
+    // add new pet
+    try {
+      const res = await axios.post(`${API_ROOT}/pets/addpet`, { data });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="container-fluid p-2 add-pet-container ">
@@ -543,6 +561,7 @@ export default function AddPet() {
                   }}
                   id="file-input"
                   multiple
+                  name="files"
                   type="file"
                 />
               </div>
