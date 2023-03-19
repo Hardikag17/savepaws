@@ -13,6 +13,7 @@ const s3Client = new S3Client({
 const uploadImages = async (req, res) => {
   let files = req.files;
   let petID = uniqid();
+  let bucket = "Paws";
 
   for (var i = 0; i < files.length; i++) {
     let contentType = files[0].mimetype;
