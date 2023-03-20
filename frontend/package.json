@@ -21,6 +21,7 @@
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.0",
+    "superagent": "^8.0.9",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2"
   },

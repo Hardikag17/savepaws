@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
 import axios from "axios";
-import FormData from "form-data";
+import upload from "superagent";
 
 import { API_ROOT } from "../api-config";
 const elephant = require("../icons-profile/elephant.jpg");
@@ -67,30 +67,24 @@ export default function AddPet() {
     data.health = pet.health;
     data.photoamt = selectedImages.length;
     setPet(data);
-    //uploadImages();
+    uploadImages();
     data.petID = pet.petID;
     newPetData(data);
   };
-  const formData = new FormData();
+
   const uploadImages = async () => {
     // uploading images to aws-s3
-
     try {
-      for (let i = 0; i < selectedImages.length; i++)
-        formData.append(`files`, selectedImages[i]);
-
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
-
-      let res = await axios({
-        method: "POST",
-        url: `${API_ROOT}/pets/upload`,
-        body: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setPet({ ...pet, petID: res.data });
-      console.log(res);
+      upload
+        .post(`${API_ROOT}/pets/upload`)
+        .attach("files", selectedImages[0])
+        .attach("files", selectedImages[1])
+        .attach("files", selectedImages[2])
+        .attach("files", selectedImages[3])
+        .end((err, res) => {
+          if (err) console.log(err);
+          setPet({ ...pet, petID: res.text });
+        });
     } catch (error) {
       console.log(error);
     }

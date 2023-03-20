@@ -6,7 +6,7 @@ const { uploadImages } = require("../controllers/fileUpload");
 
 const routes = express.Router();
 
-// upload images to diskStorage
+// upload images to memoryStorage
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 

@@ -19,8 +19,6 @@ const uploadImages = async (req, res) => {
     contentType = files[0].mimetype;
   }
 
-  console.log(req.files);
-
   let buffers = [...files].map((element) => element.buffer);
 
   if (contentType == "image/jpeg") extension = ".jpeg";
