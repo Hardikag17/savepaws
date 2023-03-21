@@ -141,7 +141,7 @@ export default function AddPet() {
               )}
               <div className="input-group mb-3">
                 <input
-                  type="text"
+                  type="number"
                   name="type"
                   className="form-control"
                   placeholder="* Type: Eg: Dog, Cat etc"

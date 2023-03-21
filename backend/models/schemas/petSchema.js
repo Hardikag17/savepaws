@@ -30,7 +30,7 @@ const petSchema = new Schema(
     breed2: String,
     gender: {
       type: String,
-      enum: ["MALE", "FEMALE", "NOT KNOWN"],
+      enum: ["Male", "Female", "Not Known"],
     },
     color1: String,
     color2: String,
