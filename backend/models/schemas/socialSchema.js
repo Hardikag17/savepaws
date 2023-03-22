@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const commentSchema = new Schema({ username: String, content: String });
+const User = require("./userSchema");
+
+const commentSchema = new Schema({ userId: String, content: String });
 
 const socialSchema = new Schema({
   /*
@@ -13,6 +15,10 @@ const socialSchema = new Schema({
   likes: [String],
   comments: {
     type: [commentSchema],
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const Social = require("./socialSchema");
+
 const petSchema = new Schema(
   {
     /*
@@ -68,6 +70,13 @@ const petSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    social: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Social",
+      },
+    ],
     //  purpose: "", Adoption OR Sell
   },
   { timestamps: true }
