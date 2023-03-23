@@ -1,23 +1,7 @@
-const testdata = require("../dataset/test.json");
+const { Pet } = require("../models/schemas/petSchema");
+//const testdata = require("../dataset/test.json");
 const MiniSearch = require("minisearch");
-
-let miniSearch = new MiniSearch({
-  idField: "PetID",
-  fields: ["Name"], // fields to index for full-text search
-  storeFields: [
-    "PetID",
-    "Name",
-    "Description",
-    "Age",
-    "Health",
-    "RescuerID",
-    "Gender",
-    "Breed",
-    "Color1",
-  ], // fields to return with search results
-  searchOptions: { prefix: true },
-});
-miniSearch.addAll(testdata);
+const mongoose = require("mongoose");
 
 const filterPets = async (pets, filterOptions) => {
   let res = pets;
@@ -52,7 +36,26 @@ const filterPets = async (pets, filterOptions) => {
 
 const search = async (searchText, filterOptions) => {
   let res;
-  if (searchText == "") res = testdata;
+  let data = await Pet.find({});
+
+  let miniSearch = new MiniSearch({
+    idField: "PetID",
+    fields: ["Name"], // fields to index for full-text search
+    storeFields: [
+      "PetID",
+      "Name",
+      "Description",
+      "Age",
+      "Health",
+      "RescuerID",
+      "Gender",
+      "Breed",
+      "Color1",
+    ], // fields to return with search results
+    searchOptions: { prefix: true },
+  });
+  miniSearch.addAll(data);
+  if (searchText == "") res = data;
   else res = miniSearch.search(searchText);
 
   if (filterOptions) {

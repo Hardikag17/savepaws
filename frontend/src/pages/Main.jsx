@@ -55,6 +55,7 @@ export default function Main() {
                       name={element.Name}
                       description={element.description}
                       rescuerId={element.RescuerID}
+                      PetID={element.PetID}
                       comments=" 5"
                       postedOn="4/3/2023"
                     />

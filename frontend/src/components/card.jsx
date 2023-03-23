@@ -12,6 +12,7 @@ export default function Card({
   rescuerId,
   comments,
   postedOn,
+  PetID,
 }) {
   return (
     <div className="cards">

@@ -98,7 +98,7 @@ const getPets = async (req, res) => {
 
   response = response.slice(page * limit - limit, page * limit);
 
-  console.log("response", response);
+  //console.log("response", response);
 
   return res.json({
     response: response,
@@ -147,7 +147,7 @@ const addPet = async (req, res) => {
 
   try {
     const response = await newPet.save();
-    console.log(response);
+    //console.log(response);
   } catch (err) {
     res.send(err);
   }

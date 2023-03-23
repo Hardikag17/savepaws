@@ -7,7 +7,7 @@ const connectionParams = {
   useUnifiedTopology: true,
 };
 
-const db = mongoose.connection;
+//const db = mongoose.connection;
 
 const connectDB = async () => {
   try {
