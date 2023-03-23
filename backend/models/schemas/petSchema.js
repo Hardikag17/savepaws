@@ -71,15 +71,15 @@ const petSchema = new Schema(
       default: false,
     },
 
-    social: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Social",
-      },
-    ],
+    // social: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Social",
+    //   },
+    // ],
     //  purpose: "", Adoption OR Sell
-  },
-  { timestamps: true }
+  }
+  // { timestamps: true }
 );
 
 const Pet = mongoose.model("Pet", petSchema);

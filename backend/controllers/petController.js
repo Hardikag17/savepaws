@@ -107,7 +107,6 @@ const getPets = async (req, res) => {
 
 // Add Pet
 const addPet = async (req, res) => {
-  // console.log(req.body.data.name);
   const PetData = req.body.data;
   const name = PetData.name;
   const petID = PetData.petID;
@@ -128,7 +127,7 @@ const addPet = async (req, res) => {
 
   const newPet = new Pet({
     petID,
-    rescuerID: "123",
+    rescuerID,
     name,
     type,
     age,
@@ -147,7 +146,7 @@ const addPet = async (req, res) => {
 
   try {
     const response = await newPet.save();
-    //console.log(response);
+    res.status(200).send("Pet Successfully added");
   } catch (err) {
     res.send(err);
   }

@@ -37,9 +37,8 @@ const filterPets = async (pets, filterOptions) => {
 const search = async (searchText, filterOptions) => {
   let res;
   let data = await Pet.find({});
-
   let miniSearch = new MiniSearch({
-    idField: "PetID",
+    idField: "_id",
     fields: ["Name"], // fields to index for full-text search
     storeFields: [
       "PetID",
@@ -54,6 +53,7 @@ const search = async (searchText, filterOptions) => {
     ], // fields to return with search results
     searchOptions: { prefix: true },
   });
+
   miniSearch.addAll(data);
   if (searchText == "") res = data;
   else res = miniSearch.search(searchText);

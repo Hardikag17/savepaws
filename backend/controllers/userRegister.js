@@ -38,8 +38,10 @@ const Login = async (req, res) => {
   // Check if exists, else send an error
   const count = await User.countDocuments({ email: email, password: password });
 
-  if (count == 1) res.send(`Validated user ${email}`);
-  else res.send("User not found");
+  if (count == 1) {
+    let response = await User.find({ email: email, password: password });
+    res.status(200).send(response[0].userId);
+  } else res.send("User not found");
 };
 
 module.exports = { Register, Login };
