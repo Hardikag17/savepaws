@@ -49,12 +49,12 @@ export default function Login() {
       console.log(res.status, res.data);
 
       if (res.status === 200) {
+        localStorage.setItem("userID", res.data);
         setState({
           user: true,
-          userID: res.data,
+          userID: localStorage.getItem("userID"),
           email: user.email,
           name: "",
-          userPosts: [],
           token: false,
         });
 

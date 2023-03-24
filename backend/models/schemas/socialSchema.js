@@ -11,7 +11,6 @@ const socialSchema = new Schema({
   unique Id of the pet
   */
   petID: String,
-  photos: [String],
   likes: [String],
   comments: {
     type: String,

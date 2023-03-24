@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
     userID: "",
     email: "",
     name: "",
-    userPosts: [],
     token: false,
     overlay: false,
   });
@@ -20,7 +19,7 @@ const Layout = ({ children }) => {
     }
 
     if (state.user) {
-      console.log("user", state.email);
+      console.log("user", state.userID);
     }
   }, [state]);
 

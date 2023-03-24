@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
+import PrivateRoute from "./components/Private";
 
 import "../src/styles/App.css";
 import Navbar from "./components/Navbar";
@@ -28,8 +29,22 @@ const App = () => {
               <Route path="/home" element={<Main />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/Profile" element={<Profile />} />
-              <Route path="/addpet" element={<AddPet />} />
+              <Route
+                path="/Profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/addpet"
+                element={
+                  <PrivateRoute>
+                    <AddPet />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/PetView" element={<PetView />} />
               <Route path="/chat" element={<Chat />} />
             </Routes>
