@@ -1,5 +1,11 @@
 // Upload a bunch of images with a folder name to aws-s3
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { Pet } = require("../models/schemas/petSchema");
+const {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  GetObjectAclCommand,
+} = require("@aws-sdk/client-s3");
 const uniqid = require("uniqid");
 
 const s3Client = new S3Client({
@@ -31,16 +37,37 @@ const uploadImages = async (req, res) => {
     var response = await s3Client.send(
       new PutObjectCommand({
         Bucket: bucket,
-        Key: `${petID}-${i}${extension}`,
+        Key: `pets/${petID}-${i}${extension}`,
         Body: buffers[i],
         ContentType: contentType,
       })
     );
   }
 
-  //  Public url to access aws-s3 uploads - aws-s3 Image url - s3.amazonaws.com/[BUCKET-NAME]/[FILE-NAME].[FILE-TYPE]
+  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.amazonaws.com/pets/[FILENAME].jpg
 
   res.status(200).send(petID);
 };
+
+// const getImages = async (req, res) => {
+//   let PetID = req.params.petID;
+//   let bucket = "paws-adoption";
+//   let response = await Pet.find({ PetID: PetID });
+//   let PhotoAmt = response[0].PhotoAmt;
+
+//   var Images = [];
+//   for (var i = 0; i < PhotoAmt; i++) {
+//     response = await s3Client.send(
+//       new GetObjectCommand({
+//         Bucket: bucket,
+//         Key: `pets/${PetID}-2.jpg`,
+//       })
+//     );
+
+//     //Images.push(response);
+//   }
+
+//   res.send(response);
+// };
 
 module.exports = { uploadImages };

@@ -51,6 +51,7 @@ export default function Login() {
       if (res.status === 200) {
         setState({
           user: true,
+          userID: res.data,
           email: user.email,
           name: "",
           userPosts: [],

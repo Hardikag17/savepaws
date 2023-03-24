@@ -2,6 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
@@ -20,6 +22,7 @@ export default function AddPet() {
     formState: { errors },
   } = useForm();
   const [selectedImages, setSelectedImages] = useState([]);
+  const { state } = useContext(UserContext);
   const [preview, setPreview] = useState([]);
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
@@ -70,6 +73,7 @@ export default function AddPet() {
     setPet(data);
     uploadImages();
     data.petID = pet.petID;
+    data.rescuerID = state.userID;
     newPetData(data);
   };
 
@@ -83,7 +87,7 @@ export default function AddPet() {
         .attach("files", selectedImages[2])
         .attach("files", selectedImages[3])
         .end((err, res) => {
-          if (err) console.log(err);
+          if (err) alert(err);
           setPet({ ...pet, petID: res.text });
         });
     } catch (error) {

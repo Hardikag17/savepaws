@@ -12,6 +12,7 @@ export default function Card({
   rescuerId,
   comments,
   postedOn,
+  PetID,
 }) {
   return (
     <div className="cards">
@@ -31,9 +32,19 @@ export default function Card({
               <span className="card__time">{postedOn} </span>
             </div>
           </div>
-          <div className="card__img"></div>
+          <div className="card__img">
+            {/* <img
+              src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
+              alt="Card img"
+            /> */}
+          </div>
           <a href="#" className="card_link">
-            <div className="card__img--hover"></div>
+            <div className="card__img--hover">
+              {/* <img
+                src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
+                alt="card hover img"
+              /> */}
+            </div>
           </a>
           <div className="card__info">
             <span>

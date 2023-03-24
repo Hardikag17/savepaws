@@ -9,56 +9,56 @@ const petSchema = new Schema(
     /*
   unique Id of the pet
   */
-    petID: String,
+    PetID: String,
     /*
   user Id of the rescuer
   */
-    rescuerID: String,
+    RescuerID: String,
     /*
   Can be left empty, If pet is not named
   */
-    name: String,
+    Name: String,
     /*
   1 - Dog, 2- Cat, 3- Cow, 4- Others
   */
-    type: {
+    Type: {
       type: Number,
     },
     /*
   Age in months calcutated at the moment of pet enroll
   */
-    age: Number,
-    breed1: String,
-    breed2: String,
-    gender: {
+    Age: Number,
+    Breed1: String,
+    Breed2: String,
+    Gender: {
       type: String,
       enum: ["Male", "Female", "Not Known"],
     },
-    color1: String,
-    color2: String,
-    color3: String,
+    Color1: String,
+    Color2: String,
+    Color3: String,
     /**
      * 1 - YES, 2 - NO, 3 - NOT SURE
      */
-    vaccinated: {
+    Vaccinated: {
       type: Number,
     },
-    sterilized: {
+    Sterilized: {
       type: Number,
     },
-    health: {
+    Health: {
       type: String,
       enum: ["Healthy", "Minor Injury", "Serious Injury", "Not Specified"],
       default: "Not Specified",
     },
-    state: String,
-    city: String,
-    pincode: Number,
-    descripton: {
+    State: String,
+    City: String,
+    Pincode: Number,
+    Descripton: {
       type: String,
       maxLength: 10000,
     },
-    photoamt: {
+    PhotoAmt: {
       type: Number,
       max: 4,
       min: 1,
@@ -66,20 +66,20 @@ const petSchema = new Schema(
     /*
   Adoption status
   */
-    status: {
+    Status: {
       type: Boolean,
       default: false,
     },
 
-    social: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Social",
-      },
-    ],
+    // social: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Social",
+    //   },
+    // ],
     //  purpose: "", Adoption OR Sell
-  },
-  { timestamps: true }
+  }
+  // { timestamps: true }
 );
 
 const Pet = mongoose.model("Pet", petSchema);

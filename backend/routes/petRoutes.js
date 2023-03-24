@@ -12,7 +12,9 @@ const upload = multer({ storage: storage });
 
 // Pet
 routes.get("/", getPets);
-routes.post("/upload", upload.array("files"), uploadImages);
 routes.post("/addpet", addPet);
+
+// AWS
+routes.post("/upload", upload.array("files"), uploadImages);
 
 module.exports = routes;

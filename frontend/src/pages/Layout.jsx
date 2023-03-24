@@ -6,6 +6,7 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
   const [state, setState] = useState({
     user: false,
+    userID: "",
     email: "",
     name: "",
     userPosts: [],
