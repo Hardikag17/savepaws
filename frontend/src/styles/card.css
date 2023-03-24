@@ -11,7 +11,7 @@
   box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.073);
 }
 
-/* .card--1 .card__img,
+.card--1 .card__img,
 .card--1 .card__img--hover {
   background-image: url("https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9nc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60");
 }
@@ -19,7 +19,7 @@
 .card--2 .card__img,
 .card--2 .card__img--hover {
   background-image: url("https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9nc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60");
-} */
+}
 
 .card__like {
   width: 18px;
