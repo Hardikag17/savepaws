@@ -147,3 +147,7 @@
   /* position: relative; */
   font-size: 13px;
 }
+
+.heart-hover:hover {
+  color: red;
+}

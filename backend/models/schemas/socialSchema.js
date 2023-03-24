@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const User = require("./userSchema");
 
-const commentSchema = new Schema({ userId: String, content: String });
+// const commentSchema = new Schema({ userId: String, content: String });
 
 const socialSchema = new Schema({
   /*
@@ -14,7 +14,7 @@ const socialSchema = new Schema({
   photos: [String],
   likes: [String],
   comments: {
-    type: [commentSchema],
+    type: String,
   },
   author: {
     type: Schema.Types.ObjectId,

@@ -1,7 +1,7 @@
 const express = require("express");
 const { body, query } = require("express-validator");
 const multer = require("multer");
-const { getPets, addPet } = require("../controllers/petController");
+const { getPets, addPet, viewPet } = require("../controllers/petController");
 const { uploadImages } = require("../controllers/fileUpload");
 
 const routes = express.Router();

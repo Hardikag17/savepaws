@@ -60,6 +60,7 @@ export default function AddPet() {
   }, [selectedImages]);
 
   const onSubmit = (data) => {
+    console.log(data);
     data.breed = pet.breed;
     data.gender = pet.gender;
     data.vaccinated = pet.vaccinated;

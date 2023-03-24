@@ -20,7 +20,7 @@ export default function Card({
           <div className="card__info-hover">
             <a id="heart">
               <span className="like">
-                <FontAwesomeIcon icon={faHeart} />
+                <FontAwesomeIcon icon={faHeart} className="heart-hover" />
                 Like
               </span>
             </a>

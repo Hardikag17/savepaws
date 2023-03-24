@@ -153,10 +153,16 @@ const addPet = async (req, res) => {
   }
 };
 
+const viewPet = async (req, res) => {
+  const petId = req.params.petId;
+  const pet = Pet.find({ petID: petId });
+  console.log(pet);
+};
+
 // Update Pet
 const updatePet = async (req, res) => {};
 
 // Delete Pet
 const deletePet = async (req, res) => {};
 
-module.exports = { getPets, addPet, updatePet, deletePet };
+module.exports = { getPets, addPet, updatePet, deletePet, viewPet };
