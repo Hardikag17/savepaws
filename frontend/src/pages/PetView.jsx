@@ -7,6 +7,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
 import { API_ROOT } from "../api-config";
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext";
 
 library.add(fab);
 function PetViewPage({ element }) {
@@ -14,10 +16,13 @@ function PetViewPage({ element }) {
     setimgS(event.target.src);
   };
 
+  // console.log("Element", element);
+
   const [imgS, setimgS] = useState(
     "https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=662&q=80"
   );
-
+  const { state } = useContext(UserContext);
+  // console.log("State ", state.userID);
   const [comment, setComment] = useState("");
   const [likeColor, setlikeColor] = useState();
   const handleOnChange = (event) => {
@@ -29,21 +34,24 @@ function PetViewPage({ element }) {
   };
 
   const addComment = () => {
-    console.log("comment", comment);
-    console.log(likeColor == "red" ? element.RescuerID : 5);
+    // console.log("comment", comment);
+    // console.log(likeColor == "red" ? element.RescuerID : 5);
     const SocialData = {
       comment: comment,
-      likes: likeColor == "red" ? element.RescuerID : null,
+      likes: likeColor == "red" ? state.userID : null,
+      author: state.userID,
+      PetID: element.PetID,
     };
+    newComment(SocialData);
   };
 
   const newComment = async (SocialData) => {
+    console.log(SocialData);
     try {
-      const res = await axios.post(`{API_ROOT}/:petId/comments`, {
-        comment: SocialData.comment,
-        like: SocialData.likes,
-        petID: element.petID,
-      });
+      const res = await axios.post(
+        `${API_ROOT}/social/${SocialData.PetID}/social`,
+        { SocialData }
+      );
       console.log(res.status, res.data);
     } catch (error) {
       console.log(error);

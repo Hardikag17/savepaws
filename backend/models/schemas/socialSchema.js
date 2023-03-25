@@ -10,9 +10,9 @@ const socialSchema = new Schema({
   /*
   unique Id of the pet
   */
-  petID: String,
-  photos: [String],
+
   likes: [String],
+  petId: { type: String },
   comments: {
     type: String,
   },
