@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import "../styles/addPet.css";
 import axios from "axios";
 import upload from "superagent";
+import Modal from "../components/modal";
 
 import { API_ROOT } from "../api-config";
 const elephant = require("../icons-profile/elephant.jpg");
@@ -24,26 +25,28 @@ export default function AddPet() {
   const [selectedImages, setSelectedImages] = useState([]);
   const { state } = useContext(UserContext);
   const [preview, setPreview] = useState([]);
+  const [petAddModal, setPetAddModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
-    petID: "",
-    rescuerID: "",
-    name: "",
-    type: null,
-    age: null,
-    breed: "",
-    gender: "",
-    vaccinated: null,
-    sterilized: null,
-    health: "",
-    state: "",
-    city: "",
-    pincode: null,
-    address: "",
-    description: "",
-    photoamt: null,
-    status: false,
+    PetID: "",
+    RescuerID: localStorage.getItem("userID"),
+    Name: "",
+    Type: null,
+    Age: null,
+    Breed1: "",
+    Gender: "",
+    Vaccinated: null,
+    Sterilized: null,
+    Health: "",
+    State: "",
+    City: "",
+    Pincode: null,
+    Address: "",
+    Description: "",
+    PhotoAmt: null,
+    Status: false,
   });
 
   useEffect(() => {
@@ -63,17 +66,16 @@ export default function AddPet() {
   }, [selectedImages]);
 
   const onSubmit = (data) => {
-    console.log(data);
-    data.breed = pet.breed;
-    data.gender = pet.gender;
-    data.vaccinated = pet.vaccinated;
-    data.sterilized = pet.sterilized;
-    data.health = pet.health;
-    data.photoamt = selectedImages.length;
+    data.Breed1 = pet.Breed1;
+    data.Gender = pet.Gender;
+    data.Vaccinated = pet.Vaccinated;
+    data.Sterilized = pet.Sterilized;
+    data.Health = pet.Health;
+    data.PhotoAmt = selectedImages.length;
     setPet(data);
     uploadImages();
-    data.petID = pet.petID;
-    data.rescuerID = state.userID;
+    data.PetID = pet.PetID;
+    data.RescuerID = pet.RescuerID;
     newPetData(data);
   };
 
@@ -87,8 +89,8 @@ export default function AddPet() {
         .attach("files", selectedImages[2])
         .attach("files", selectedImages[3])
         .end((err, res) => {
-          if (err) alert(err);
-          setPet({ ...pet, petID: res.text });
+          if (err) setErrorModal(true);
+          else setPet({ ...pet, PetID: res.text });
         });
     } catch (error) {
       console.log(error);
@@ -100,12 +102,30 @@ export default function AddPet() {
     try {
       const res = await axios.post(`${API_ROOT}/pets/addpet`, { data });
       console.log(res);
+      if (res.status == 200) setPetAddModal(true);
+      else setErrorModal(true);
     } catch (err) {
       console.log(err);
     }
   };
   return (
     <div className="container-fluid p-2 add-pet-container ">
+      {petAddModal ? (
+        <Modal
+          state={petAddModal}
+          text={`${pet.Name} Sucessfully added to the platform. You can access the pet details in your profile or using the search by location section.`}
+        />
+      ) : (
+        <></>
+      )}
+      {errorModal ? (
+        <Modal
+          state={errorModal}
+          text={`Error occured. Please try again later`}
+        />
+      ) : (
+        <></>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="add-pet">
         <div
           className="d-flex flex-row-reverse me-2"
@@ -131,12 +151,12 @@ export default function AddPet() {
               <div className="input-group mb-3">
                 <input
                   type="text"
-                  name="name"
+                  name="Name"
                   className="form-control"
                   placeholder="* Pet's Name"
                   aria-label="Name"
                   aria-describedby="basic-addon2"
-                  {...register("name", { required: true, maxLength: 20 })}
+                  {...register("Name", { required: true, maxLength: 20 })}
                 />
               </div>
               {errors.name && (
@@ -147,15 +167,15 @@ export default function AddPet() {
               <div className="input-group mb-3">
                 <input
                   type="number"
-                  name="type"
+                  name="Type"
                   className="form-control"
-                  placeholder="* Type: Eg: Dog, Cat etc"
+                  placeholder="* Type: Eg: 1-Dog, 2-Cat, 3-Others etc"
                   aria-label="Type"
                   aria-describedby="basic-addon2"
-                  {...register("type", { required: true, maxLength: 15 })}
+                  {...register("Type", { required: true, maxLength: 15 })}
                 />
               </div>
-              {errors.type && (
+              {errors.Type && (
                 <div class="alert alert-danger py-0" role="alert">
                   Please give a valid input
                 </div>
@@ -163,39 +183,39 @@ export default function AddPet() {
               <div className="input-group mb-3  cursor-pointer dropdown">
                 <input
                   type="text"
-                  name="breed"
+                  name="Breed1"
                   className="form-control"
                   placeholder="Breed's Name"
                   aria-label="Breed name"
                   aria-describedby="basic-addon2"
                   disabled
-                  value={`Breed: ${pet.breed}`}
+                  value={`Breed: ${pet.Breed1}`}
                 />
                 <button
                   data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle"
+                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
                   style={{ fontSize: "15px" }}
                 >
                   Select
                 </button>
                 <ul className="dropdown-menu dropdown-menu-start text-center">
                   <li
-                    onClick={() => setPet({ ...pet, breed: "Husky" })}
-                    {...register("breed", { required: true })}
+                    onClick={() => setPet({ ...pet, Breed1: "Husky" })}
+                    {...register("Breed1", { required: true })}
                     className="dropdown-item"
                   >
                     Husky
                   </li>
                   <li
-                    onClick={() => setPet({ ...pet, breed: "Labra" })}
-                    {...register("breed", { required: true })}
+                    onClick={() => setPet({ ...pet, Breed1: "Labra" })}
+                    {...register("Breed1", { required: true })}
                     className="dropdown-item"
                   >
                     Labra
                   </li>
                   <li
-                    onClick={() => setPet({ ...pet, breed: "Himalayan" })}
-                    {...register("breed", { required: true })}
+                    onClick={() => setPet({ ...pet, Breed1: "Himalayan" })}
+                    {...register("Breed1", { required: true })}
                     className="dropdown-item"
                   >
                     Himalyan
@@ -204,39 +224,39 @@ export default function AddPet() {
                 &nbsp; &nbsp;
                 <input
                   type="text"
-                  name="gender"
+                  name="Gender"
                   className="form-control"
                   placeholder="Gender"
                   aria-label="Gender"
                   aria-describedby="basic-addon2"
-                  value={`Gender: ${pet.gender}`}
+                  value={`Gender: ${pet.Gender}`}
                   disabled
                 />
                 <button
                   data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle"
+                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
                   style={{ fontSize: "15px" }}
                 >
                   Select
                 </button>
                 <ul className="dropdown-menu dropdown-menu-start text-center">
                   <li
-                    onClick={() => setPet({ ...pet, gender: "Male" })}
-                    {...register("gender", { required: true })}
+                    onClick={() => setPet({ ...pet, Gender: "Male" })}
+                    {...register("Gender", { required: true })}
                     className="dropdown-item"
                   >
                     Male
                   </li>
                   <li
-                    onClick={() => setPet({ ...pet, gender: "Female" })}
-                    {...register("gender", { required: true })}
+                    onClick={() => setPet({ ...pet, Gender: "Female" })}
+                    {...register("Gender", { required: true })}
                     className="dropdown-item"
                   >
                     Female
                   </li>
                   <li
-                    onClick={() => setPet({ ...pet, gender: "Not Known" })}
-                    {...register("gender", { required: true })}
+                    onClick={() => setPet({ ...pet, Gender: "Not Known" })}
+                    {...register("Gender", { required: true })}
                     className="dropdown-item"
                   >
                     Not Known
@@ -245,17 +265,17 @@ export default function AddPet() {
                 &nbsp; &nbsp;
                 <input
                   type="text"
-                  name="age"
+                  name="Age"
                   className="form-control"
-                  placeholder="Age"
+                  placeholder="Age (in months)"
                   aria-label="Age"
                   aria-describedby="basic-addon2"
-                  value={`Age: ${pet.age}`}
+                  value={`Age: ${pet.Age}`}
                   disabled
                 />
                 <button
                   data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle"
+                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
                   style={{ fontSize: "15px" }}
                 >
                   Select
@@ -265,8 +285,8 @@ export default function AddPet() {
                     return (
                       <li
                         key={`year${index}`}
-                        onClick={() => setPet({ ...pet, age: year })}
-                        {...register("age", { required: true })}
+                        onClick={() => setPet({ ...pet, Age: year })}
+                        {...register("Age", { required: true })}
                         value={year}
                         className="dropdown-item"
                       >
@@ -280,20 +300,20 @@ export default function AddPet() {
                 <span className="input-group-text">Description:</span>
                 <textarea
                   rows="3"
-                  name="description"
+                  name="Description"
                   className="form-control"
-                  aria-label="description:"
+                  aria-label="Description:"
                   onChange={(e) =>
-                    setPet({ ...pet, description: e.target.value })
+                    setPet({ ...pet, Description: e.target.value })
                   }
-                  {...register("description", {
+                  {...register("Description", {
                     required: true,
                     maxLength: 100,
                     minLength: 30,
                   })}
                 ></textarea>
               </div>
-              {errors.description && (
+              {errors.Description && (
                 <div className="alert alert-danger py-0" role="alert">
                   Requires min 30 characters
                 </div>
@@ -308,18 +328,18 @@ export default function AddPet() {
                 <div className="input-group mb-3">
                   <input
                     type="text"
-                    name="health"
+                    name="Health"
                     className="form-control"
                     placeholder="Status"
-                    aria-label="health status"
+                    aria-label="Health status"
                     aria-describedby="basic-addon2"
-                    value={`Status: ${pet.health}`}
+                    value={`Status: ${pet.Health}`}
                     disabled
                   />
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, health: "Healthy" })}
+                    onClick={() => setPet({ ...pet, Health: "Healthy" })}
                     id="basic-addon2"
                   >
                     Healthy
@@ -327,7 +347,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, health: "Minor Injury" })}
+                    onClick={() => setPet({ ...pet, Health: "Minor Injury" })}
                     id="basic-addon2"
                   >
                     Minor Injury
@@ -335,7 +355,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, health: "Serious Injury" })}
+                    onClick={() => setPet({ ...pet, Health: "Serious Injury" })}
                     id="basic-addon2"
                   >
                     Serious Injury
@@ -343,7 +363,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, health: "Not Specified" })}
+                    onClick={() => setPet({ ...pet, Health: "Not Specified" })}
                     id="basic-addon2"
                   >
                     Not Specified
@@ -352,15 +372,15 @@ export default function AddPet() {
                 <div className="input-group mb-3">
                   <input
                     type="text"
-                    name="vaccination"
+                    name="Vaccinated"
                     className="form-control"
-                    placeholder="Vaccination"
-                    aria-label="vaccination status"
+                    placeholder="Vaccinated"
+                    aria-label="Vaccinated status"
                     aria-describedby="basic-addon2"
                     value={
-                      pet.vaccinated === 1
+                      pet.Vaccinated === 1
                         ? "Vaccination: Yes"
-                        : pet.vaccinated === 2
+                        : pet.Vaccinated === 2
                         ? "Vaccination: No"
                         : "Vaccination: No Idea"
                     }
@@ -369,7 +389,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, vaccinated: 1 })}
+                    onClick={() => setPet({ ...pet, Vaccinated: 1 })}
                     id="basic-addon2"
                   >
                     Yes
@@ -377,7 +397,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, vaccinated: 2 })}
+                    onClick={() => setPet({ ...pet, Vaccinated: 2 })}
                     id="basic-addon2"
                   >
                     No
@@ -385,7 +405,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, vaccinated: 3 })}
+                    onClick={() => setPet({ ...pet, Vaccinated: 3 })}
                     id="basic-addon2"
                   >
                     No Idea
@@ -395,14 +415,14 @@ export default function AddPet() {
                   <input
                     type="text"
                     className="form-control"
-                    name="sterilized"
+                    name="Sterilized"
                     placeholder="Sterilized"
                     aria-label="Sterilized status"
                     aria-describedby="basic-addon2"
                     value={
-                      pet.sterilized === 1
+                      pet.Sterilized === 1
                         ? "Sterilized: Yes"
-                        : pet.sterilized === 2
+                        : pet.Sterilized === 2
                         ? "Sterilized: No"
                         : "Sterilized: No Idea"
                     }
@@ -411,7 +431,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, sterilized: 1 })}
+                    onClick={() => setPet({ ...pet, Sterilized: 1 })}
                     id="basic-addon2"
                   >
                     Yes
@@ -419,7 +439,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, sterilized: 2 })}
+                    onClick={() => setPet({ ...pet, Sterilized: 2 })}
                     id="basic-addon2"
                   >
                     No
@@ -427,7 +447,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer px-5"
-                    onClick={() => setPet({ ...pet, sterilized: 3 })}
+                    onClick={() => setPet({ ...pet, Sterilized: 3 })}
                     id="basic-addon2"
                   >
                     Not Idea
@@ -446,9 +466,9 @@ export default function AddPet() {
                   <textarea
                     rows="3"
                     className="form-control"
-                    name="address"
-                    aria-label="address:"
-                    {...register("address", {
+                    name="Address"
+                    aria-label="Address:"
+                    {...register("Address", {
                       required: true,
                       maxLength: 80,
                       minLength: 20,
@@ -462,7 +482,7 @@ export default function AddPet() {
                     Click me &nbsp; <FontAwesomeIcon icon={faLocationDot} />
                   </span>
                 </div>
-                {errors.address && (
+                {errors.Address && (
                   <div className="alert alert-danger py-0" role="alert">
                     Common, This is a mandatory field
                   </div>
@@ -475,10 +495,10 @@ export default function AddPet() {
                     <span className="input-group-text">City:</span>
                     <input
                       className="form-control"
-                      name="city"
+                      name="City"
                       type="text"
-                      aria-label="city"
-                      {...register("city", {
+                      aria-label="City"
+                      {...register("City", {
                         required: true,
                         maxLength: 20,
                       })}
@@ -488,9 +508,9 @@ export default function AddPet() {
                     <input
                       className="form-control"
                       type="text"
-                      name="state"
+                      name="State"
                       aria-label="State"
-                      {...register("state", {
+                      {...register("State", {
                         required: true,
                         maxLength: 20,
                       })}
@@ -501,14 +521,14 @@ export default function AddPet() {
                       className="form-control"
                       type="number"
                       aria-label="Pincode"
-                      {...register("pincode", {
+                      {...register("Pincode", {
                         required: true,
                         maxLength: 20,
                       })}
                     ></input>
                   </div>
                 </div>
-                {(errors.city || errors.state || errors.pincode) && (
+                {(errors.City || errors.State || errors.Pincode) && (
                   <div className="alert alert-danger py-0" role="alert">
                     Please fill the above row
                   </div>
@@ -550,8 +570,8 @@ export default function AddPet() {
                 </label>
                 <input
                   onChange={(e) => {
-                    if (e.target.files.length > 4)
-                      alert("You can upload only 4 images");
+                    if (e.target.files.length !== 4)
+                      alert("You must upload 4 images");
                     else {
                       if (e.target.files?.[0]) {
                         setSelectedImages(e.target.files);

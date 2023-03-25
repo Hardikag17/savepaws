@@ -9,7 +9,10 @@ const petSchema = new Schema(
     /*
   unique Id of the pet
   */
-    PetID: String,
+    PetID: {
+      type: String,
+      required: true,
+    },
     /*
   user Id of the rescuer
   */
@@ -78,8 +81,8 @@ const petSchema = new Schema(
       },
     ],
     //  purpose: "", Adoption OR Sell
-  }
-  // { timestamps: true }
+  },
+  { timestamps: true }
 );
 
 const Pet = mongoose.model("Pet", petSchema);

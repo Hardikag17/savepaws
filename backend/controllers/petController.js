@@ -107,45 +107,10 @@ const getPets = async (req, res) => {
 
 // Add Pet
 const addPet = async (req, res) => {
-  const PetData = req.body.data;
-  const name = PetData.name;
-  const petID = PetData.petID;
-  const rescuerID = PetData.rescuerID;
-  const type = PetData.type;
-  const age = PetData.age;
-  const breed1 = PetData.breed;
-  const gender = PetData.gender;
-  const vaccinated = PetData.vaccinated;
-  const sterilized = PetData.sterilized;
-  const health = PetData.health;
-  const state = PetData.state;
-  const city = PetData.city;
-  const pincode = PetData.pincode;
-  const photoamt = PetData.photoamt;
-  const descripton = PetData.descripton;
-  const address = PetData.address;
-
-  const newPet = new Pet({
-    petID,
-    rescuerID,
-    name,
-    type,
-    age,
-    breed1,
-    gender,
-    vaccinated,
-    sterilized,
-    health,
-    state,
-    city,
-    pincode,
-    photoamt,
-    descripton,
-    address,
-  });
+  const newPet = new Pet(req.body.data);
 
   try {
-    const response = await newPet.save();
+    await newPet.save();
     res.status(200).send("Pet Successfully added");
   } catch (err) {
     res.send(err);
