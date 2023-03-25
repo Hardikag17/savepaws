@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const Social = require("./socialSchema");
-
 const petSchema = new Schema(
   {
     /*
@@ -73,7 +71,7 @@ const petSchema = new Schema(
       type: Boolean,
       default: false,
     },
-
+    AdopterID: String,
     social: [
       {
         type: Schema.Types.ObjectId,
