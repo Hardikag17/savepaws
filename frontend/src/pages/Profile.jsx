@@ -148,7 +148,7 @@ export default function Profile() {
             <hr />
           </div>
         </div>
-        <div className="activity container">
+        <div className=" container">
           <h1>Recent Activity</h1>
           <hr />
           <div>Here is the previous post cards.</div>

@@ -11,6 +11,7 @@ import {
   faBackwardStep,
   faForwardStep,
 } from "@fortawesome/free-solid-svg-icons";
+import LoadingCard from "../components/loadingCard";
 
 library.add(fab);
 export default function Main() {
@@ -18,10 +19,12 @@ export default function Main() {
   const [card, setCard] = useState(0);
   const [page, setPage] = useState(1);
   const [element, setElement] = useState();
+  const [isLoading, setLoading] = useState(true);
 
   const getPets = useCallback(async () => {
     const res = await axios.get(`http://localhost:9000/pets?page=${page}`);
     setPosts(res.data.response);
+    setLoading(false);
   }, [page]);
 
   const showCard = (element, value) => {
@@ -33,8 +36,27 @@ export default function Main() {
     getPets();
   }, []);
 
+  const dummyCards = [...Array(12)].map((_, index) => (
+    <LoadingCard key={index} />
+  ));
+
+  const cards = posts.map((element, key) => {
+    return (
+      <div key={key} onClick={() => showCard(element, key)}>
+        <Card
+          name={element.Name}
+          description={element.description}
+          rescuerId={element.RescuerID}
+          PetID={element.PetID}
+          comments=" 5"
+          postedOn="4/3/2023"
+        />
+      </div>
+    );
+  });
+
   return (
-    <div id="Main" style={{ backgroundColor: "#FFF" }}>
+    <div id="Main" style={{ backgroundColor: "#FFF", height: "100%" }}>
       {card === 0 ? (
         <div className="dashboard">
           <div className="filterOptions">
@@ -48,21 +70,9 @@ export default function Main() {
               <h5>Sort By</h5>
             </div>
             <div className=" d-flex flex-wrap justify-content-between">
-              {posts.map((element, key) => {
-                return (
-                  <div key={key} onClick={() => showCard(element, key)}>
-                    <Card
-                      name={element.Name}
-                      description={element.description}
-                      rescuerId={element.RescuerID}
-                      PetID={element.PetID}
-                      comments=" 5"
-                      postedOn="4/3/2023"
-                    />
-                  </div>
-                );
-              })}
+              {isLoading ? dummyCards : cards}
             </div>
+            <br />
             <div className="d-flex flex-row justify-content-center align-items-center">
               <button
                 onClick={() => {
@@ -70,6 +80,7 @@ export default function Main() {
                   if (p - 1 < 1) alert("Page no can not be less than 1");
                   else {
                     setPage(p - 1);
+                    setLoading(true);
                     getPets();
                   }
                 }}
@@ -81,6 +92,7 @@ export default function Main() {
                 onClick={() => {
                   let p = page;
                   setPage(p + 1);
+                  setLoading(true);
                   getPets();
                 }}
                 className="btn btn-success btn-lg banner-btn mx-2 rounded-circle"
@@ -88,6 +100,7 @@ export default function Main() {
                 <FontAwesomeIcon icon={faForwardStep} />
               </button>
             </div>
+            <br /> <br /> <br />
           </div>
         </div>
       ) : (

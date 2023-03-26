@@ -97,6 +97,11 @@ export default function Navbar() {
                 Adopt
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link active" to="/home">
+                Analytics
+              </Link>
+            </li>
             {/* <li className="nav-item">
                 <a className="nav-link" href="/">
                   Shop
@@ -157,6 +162,11 @@ export default function Navbar() {
                 Adopt
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link active" to="/home">
+                Analytics
+              </Link>
+            </li>
             {/* <li className="nav-item">
                 <a className="nav-link" href="/">
                   Shop
@@ -198,6 +208,11 @@ export default function Navbar() {
                 alt="Placeholder profile pic"
               />
               <ul class="dropdown-menu dropdown-menu-end text-center">
+                <li>
+                  <Link class="dropdown-item" to="/requests">
+                    Requests
+                  </Link>
+                </li>
                 <li>
                   <Link class="dropdown-item" to="/addpet">
                     Add Pet

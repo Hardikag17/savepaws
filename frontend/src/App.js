@@ -1,12 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import PrivateRoute from "./components/Private";
+import "./styles/App.css";
 
 import "../src/styles/App.css";
 import Navbar from "./components/Navbar";
 import Layout from "./pages/Layout";
+import Requests from "./pages/Requests";
+import Footer from "./components/footer";
+import Landing from "./pages/Landing";
 
-const Landing = lazy(() => import("./pages/Landing"));
 const Main = lazy(() => import("./pages/Main"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
@@ -38,6 +41,14 @@ const App = () => {
                 }
               />
               <Route
+                path="/requests"
+                element={
+                  <PrivateRoute>
+                    <Requests />
+                  </PrivateRoute>
+                }
+              />
+              <Route
                 path="/addpet"
                 element={
                   <PrivateRoute>
@@ -49,6 +60,8 @@ const App = () => {
               <Route path="/chat" element={<Chat />} />
             </Routes>
           </Suspense>
+          {/* Footer */}
+          <Footer />
         </Layout>
       </Router>
     </div>
