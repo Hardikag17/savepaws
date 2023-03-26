@@ -1,8 +1,9 @@
 const express = require("express");
 const routes = express.Router();
 
-const { getBreeds } = require("../controllers/optionController");
+const { getBreeds, getStates } = require("../controllers/optionController");
 
 routes.get("/breeds", getBreeds);
+routes.get("/states", getStates);
 
 module.exports = routes;

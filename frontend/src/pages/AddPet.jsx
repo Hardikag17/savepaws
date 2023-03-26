@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getBreedOptions } from "../utils/options";
+import { getBreedOptions, getStatesOption } from "../utils/options";
 import Select from "react-select";
 import "../styles/addPet.css";
 import axios from "axios";
@@ -30,6 +30,7 @@ export default function AddPet() {
   const [petAddModal, setPetAddModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [breedOptions, setBreedOptions] = useState([]);
+  const [statesOptions, setStatesOptions] = useState([]);
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
@@ -57,6 +58,12 @@ export default function AddPet() {
       setBreedOptions(res);
     });
   }, [getBreedOptions]);
+
+  useEffect(() => {
+    getStatesOption().then((res) => {
+      setStatesOptions(res);
+    });
+  }, [getStatesOption]);
 
   useEffect(() => {
     if (!selectedImages[0]) {

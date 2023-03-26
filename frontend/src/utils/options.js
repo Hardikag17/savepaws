@@ -19,4 +19,23 @@ export const getBreedOptions = async () => {
   }
 };
 
+export const getStatesOption = async () => {
+  try {
+    let statesOptions = [];
+    const res = await axios.get(`${API_ROOT}/options/states`);
+
+    res.data.forEach((element) => {
+      const obj = {};
+      obj.label = element.StateName;
+      obj.value = element.StateID;
+
+      statesOptions.push(obj);
+    });
+
+    return statesOptions;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // export { getBreedOptions };
