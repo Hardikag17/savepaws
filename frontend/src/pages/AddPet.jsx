@@ -6,6 +6,8 @@ import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { getBreedOptions } from "../utils/options";
+import Select from "react-select";
 import "../styles/addPet.css";
 import axios from "axios";
 import upload from "superagent";
@@ -27,6 +29,7 @@ export default function AddPet() {
   const [preview, setPreview] = useState([]);
   const [petAddModal, setPetAddModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+  const [breedOptions, setBreedOptions] = useState([]);
 
   const numbers = Array.from(new Array(20), (val, index) => index + 1);
   const [pet, setPet] = useState({
@@ -48,6 +51,12 @@ export default function AddPet() {
     PhotoAmt: null,
     Status: false,
   });
+
+  useEffect(() => {
+    getBreedOptions().then((res) => {
+      setBreedOptions(res);
+    });
+  }, [getBreedOptions]);
 
   useEffect(() => {
     if (!selectedImages[0]) {
@@ -164,6 +173,7 @@ export default function AddPet() {
                   Name can not be more than 20 characters
                 </div>
               )}
+
               <div className="input-group mb-3">
                 <input
                   type="number"

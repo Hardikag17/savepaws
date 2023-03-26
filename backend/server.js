@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const petRoutes = require("./routes/petRoutes");
 const socialRoutes = require("./routes/socialRoutes");
+const optionRoutes = require("./routes/optionRoutes");
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use("/user", userRoutes);
 app.use("/pets", petRoutes);
 app.use("/social", socialRoutes);
+app.use("/options", optionRoutes);
 
 //PORT
 const PORT = 9000 || process.env.PORT;
