@@ -1,4 +1,5 @@
 const { Pet } = require("../models/schemas/petSchema");
+const { Requests } = require("../models/schemas/requestsSchema");
 const { Social } = require("../models/schemas/socialSchema");
 const { filterPets, search } = require("../utils/search");
 
@@ -129,4 +130,160 @@ const updatePet = async (req, res) => {};
 // Delete Pet
 const deletePet = async (req, res) => {};
 
-module.exports = { getPets, addPet, updatePet, deletePet, viewPet };
+// Request pet for Adoption
+const requestPet = async (req, res) => {
+  // key-value pairs (userID- Requested. PetID)
+  // A user can request for only one pet at a time, user has to retrive his request to make new request
+
+  const PetID = req.body.PetID;
+  const UserID = req.body.UserID;
+
+  try {
+    let response = await Requests.find({
+      PetID: PetID,
+      Requests: { $in: [UserID] },
+    });
+
+    // User has already requested for the same pet
+    if (response.length > 0)
+      res.status(200).send({
+        status: "success",
+        message: "User already requested",
+        response: PetID,
+      });
+    else {
+      try {
+        let response = await Requests.find({
+          Requests: { $elemMatch: { $eq: UserID } },
+        });
+
+        if (response.length > 0 && response[0].Requests.length > 0) {
+          // User has already requested somewhere else
+          res.status(400).send({
+            status: "success",
+            message: "User has already requested in the below PetID",
+            response: response[0].PetID,
+          });
+        } else {
+          try {
+            let response = await Requests.find({ PetID: PetID });
+            if (response.length == 0) {
+              const newRequest = new Requests({
+                PetID: PetID,
+                Requests: [],
+              });
+              response = await newRequest.save();
+            }
+
+            await Requests.updateOne(
+              { PetID: PetID },
+              { $push: { Requests: UserID } }
+            );
+
+            res.status(200).send({
+              status: "success",
+              message: "UserID successfully pushed",
+            });
+          } catch (err) {
+            res.status(400).send({ status: "failed", error: err });
+          }
+        }
+      } catch (err) {
+        res.status(400).send({ status: "failed", error: err });
+      }
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+const deleteRequest = async (req, res) => {
+  // Delete user's previous request to make the new request
+  const UserID = req.body.UserID;
+  try {
+    // Get the user's requested response
+    let response = await Requests.find({
+      Requests: { $elemMatch: { $eq: UserID } },
+    });
+
+    if (response && response[0].Requests.length > 0) {
+      let PetID = response[0].PetID;
+      try {
+        let response = await Requests.updateOne(
+          { PetID: PetID },
+          { $pullAll: { Requests: [UserID] } }
+        );
+
+        console.log(response);
+
+        res.status(200).send({
+          status: "success",
+          message: "UserID successfully pulled",
+        });
+      } catch (err) {
+        res.status(400).send({ status: "failed", error: err });
+      }
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+//Adopt pet
+const adoptPet = async (req, res) => {
+  // Rescuer can only call this fxn and approve user's request & making pet status true in petSchema and RequestSchema
+
+  const PetID = req.body.PetID;
+  const UserID = req.body.UserID;
+  const RescuerID = req.body.RescuerID;
+
+  // Check the Person calling this route is Rescuer
+
+  try {
+    let response = await Pet.find({ PetID: PetID });
+
+    if (response && response[0].RescuerID == RescuerID && !response[0].Status) {
+      // Check PetID and UserID in RequestSchema documents
+      try {
+        let response = await Requests.find({
+          PetID: PetID,
+          Requests: { $in: [UserID] },
+        });
+
+        if (response && response[0].Requests.length > 0) {
+          // Change Adopt status to true
+          await Requests.findOneAndUpdate({ PetID: PetID }, { Status: true });
+          await Pet.findOneAndUpdate(
+            { PetID: PetID },
+            { Status: true, AdopterID: UserID }
+          );
+
+          res.status(200).send({
+            status: "success",
+            message: `${PetID} Pet is adopted by ${UserID} user`,
+          });
+        }
+      } catch (err) {
+        res.status(400).send({ status: "failed", error: err });
+      }
+    } else {
+      // Something went wrong, Pet cannot be adopted
+      res
+        .status(400)
+        .send({ status: "failed", message: "Pet cannot be adopted" });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+module.exports = {
+  getPets,
+  addPet,
+  updatePet,
+  deletePet,
+  viewPet,
+  requestPet,
+  deleteRequest,
+  adoptPet,
+};
