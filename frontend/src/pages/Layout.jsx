@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { UserContext } from "../utils/userContext";
-import { useNavigate } from "react-router-dom";
 
 const Layout = ({ children }) => {
-  const navigate = useNavigate();
   const [state, setState] = useState({
     user: false,
     userID: "",
@@ -19,7 +17,7 @@ const Layout = ({ children }) => {
     }
 
     if (state.user) {
-      console.log("user", state.userID);
+      console.log("user", state);
     }
   }, [state]);
 

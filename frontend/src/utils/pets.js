@@ -12,8 +12,9 @@ export const getPets = async (page) => {
 
 export const getPetByPetID = async (PetID) => {
   try {
-    let res = await axios.get(`${API_ROOT}/pets/pet/${PetID}`);
-    console.log("Pet:", res);
+    let response = await axios.get(`${API_ROOT}/pets/pet/${PetID}`);
+    response = await response.data.response;
+    return response;
   } catch (err) {
     console.log(err);
   }

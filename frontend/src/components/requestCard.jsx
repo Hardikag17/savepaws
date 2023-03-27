@@ -5,11 +5,16 @@ import { faMessage, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { getPetByPetID } from "../utils/pets";
 import "../styles/requestCard.css";
 import { useEffect } from "react";
+import { useState } from "react";
+import truncateString from "../utils/truncate";
 
 export default function RequestCard({ isAdopt, data }) {
+  const [pet, setPet] = useState();
   useEffect(() => {
-    console.log("data:", data?.Status);
-  }, [data]);
+    if (data) getPetByPetID(data?.PetID).then((res) => setPet(res));
+  }, []);
+
+  console.log("pet details:", pet);
   const backgroundImage =
     "https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9nc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60";
   return (
@@ -28,18 +33,24 @@ export default function RequestCard({ isAdopt, data }) {
             }}
           />
         </div>
-        <div className=" p-3 w-100 align-self-start ">
-          <div>
+        <div className=" p-3 w-100 align-self-start">
+          <div className="">
             <h3>
-              <b></b>
+              <b>{pet?.Name}</b>
             </h3>
           </div>
-          <div className="">Description</div>
 
-          <div className="">Details</div>
+          <div className="pt-2">
+            <h6>
+              {pet?.Description ? (
+                truncateString(pet?.Description, 150)
+              ) : (
+                <div />
+              )}
+            </h6>
+          </div>
           <hr />
-          <div className="">Rescuer Name</div>
-          <div className="">Rescuer Name</div>
+          <div className="">Pet Details</div>
         </div>
       </div>
       <div className="w-100 p-3">

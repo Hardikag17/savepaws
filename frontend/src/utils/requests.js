@@ -20,7 +20,6 @@ export const getRequestByUserID = async (UserID) => {
 const getRequestsByPetID = async (PetID) => {
   try {
     let res = await axios.get(`${API_ROOT}/pets/requests/pet/${PetID}`);
-
     return res;
   } catch (err) {
     console.log(err);

@@ -122,7 +122,7 @@ const getPetByPetID = async (req, res) => {
   let PetID = req.params.PetID;
   try {
     let response = await Pet.find({ PetID: PetID });
-    res.status(400).send({
+    res.status(200).send({
       status: "success",
       message: `Pets for ${PetID} PetID`,
       response: response[0],
@@ -137,7 +137,7 @@ const getPetsByUserID = async (req, res) => {
 
   try {
     let response = await Pet.find({ RescuerID: UserID });
-    res.status(400).send({
+    res.status(200).send({
       status: "success",
       message: "Pets added by Users",
       response: response,
