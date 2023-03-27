@@ -118,10 +118,31 @@ const addPet = async (req, res) => {
   }
 };
 
-const viewPet = async (req, res) => {
-  const petId = req.params.petId;
-  const pet = Pet.find({ petID: petId });
-  console.log(pet);
+const getPetByPetID = async (req, res) => {
+  let PetID = req.params.PetID;
+  try {
+    let response = await Pet.find({ PetID: PetID });
+    res.status(400).send({
+      status: "success",
+      message: `Pets for ${PetID} PetID`,
+      response: response[0],
+    });
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+const getPetsByUserID = async (req, res) => {
+  let UserID = req.params.UserID;
+
+  try {
+    let response = await Pet.find({ RescuerID: UserID });
+    res.status(400).send({
+      status: "success",
+      message: "Pets added by Users",
+      response: response,
+    });
+  } catch (err) {}
 };
 
 // Update Pet
@@ -277,13 +298,74 @@ const adoptPet = async (req, res) => {
   }
 };
 
+const getRequestsByPetID = async (req, res) => {
+  const PetID = req.body.PetID;
+  try {
+    let response = await Requests.find({
+      PetID: PetID,
+    });
+
+    if (response) {
+      res.status(200).send({ status: "success", PetID: response[0] });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+const getRequestByUserID = async (req, res) => {
+  // Can be only one
+  const UserID = req.params.UserID;
+
+  try {
+    let response = await Requests.find({
+      Requests: { $elemMatch: { $in: UserID } },
+    });
+
+    console.log("res", response);
+
+    if (response && response[0].PetID) {
+      res.status(200).send({ status: "success", PetID: response[0].PetID });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+const getRequestsByRescuerID = async (req, res) => {
+  const RescuerID = req.params.RescuerID;
+
+  try {
+    let result;
+    let response = await Pet.find({ RescuerID: RescuerID });
+
+    if (response) {
+      response.forEach(async (Pet) => {
+        result.push(await Requests.find({ PetID: Pet.PetID }));
+      });
+
+      res.status(200).send({ status: "success", Requests: result });
+    } else {
+      res
+        .status(200)
+        .send({ status: "success", Requests: "No requests found" });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
 module.exports = {
   getPets,
   addPet,
   updatePet,
   deletePet,
-  viewPet,
+  getPetByPetID,
+  getPetsByUserID,
   requestPet,
   deleteRequest,
+  getRequestsByPetID,
+  getRequestByUserID,
+  getRequestsByRescuerID,
   adoptPet,
 };

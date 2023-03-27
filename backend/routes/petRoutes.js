@@ -4,9 +4,13 @@ const multer = require("multer");
 const {
   getPets,
   addPet,
-  viewPet,
+  getPetByPetID,
+  getPetsByUserID,
   requestPet,
   deleteRequest,
+  getRequestsByPetID,
+  getRequestByUserID,
+  getRequestsByRescuerID,
   adoptPet,
 } = require("../controllers/petController");
 const { uploadImages } = require("../controllers/fileUpload");
@@ -19,6 +23,11 @@ const upload = multer({ storage: storage });
 
 // Pet
 routes.get("/", getPets);
+routes.get("/pet/:PetID", getPetByPetID);
+routes.get("/user/:UserID", getPetsByUserID);
+routes.get("/requests/pet/:PetID", getRequestsByPetID);
+routes.get("/requests/user/:UserID", getRequestByUserID);
+routes.get("/requests/rescuer/:RescuerID", getRequestsByRescuerID);
 routes.post("/addpet", addPet);
 routes.post("/requestpet", requestPet);
 routes.post("/deleterequest", deleteRequest);

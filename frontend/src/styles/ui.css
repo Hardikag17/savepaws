@@ -1,3 +1,6 @@
+textarea {
+  resize: none;
+}
 .pet-view {
   color: #000;
 }

@@ -11,6 +11,7 @@ import {
   faInfoCircle,
   faMedkit,
   faStickyNote,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import { API_ROOT } from "../api-config";
 import { useContext } from "react";
@@ -66,6 +67,10 @@ function PetViewPage({ element }) {
 
   const clear = () => {
     setComment("");
+  };
+
+  const sendPetRequest = async () => {
+    console.log("request pet");
   };
 
   return (
@@ -231,10 +236,17 @@ function PetViewPage({ element }) {
 
                     <div className="mb-4">
                       <button
-                        className="btn btn-success mr-1"
+                        onClick={sendPetRequest}
+                        className="btn btn-success mx-2"
                         style={{ color: "white" }}
                       >
-                        Adopt now
+                        Request now
+                      </button>
+                      <button
+                        className="btn btn-success mx-2"
+                        style={{ color: "white" }}
+                      >
+                        <FontAwesomeIcon icon={faMessage} /> &nbsp;Chat
                       </button>
                     </div>
                   </article>

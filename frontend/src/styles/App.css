@@ -4,20 +4,20 @@
   --bg-color: #f3f3f3;
 }
 
+html,
 body {
   margin: 0%;
   padding: 0%;
-  height: 100vh;
+  height: 100%;
   font-family: "Cormorant", serif;
   font-weight: 400;
   font-size: large;
-  /* background-color: var(--bg-color); */
+  background-color: var(--bg-color);
   color: var(--black);
 }
 
 .btn {
   cursor: pointer;
-  /* background-color: var(--green); */
   color: white;
 }
 
