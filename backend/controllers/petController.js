@@ -299,14 +299,15 @@ const adoptPet = async (req, res) => {
 };
 
 const getRequestsByPetID = async (req, res) => {
-  const PetID = req.body.PetID;
+  const PetID = req.params.PetID;
+
   try {
     let response = await Requests.find({
       PetID: PetID,
     });
 
     if (response) {
-      res.status(200).send({ status: "success", PetID: response[0] });
+      res.status(200).send({ status: "success", Pet: response[0] });
     }
   } catch (err) {
     res.status(400).send({ status: "failed", error: err });
@@ -321,8 +322,6 @@ const getRequestByUserID = async (req, res) => {
     let response = await Requests.find({
       Requests: { $elemMatch: { $in: UserID } },
     });
-
-    console.log("res", response);
 
     if (response && response[0].PetID) {
       res.status(200).send({ status: "success", PetID: response[0].PetID });
