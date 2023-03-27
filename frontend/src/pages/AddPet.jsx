@@ -6,24 +6,20 @@ import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { getBreedOptions, getStatesOption } from "../utils/options";
 import Select from "react-select";
 import "../styles/addPet.css";
 import axios from "axios";
 import upload from "superagent";
 import Modal from "../components/modal";
-
 import { API_ROOT } from "../api-config";
 const elephant = require("../icons-profile/elephant.jpg");
 
 library.add(fab);
 
 export default function AddPet() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
   const [selectedImages, setSelectedImages] = useState([]);
   const { state } = useContext(UserContext);
   const [preview, setPreview] = useState([]);
@@ -31,20 +27,69 @@ export default function AddPet() {
   const [errorModal, setErrorModal] = useState(false);
   const [breedOptions, setBreedOptions] = useState([]);
   const [statesOptions, setStatesOptions] = useState([]);
+  const [breed, setbreed] = useState(null);
+  const [gender, setgender] = useState(null);
+  const [age, setage] = useState(null);
+  const [type, settype] = useState(null);
 
-  const numbers = Array.from(new Array(20), (val, index) => index + 1);
+  const formSchema = yup.object().shape({
+    Name: yup
+      .string()
+      .required("Name is mandatory")
+      .max(15, "Max length of name must be less then 15"),
+    Description: yup
+      .string()
+      .required("Description is mandatory")
+      .min(20, "Description must be atleast 20 char long")
+      .max(50, "Max Length of Description must be 50"),
+    Address: yup
+      .string()
+      .required("Address is required")
+      .min(20, "Address must be atleast 20 char long")
+      .max(80, "Max Length of Description must be 80"),
+    City: yup.string().required("City is required"),
+    State: yup.number().required("State is mandatory"),
+    Pincode: yup.number().required("Pincode is mandatory"),
+    checkBox: yup.bool().oneOf([true], "Checkbox selection is required"),
+  });
+
+  const formOptions = { resolver: yupResolver(formSchema) };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm(formOptions);
+
+  const genderOptions = [
+    { value: 1, label: "Male" },
+    { value: 2, label: "Female" },
+    { value: 3, label: "Not Known" },
+  ];
+
+  const typeOptions = [
+    { value: 1, label: "Dog" },
+    { value: 2, label: "Cat" },
+    { value: 3, label: "Others" },
+  ];
+
+  const ageOptions = [];
+  for (let i = 0; i <= 30; i++) {
+    ageOptions.push({ label: i, value: i });
+  }
   const [pet, setPet] = useState({
     PetID: "",
     RescuerID: localStorage.getItem("userID"),
     Name: "",
     Type: null,
     Age: null,
-    Breed1: "",
-    Gender: "",
+    Breed1: null,
+    Gender: null,
     Vaccinated: null,
     Sterilized: null,
-    Health: "",
-    State: "",
+    Health: null,
+    State: null,
     City: "",
     Pincode: null,
     Address: "",
@@ -82,20 +127,20 @@ export default function AddPet() {
   }, [selectedImages]);
 
   const onSubmit = (data) => {
-    data.Breed1 = pet.Breed1;
-    data.Gender = pet.Gender;
+    // console.log("data...", data);
+    data.Breed1 = breed.value;
+    data.Gender = gender.value;
+    data.Type = type.value;
     data.Vaccinated = pet.Vaccinated;
     data.Sterilized = pet.Sterilized;
     data.Health = pet.Health;
     data.PhotoAmt = selectedImages.length;
-    setPet(data);
-    uploadImages();
-    data.PetID = pet.PetID;
+    data.Age = age.value;
     data.RescuerID = pet.RescuerID;
-    newPetData(data);
+    uploadImages(data);
   };
 
-  const uploadImages = async () => {
+  const uploadImages = async (data) => {
     // uploading images to aws-s3
     try {
       upload
@@ -106,7 +151,14 @@ export default function AddPet() {
         .attach("files", selectedImages[3])
         .end((err, res) => {
           if (err) setErrorModal(true);
-          else setPet({ ...pet, PetID: res.text });
+          if (res.text.length > 0) {
+            setPet({ ...pet, PetID: res.text });
+            data.PetID = res.text;
+            setPet(data);
+            newPetData(data);
+          } else {
+            alert("Something went wrong, Please try again later");
+          }
         });
     } catch (error) {
       console.log(error);
@@ -168,171 +220,109 @@ export default function AddPet() {
                 <input
                   type="text"
                   name="Name"
-                  className="form-control"
+                  {...register("Name")}
+                  className={`form-control ${errors.Name ? "is-invalid" : ""}`}
                   placeholder="* Pet's Name"
                   aria-label="Name"
                   aria-describedby="basic-addon2"
-                  {...register("Name", { required: true, maxLength: 20 })}
                 />
               </div>
-              {errors.name && (
+              {errors.Name && (
                 <div className="alert alert-danger py-0" role="alert">
-                  Name can not be more than 20 characters
+                  {errors.Name.message}
                 </div>
               )}
 
-              <div className="input-group mb-3">
-                <input
-                  type="number"
-                  name="Type"
-                  className="form-control"
-                  placeholder="* Type: Eg: 1-Dog, 2-Cat, 3-Others etc"
-                  aria-label="Type"
-                  aria-describedby="basic-addon2"
-                  {...register("Type", { required: true, maxLength: 15 })}
-                />
-              </div>
-              {errors.Type && (
-                <div class="alert alert-danger py-0" role="alert">
-                  Please give a valid input
-                </div>
-              )}
               <div className="input-group mb-3  cursor-pointer dropdown">
-                <input
-                  type="text"
-                  name="Breed1"
-                  className="form-control"
-                  placeholder="Breed's Name"
-                  aria-label="Breed name"
-                  aria-describedby="basic-addon2"
-                  disabled
-                  value={`Breed: ${pet.Breed1}`}
+                <Select
+                  options={typeOptions}
+                  defaultValue={type}
+                  placeholder="Select Type"
+                  onChange={settype}
+                  isSearchable={true}
+                  isClearable
+                  noOptionsMessage={() => "Sorry no such type found"}
+                  styles={{
+                    control: (baseStyles, state, defaultStyles) => ({
+                      ...defaultStyles,
+                      ...baseStyles,
+                      width: 180,
+                      borderColor: state.isFocused ? "green" : "green",
+                    }),
+                  }}
                 />
-                <button
-                  data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
-                  style={{ fontSize: "15px" }}
-                >
-                  Select
-                </button>
-                <ul className="dropdown-menu dropdown-menu-start text-center">
-                  <li
-                    onClick={() => setPet({ ...pet, Breed1: "Husky" })}
-                    {...register("Breed1", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Husky
-                  </li>
-                  <li
-                    onClick={() => setPet({ ...pet, Breed1: "Labra" })}
-                    {...register("Breed1", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Labra
-                  </li>
-                  <li
-                    onClick={() => setPet({ ...pet, Breed1: "Himalayan" })}
-                    {...register("Breed1", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Himalyan
-                  </li>
-                </ul>
                 &nbsp; &nbsp;
-                <input
-                  type="text"
-                  name="Gender"
-                  className="form-control"
-                  placeholder="Gender"
-                  aria-label="Gender"
-                  aria-describedby="basic-addon2"
-                  value={`Gender: ${pet.Gender}`}
-                  disabled
+                <Select
+                  options={breedOptions}
+                  defaultValue={breed}
+                  placeholder="Select Breed"
+                  onChange={setbreed}
+                  isSearchable={true}
+                  isClearable
+                  noOptionsMessage={() => "Sorry no such breed found"}
+                  styles={{
+                    control: (baseStyles, state, defaultStyles) => ({
+                      ...defaultStyles,
+                      ...baseStyles,
+                      width: 180,
+                      borderColor: state.isFocused ? "green" : "green",
+                    }),
+                  }}
                 />
-                <button
-                  data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
-                  style={{ fontSize: "15px" }}
-                >
-                  Select
-                </button>
-                <ul className="dropdown-menu dropdown-menu-start text-center">
-                  <li
-                    onClick={() => setPet({ ...pet, Gender: "Male" })}
-                    {...register("Gender", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Male
-                  </li>
-                  <li
-                    onClick={() => setPet({ ...pet, Gender: "Female" })}
-                    {...register("Gender", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Female
-                  </li>
-                  <li
-                    onClick={() => setPet({ ...pet, Gender: "Not Known" })}
-                    {...register("Gender", { required: true })}
-                    className="dropdown-item"
-                  >
-                    Not Known
-                  </li>
-                </ul>
                 &nbsp; &nbsp;
-                <input
-                  type="text"
-                  name="Age"
-                  className="form-control"
-                  placeholder="Age (in months)"
-                  aria-label="Age"
-                  aria-describedby="basic-addon2"
-                  value={`Age: ${pet.Age}`}
-                  disabled
+                <Select
+                  options={genderOptions}
+                  defaultValue={gender}
+                  placeholder="Select Gender"
+                  onChange={setgender}
+                  isSearchable={true}
+                  isClearable
+                  noOptionsMessage={() => "Sorry no such gender found"}
+                  styles={{
+                    control: (baseStyles, state, defaultStyles) => ({
+                      ...defaultStyles,
+                      ...baseStyles,
+                      width: 180,
+                      borderColor: state.isFocused ? "green" : "green",
+                    }),
+                  }}
                 />
-                <button
-                  data-bs-toggle="dropdown"
-                  className="btn btn-success btn-lg banner-btn dropdown-toggle z-0"
-                  style={{ fontSize: "15px" }}
-                >
-                  Select
-                </button>
-                <ul className="dropdown-menu dropdown-menu-start text-center">
-                  {numbers.map((year, index) => {
-                    return (
-                      <li
-                        key={`year${index}`}
-                        onClick={() => setPet({ ...pet, Age: year })}
-                        {...register("Age", { required: true })}
-                        value={year}
-                        className="dropdown-item"
-                      >
-                        {year}
-                      </li>
-                    );
-                  })}
-                </ul>
+                &nbsp; &nbsp;
+                <Select
+                  options={ageOptions}
+                  defaultValue={age}
+                  placeholder="Select Age"
+                  onChange={setage}
+                  isSearchable={true}
+                  isClearable
+                  styles={{
+                    control: (baseStyles, state, defaultStyles) => ({
+                      ...defaultStyles,
+                      ...baseStyles,
+                      width: 180,
+                      borderColor: state.isFocused ? "green" : "green",
+                    }),
+                  }}
+                />
               </div>
               <div className="input-group mb-3">
                 <span className="input-group-text">Description:</span>
                 <textarea
                   rows="3"
                   name="Description"
-                  className="form-control"
+                  {...register("Description")}
+                  className={`form-control ${
+                    errors.Description ? "is-invalid" : ""
+                  }`}
                   aria-label="Description:"
                   onChange={(e) =>
                     setPet({ ...pet, Description: e.target.value })
                   }
-                  {...register("Description", {
-                    required: true,
-                    maxLength: 100,
-                    minLength: 30,
-                  })}
                 ></textarea>
               </div>
               {errors.Description && (
                 <div className="alert alert-danger py-0" role="alert">
-                  Requires min 30 characters
+                  {errors.Description.message}
                 </div>
               )}
               <div className=" pt-2">
@@ -356,7 +346,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, Health: "Healthy" })}
+                    onClick={() => setPet({ ...pet, Health: 1 })}
                     id="basic-addon2"
                   >
                     Healthy
@@ -364,7 +354,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, Health: "Minor Injury" })}
+                    onClick={() => setPet({ ...pet, Health: 2 })}
                     id="basic-addon2"
                   >
                     Minor Injury
@@ -372,7 +362,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, Health: "Serious Injury" })}
+                    onClick={() => setPet({ ...pet, Health: 3 })}
                     id="basic-addon2"
                   >
                     Serious Injury
@@ -380,7 +370,7 @@ export default function AddPet() {
                   <span
                     role="button"
                     className="input-group-text cursor-pointer lg:px-3"
-                    onClick={() => setPet({ ...pet, Health: "Not Specified" })}
+                    onClick={() => setPet({ ...pet, Health: 4 })}
                     id="basic-addon2"
                   >
                     Not Specified
@@ -482,14 +472,12 @@ export default function AddPet() {
                   <span className="input-group-text">* Address:</span>
                   <textarea
                     rows="3"
-                    className="form-control"
                     name="Address"
+                    {...register("Address")}
+                    className={`form-control ${
+                      errors.Address ? "is-invalid" : ""
+                    }`}
                     aria-label="Address:"
-                    {...register("Address", {
-                      required: true,
-                      maxLength: 80,
-                      minLength: 20,
-                    })}
                   ></textarea>
                   <span
                     role="button"
@@ -501,7 +489,7 @@ export default function AddPet() {
                 </div>
                 {errors.Address && (
                   <div className="alert alert-danger py-0" role="alert">
-                    Common, This is a mandatory field
+                    {errors.Address.message}
                   </div>
                 )}
                 <div>
@@ -511,37 +499,35 @@ export default function AddPet() {
                   <div className="input-group mb-3 ">
                     <span className="input-group-text">City:</span>
                     <input
-                      className="form-control"
                       name="City"
+                      {...register("City")}
+                      className={`form-control ${
+                        errors.City ? "is-invalid" : ""
+                      }`}
                       type="text"
                       aria-label="City"
-                      {...register("City", {
-                        required: true,
-                        maxLength: 20,
-                      })}
                     ></input>
                     &nbsp; &nbsp;
                     <span className="input-group-text">State:</span>
                     <input
-                      className="form-control"
                       type="text"
                       name="State"
+                      {...register("State")}
+                      className={`form-control ${
+                        errors.State ? "is-invalid" : ""
+                      }`}
                       aria-label="State"
-                      {...register("State", {
-                        required: true,
-                        maxLength: 20,
-                      })}
                     ></input>
                     &nbsp; &nbsp;
                     <span className="input-group-text">Pincode:</span>
                     <input
-                      className="form-control"
                       type="number"
+                      name="Pincode"
                       aria-label="Pincode"
-                      {...register("Pincode", {
-                        required: true,
-                        maxLength: 20,
-                      })}
+                      {...register("Pincode")}
+                      className={`form-control ${
+                        errors.State ? "is-invalid" : ""
+                      }`}
                     ></input>
                   </div>
                 </div>
@@ -611,9 +597,12 @@ export default function AddPet() {
         <div className=" d-flex flex-row justify-content-between align-items-center pt-5">
           <div className="form-check d-flex justify-content-center mb-5">
             <input
-              className="form-check-input me-2"
               type="checkbox"
               name="terms"
+              {...register("checkBox")}
+              className={`form-check-input me-2 ${
+                errors.checkBox ? "is-invalid" : ""
+              }`}
             />
             <label className="form-check-label" for="form2Example3g">
               I agree all statements in
@@ -621,7 +610,13 @@ export default function AddPet() {
                 <u>Terms of service</u>
               </a>
             </label>
+            {errors.checkBox && (
+              <div class="alert alert-danger py-0 mx-2" role="alert">
+                {errors.checkBox.message}
+              </div>
+            )}
           </div>
+
           <button
             style={{ fontSize: "14px" }}
             type="submit"

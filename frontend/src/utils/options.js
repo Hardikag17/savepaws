@@ -8,8 +8,8 @@ export const getBreedOptions = async () => {
 
     res.data.forEach((element) => {
       const obj = {};
-      obj.label = element.BreedID;
-      obj.value = element.BreedName;
+      obj.label = element.BreedName;
+      obj.value = element.BreedID;
       breedOptions.push(obj);
     });
 
@@ -26,8 +26,8 @@ export const getStatesOption = async () => {
 
     res.data.forEach((element) => {
       const obj = {};
-      obj.label = element.StateName;
       obj.value = element.StateID;
+      obj.label = element.StateName;
 
       statesOptions.push(obj);
     });

@@ -29,15 +29,15 @@ const petSchema = new Schema(
   Age in months calcutated at the moment of pet enroll
   */
     Age: Number,
-    Breed1: String,
-    Breed2: String,
+    Breed1: Number,
+    Breed2: Number,
     Gender: {
-      type: String,
-      enum: ["Male", "Female", "Not Known"],
+      type: Number,
+      // enum: ["Male", "Female", "Not Known"],
     },
-    Color1: String,
-    Color2: String,
-    Color3: String,
+    Color1: Number,
+    Color2: Number,
+    Color3: Number,
     /**
      * 1 - YES, 2 - NO, 3 - NOT SURE
      */
@@ -48,11 +48,11 @@ const petSchema = new Schema(
       type: Number,
     },
     Health: {
-      type: String,
-      enum: ["Healthy", "Minor Injury", "Serious Injury", "Not Specified"],
+      type: Number,
+      // enum: [, "Minor Injury", "Serious Injury", "Not Specified"],
       default: "Not Specified",
     },
-    State: String,
+    State: Number,
     City: String,
     Pincode: Number,
     Descripton: {

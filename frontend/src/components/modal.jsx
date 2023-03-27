@@ -4,6 +4,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -23,11 +24,12 @@ const customStyles = {
 library.add(fab);
 
 export default function ModalContainer({ state, text }) {
-  let subtitle;
+  const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(state);
 
   function closeModal() {
     setIsOpen(false);
+    navigate("/home");
   }
   return (
     <>
@@ -35,6 +37,7 @@ export default function ModalContainer({ state, text }) {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
+        ariaHideApp={false}
         contentLabel="Example Modal"
       >
         <div className=" d-flex flex-column">

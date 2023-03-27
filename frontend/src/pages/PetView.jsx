@@ -5,7 +5,13 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart,
+  faComments,
+  faInfoCircle,
+  faMedkit,
+  faStickyNote,
+} from "@fortawesome/free-solid-svg-icons";
 import { API_ROOT } from "../api-config";
 import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
@@ -16,7 +22,7 @@ function PetViewPage({ element }) {
     setimgS(event.target.src);
   };
 
-  // console.log("Element", element);
+  console.log("Element", typeof element.Health);
 
   const [imgS, setimgS] = useState(
     "https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=662&q=80"
@@ -145,7 +151,13 @@ function PetViewPage({ element }) {
 
                     <div className="mb-3">
                       <h5>
-                        <b>Basic Information</b>
+                        <b>
+                          <FontAwesomeIcon
+                            icon={faInfoCircle}
+                            style={{ color: "#25511f" }}
+                          />{" "}
+                          Basic Information
+                        </b>
                       </h5>
                       <ul className="schema-ul">
                         <li>Age: {element.Age} </li>
@@ -170,7 +182,13 @@ function PetViewPage({ element }) {
                       <hr width="90%" />
 
                       <h5>
-                        <b>Health</b>
+                        <b>
+                          <FontAwesomeIcon
+                            icon={faMedkit}
+                            style={{ color: "#25511f" }}
+                          />{" "}
+                          Health
+                        </b>
                       </h5>
                       <ul>
                         <li>
@@ -200,7 +218,13 @@ function PetViewPage({ element }) {
                       <hr width="90%" />
 
                       <h5>
-                        <b>Description</b>
+                        <b>
+                          <FontAwesomeIcon
+                            icon={faStickyNote}
+                            style={{ color: "#25511f" }}
+                          />{" "}
+                          Description
+                        </b>
                       </h5>
                       <p>{element.Description}</p>
                     </div>
