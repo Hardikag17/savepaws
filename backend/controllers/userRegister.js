@@ -1,6 +1,7 @@
 const { User } = require("../models/schemas/userSchema");
 const uniqid = require("uniqid");
 const jwt = require("jsonwebtoken");
+const { sendMail } = require("../utils/nodemailer/nodemailer");
 
 const Register = async (req, res) => {
   const name = req.body.name;
@@ -23,6 +24,7 @@ const Register = async (req, res) => {
     newuser
       .save()
       .then(() => {
+        sendMail(req.body.email, req.body.name);
         res.status(200).send("successfully created your account");
       })
       .catch((err) => {
@@ -40,6 +42,7 @@ const Login = async (req, res) => {
 
   if (count == 1) {
     let response = await User.find({ email: email, password: password });
+    // sendMail(response[0].email, response[0].name);
     res.status(200).send(response[0].userId);
   } else res.send("User not found");
 };

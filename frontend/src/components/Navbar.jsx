@@ -36,6 +36,7 @@ export default function Navbar() {
   });
 
   const Logout = () => {
+    sessionStorage.clear();
     setState({
       user: false,
       email: "",
@@ -70,7 +71,7 @@ export default function Navbar() {
   const notLoggedIn = (
     <nav className="navbar navbar-expand-lg bg-light sticky-top z-5">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link onClick={() => setSearchText("")} className="navbar-brand" to="/">
           <img alt="logo" src="../assets/brand/logo.png" height="20" />
           <b> Paws Adoption</b>
         </Link>
@@ -88,17 +89,30 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                aria-current="page"
+                to="/"
+              >
                 Help
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/home">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                to="/home"
+              >
                 Adopt
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/home">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                to="/home"
+              >
                 Analytics
               </Link>
             </li>
@@ -114,6 +128,7 @@ export default function Navbar() {
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
               <Link
+                onClick={() => setSearchText("")}
                 to="/register"
                 className="nav-link active"
                 aria-current="page"
@@ -122,7 +137,11 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link active">
+              <Link
+                onClick={() => setSearchText("")}
+                to="/login"
+                className="nav-link active"
+              >
                 Login
               </Link>
             </li>
@@ -135,7 +154,7 @@ export default function Navbar() {
   const LoggedIn = (
     <nav className="navbar navbar-expand-lg sticky-top z-5 bg-light">
       <div className="container-fluid ">
-        <Link className="navbar-brand" to="/">
+        <Link onClick={() => setSearchText("")} className="navbar-brand" to="/">
           <img alt="logo" src="../assets/brand/logo.png" height="20" /> Paws
           Adoption
         </Link>
@@ -153,17 +172,30 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                aria-current="page"
+                to="/"
+              >
                 Help
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/home">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                to="/home"
+              >
                 Adopt
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/home">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                to="/home"
+              >
                 Analytics
               </Link>
             </li>
@@ -193,7 +225,11 @@ export default function Navbar() {
           {search}
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" to="/">
+              <Link
+                onClick={() => setSearchText("")}
+                className="nav-link active"
+                to="/"
+              >
                 Chat
               </Link>
             </li>
@@ -209,17 +245,29 @@ export default function Navbar() {
               />
               <ul class="dropdown-menu dropdown-menu-end text-center">
                 <li>
-                  <Link class="dropdown-item" to="/requests">
+                  <Link
+                    onClick={() => setSearchText("")}
+                    class="dropdown-item"
+                    to="/requests"
+                  >
                     Requests
                   </Link>
                 </li>
                 <li>
-                  <Link class="dropdown-item" to="/addpet">
+                  <Link
+                    onClick={() => setSearchText("")}
+                    class="dropdown-item"
+                    to="/addpet"
+                  >
                     Add Pet
                   </Link>
                 </li>
                 <li>
-                  <Link class="dropdown-item" to="/profile">
+                  <Link
+                    onClick={() => setSearchText("")}
+                    class="dropdown-item"
+                    to="/profile"
+                  >
                     Profile
                   </Link>
                 </li>
@@ -240,7 +288,11 @@ export default function Navbar() {
     <div className=" sticky-top">
       {state.user ? LoggedIn : notLoggedIn}
       {state.overlay ? (
-        <SearchOverlay searchText={searchText} Pets={pets} />
+        <SearchOverlay
+          setSearchText={setSearchText}
+          searchText={searchText}
+          Pets={pets}
+        />
       ) : (
         <div />
       )}

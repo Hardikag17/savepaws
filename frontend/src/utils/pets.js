@@ -28,4 +28,13 @@ export const getPetByUserID = async (UserID) => {
   }
 };
 
-export const adoptPet = async () => {};
+export const adoptPet = async (pet, UserID) => {
+  const res = await axios.post(`${API_ROOT}/pets/adopt`, {
+    PetID: pet.PetID,
+    UserID: UserID,
+    RescuerID: pet.RescuerID,
+  });
+
+  if (res.data.status === "failed") return false;
+  else return true;
+};

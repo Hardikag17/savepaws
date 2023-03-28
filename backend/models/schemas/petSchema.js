@@ -50,12 +50,11 @@ const petSchema = new Schema(
     Health: {
       type: Number,
       // enum: [, "Minor Injury", "Serious Injury", "Not Specified"],
-      default: "Not Specified",
     },
     State: Number,
     City: String,
     Pincode: Number,
-    Descripton: {
+    Description: {
       type: String,
       maxLength: 10000,
     },

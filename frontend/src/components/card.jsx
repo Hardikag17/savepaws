@@ -32,20 +32,37 @@ export default function Card({
               <span className="card__time">{postedOn} </span>
             </div>
           </div>
-          <div className="card__img">
-            {/* <img
+          <div
+            className="card__img"
+            style={{
+              // backgroundImage: `url('https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg')`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              // height: "300px",
+              // width: "350px",
+            }}
+          />
+          {/* <img
               src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
               alt="Card img"
             /> */}
-          </div>
-          <a href="#" className="card_link">
-            <div className="card__img--hover">
-              {/* <img
+
+          <div
+            className="card__img--hover"
+            style={{
+              // backgroundImage: `url('https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg')`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          />
+          {/* <img
                 src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
                 alt="card hover img"
               /> */}
-            </div>
-          </a>
+          {/* </div> */}
+
           <div className="card__info">
             <span>
               <b>{name}</b>

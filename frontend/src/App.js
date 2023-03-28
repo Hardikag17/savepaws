@@ -56,7 +56,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route path="/PetView" element={<PetView />} />
+              <Route path="/petview/:PetID" element={<PetView />} />
               <Route path="/chat" element={<Chat />} />
             </Routes>
           </Suspense>

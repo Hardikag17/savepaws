@@ -1,5 +1,5 @@
 import RequestCard from "../components/requestCard";
-import { getRequestByUserID } from "../utils/requests";
+import { getRequestByUserID, getRequestsByRescuerID } from "../utils/requests";
 import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
 import { useEffect } from "react";
@@ -7,11 +7,17 @@ import { useState } from "react";
 export default function Requests() {
   const { state } = useContext(UserContext);
   const [userRequest, setuserRequest] = useState([]);
+  const [requests, setPetRequests] = useState();
 
   useEffect(() => {
     getRequestByUserID(state.userID).then((res) => {
       let response = res.data;
       setuserRequest([response]);
+    });
+
+    getRequestsByRescuerID(state.userID).then((res) => {
+      console.log("Requests:", res);
+      setPetRequests(res);
     });
   }, [getRequestByUserID]);
 
@@ -34,9 +40,15 @@ export default function Requests() {
         )}
       </div>
       <hr />
-      <h3>Your Pet's Requests</h3>
+      <h3>Your Pet's Requests **(Bug fix needed)</h3>
       <hr />
-      <div className=" d-flex">{dummyCards}</div>
+      <div className=" d-flex">
+        {state.user && requests && requests.length > 0 ? (
+          <RequestCard data={requests} />
+        ) : (
+          <div />
+        )}
+      </div>
     </div>
   );
 }

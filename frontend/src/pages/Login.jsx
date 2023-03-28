@@ -36,7 +36,6 @@ export default function Login() {
   } = useForm(formOptions);
 
   const formSubmit = (data) => {
-    console.log(data);
     login(data);
   };
 
@@ -46,14 +45,12 @@ export default function Login() {
         email: data.email,
         password: data.password,
       });
-      console.log(res.status, res.data);
 
       if (res.status === 200) {
-        localStorage.setItem("userID", res.data);
         setState({
           user: true,
-          userID: localStorage.getItem("userID"),
-          email: user.email,
+          userID: res.data,
+          email: data.email,
           name: "",
           token: false,
         });

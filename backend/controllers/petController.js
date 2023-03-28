@@ -263,6 +263,8 @@ const adoptPet = async (req, res) => {
   try {
     let response = await Pet.find({ PetID: PetID });
 
+    console.log(response);
+
     if (response && response[0].RescuerID == RescuerID && !response[0].Status) {
       // Check PetID and UserID in RequestSchema documents
       try {
@@ -290,7 +292,7 @@ const adoptPet = async (req, res) => {
     } else {
       // Something went wrong, Pet cannot be adopted
       res
-        .status(400)
+        .status(200)
         .send({ status: "failed", message: "Pet cannot be adopted" });
     }
   } catch (err) {
@@ -334,16 +336,17 @@ const getRequestByUserID = async (req, res) => {
 const getRequestsByRescuerID = async (req, res) => {
   const RescuerID = req.params.RescuerID;
 
+  // **Bug: Currently this function returns only one pet's requests
+  // **Hint: We need to save forEarch(Pet) response in temp array then send all reponse at once
+
   try {
-    let result;
     let response = await Pet.find({ RescuerID: RescuerID });
-
-    if (response) {
-      response.forEach(async (Pet) => {
-        result.push(await Requests.find({ PetID: Pet.PetID }));
+    if (response && response.length > 0) {
+      response.forEach((Pet) => {
+        Requests.find({ PetID: Pet.PetID }).then((response) => {
+          res.status(200).send({ status: "success", Requests: response[0] });
+        });
       });
-
-      res.status(200).send({ status: "success", Requests: result });
     } else {
       res
         .status(200)

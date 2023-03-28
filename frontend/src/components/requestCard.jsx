@@ -7,16 +7,20 @@ import "../styles/requestCard.css";
 import { useEffect } from "react";
 import { useState } from "react";
 import truncateString from "../utils/truncate";
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext";
 
 export default function RequestCard({ isAdopt, data }) {
+  const { state } = useContext(UserContext);
   const [pet, setPet] = useState();
+
   useEffect(() => {
     if (data) getPetByPetID(data?.PetID).then((res) => setPet(res));
   }, []);
 
-  console.log("pet details:", pet);
   const backgroundImage =
     "https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9nc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60";
+
   return (
     <div className="requestCard container border rounded border-2 border-solid border-success border-opacity-50 py-2 bg-light m-2 shadow-sm">
       <div className=" flex d-flex">
@@ -57,23 +61,25 @@ export default function RequestCard({ isAdopt, data }) {
         {isAdopt ? (
           <div className=" d-flex flex justify-content-around mt-3">
             <div className="text-white mx-1">
-              {data.Status ? (
+              {data.Status && pet.AdopterID && pet.AdopterID == state.userID ? (
                 <button className=" btn btn-success border-2 ">
                   <FontAwesomeIcon icon={faCircle} />
                   Accepted
                 </button>
               ) : (
-                <button className=" btn btn-secondary border-2 ">
-                  <FontAwesomeIcon icon={faCircle} /> Pending
-                </button>
+                <>
+                  <button className=" btn btn-secondary border-2 ">
+                    <FontAwesomeIcon icon={faCircle} /> Pending
+                  </button>
+                  <button className="btn btn-dark m-1 text-white mx-1">
+                    <FontAwesomeIcon icon={faMessage} /> &nbsp; Chat
+                  </button>
+                  <button className="btn btn-success m-1 text-white mx-1">
+                    Cancel
+                  </button>
+                </>
               )}
             </div>
-            <button className="btn btn-dark m-1 text-white mx-1">
-              <FontAwesomeIcon icon={faMessage} /> &nbsp; Chat
-            </button>
-            <button className="btn btn-success m-1 text-white mx-1">
-              Cancel
-            </button>
           </div>
         ) : (
           <div className=" d-flex flex justify-content-between mt-3">

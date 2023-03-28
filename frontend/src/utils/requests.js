@@ -27,14 +27,30 @@ const getRequestsByPetID = async (PetID) => {
 };
 
 // // User rescued pet requests
-// export const getRequestsByRescuerID = async (RescuerID) => {
-//   try {
-//     let res = await axios.get(`${API_ROOT}/pets/requests/rescuer/${RescuerID}`);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+export const getRequestsByRescuerID = async (RescuerID) => {
+  /**
+   * Fix this fxn in backend
+   */
+  try {
+    let res = await axios.get(`${API_ROOT}/pets/requests/rescuer/${RescuerID}`);
+    console.log("res:", res.data.Requests);
+    if (res.data.Requests) return res.data.Requests;
+    else return {};
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-// export const requestPet = async () => {};
+export const requestPet = async (PetID, UserID) => {
+  try {
+    let res = await axios.post(`${API_ROOT}/pets/requestpet`, {
+      PetID: PetID,
+      UserID: UserID,
+    });
+    return res.data.message;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 // export const deleteRequest = async () => {};

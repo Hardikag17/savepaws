@@ -7,6 +7,7 @@ import SideBar from "../components/sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
 import {
   faBackwardStep,
   faForwardStep,
@@ -15,6 +16,7 @@ import LoadingCard from "../components/loadingCard";
 
 library.add(fab);
 export default function Main() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [card, setCard] = useState(0);
   const [page, setPage] = useState(1);
@@ -42,16 +44,18 @@ export default function Main() {
 
   const cards = posts.map((element, key) => {
     return (
-      <div key={key} onClick={() => showCard(element, key)}>
-        <Card
-          name={element.Name}
-          description={element.description}
-          rescuerId={element.RescuerID}
-          PetID={element.PetID}
-          comments=" 5"
-          postedOn="4/3/2023"
-        />
-      </div>
+      <Link to={`/petview/${element.PetID}`}>
+        <div key={key}>
+          <Card
+            name={element.Name}
+            description={element.description}
+            rescuerId={element.RescuerID}
+            PetID={element.PetID}
+            comments=" 5"
+            postedOn="4/3/2023"
+          />
+        </div>
+      </Link>
     );
   });
 

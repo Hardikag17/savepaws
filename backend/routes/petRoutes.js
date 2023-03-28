@@ -1,5 +1,5 @@
 const express = require("express");
-const { body, query } = require("express-validator");
+const { body } = require("express-validator");
 const multer = require("multer");
 const {
   getPets,

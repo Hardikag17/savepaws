@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { getSessionStotage } from "../utils/storage";
 import { UserContext } from "../utils/userContext";
 
 const Layout = ({ children }) => {
-  const [state, setState] = useState({
-    user: false,
-    userID: "",
-    email: "",
-    name: "",
-    token: false,
-    overlay: false,
-  });
+  const [state, setState] = useState(() => getSessionStotage("state"));
 
   useEffect(() => {
     if (state.user === false) {
@@ -18,6 +12,7 @@ const Layout = ({ children }) => {
 
     if (state.user) {
       console.log("user", state);
+      sessionStorage.setItem("state", JSON.stringify(state));
     }
   }, [state]);
 

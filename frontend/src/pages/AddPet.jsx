@@ -40,7 +40,7 @@ export default function AddPet() {
     Description: yup
       .string()
       .required("Description is mandatory")
-      .min(20, "Description must be atleast 20 char long")
+      // .min(20, "Description must be atleast 20 char long")
       .max(50, "Max Length of Description must be 50"),
     Address: yup
       .string()
@@ -80,7 +80,7 @@ export default function AddPet() {
   }
   const [pet, setPet] = useState({
     PetID: "",
-    RescuerID: localStorage.getItem("userID"),
+    RescuerID: state.userID,
     Name: "",
     Type: null,
     Age: null,
@@ -127,17 +127,19 @@ export default function AddPet() {
   }, [selectedImages]);
 
   const onSubmit = (data) => {
-    // console.log("data...", data);
-    data.Breed1 = breed.value;
-    data.Gender = gender.value;
-    data.Type = type.value;
-    data.Vaccinated = pet.Vaccinated;
-    data.Sterilized = pet.Sterilized;
-    data.Health = pet.Health;
-    data.PhotoAmt = selectedImages.length;
-    data.Age = age.value;
-    data.RescuerID = pet.RescuerID;
-    uploadImages(data);
+    if (selectedImages.length < 4) alert("Please select images");
+    else {
+      data.Breed1 = breed.value;
+      data.Gender = gender.value;
+      data.Type = type.value;
+      data.Vaccinated = pet.Vaccinated;
+      data.Sterilized = pet.Sterilized;
+      data.Health = pet.Health;
+      data.PhotoAmt = selectedImages.length;
+      data.Age = age.value;
+      data.RescuerID = pet.RescuerID;
+      uploadImages(data);
+    }
   };
 
   const uploadImages = async (data) => {
