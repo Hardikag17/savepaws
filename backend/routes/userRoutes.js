@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
-const { Register, Login } = require("../controllers/userRegister");
+const { Register, Login, Info } = require("../controllers/userRegister");
+const auth = require("../middleware/auth");
 
 const routes = express.Router();
 
@@ -18,6 +19,7 @@ routes.post(
   body("password").isString().not().isEmpty(),
   Register
 );
+routes.get("/info", auth, Info);
 routes.get("/:email/forgetpassword");
 
 module.exports = routes;

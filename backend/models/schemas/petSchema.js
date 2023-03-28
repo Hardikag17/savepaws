@@ -60,8 +60,6 @@ const petSchema = new Schema(
     },
     PhotoAmt: {
       type: Number,
-      max: 4,
-      min: 1,
     },
     /*
   Adoption status
