@@ -48,16 +48,8 @@ export default function Login() {
           email: data.email,
           password: data.password,
         },
-        {
-          headers: {
-            authorization: state.token,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
+        { withCredentials: true }
       );
-
-      console.log(res);
 
       if (res.status === 200) {
         setState({
@@ -65,7 +57,6 @@ export default function Login() {
           userID: res.data.userId,
           email: data.email,
           name: res.data.name,
-          token: res.data.token,
         });
 
         navigate("/home");
