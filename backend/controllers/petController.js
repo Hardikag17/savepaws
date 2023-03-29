@@ -341,6 +341,7 @@ const getRequestsByRescuerID = async (req, res) => {
 
   try {
     let response = await Pet.find({ RescuerID: RescuerID });
+
     if (response && response.length > 0) {
       response.forEach((Pet) => {
         Requests.find({ PetID: Pet.PetID }).then((response) => {

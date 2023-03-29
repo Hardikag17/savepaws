@@ -123,4 +123,18 @@ const Info = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login, Info };
+const userInfo = async (req, res) => {
+  const UserID = req.body.UserID;
+
+  try {
+    let response = await User.find(
+      { userId: UserID },
+      { userId: 1, name: 1, email: 1, mobile: 1 }
+    );
+    res.status(200).send({ status: "success", userInfo: response });
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+module.exports = { Register, Login, Info, userInfo };

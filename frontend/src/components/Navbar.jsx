@@ -228,7 +228,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/"
+                to="/chat"
               >
                 Chat
               </Link>

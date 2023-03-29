@@ -157,17 +157,21 @@ function PetViewPage() {
                             </span>
                           </h3>
                         </div>
-                        <div className="like_adopt">
-                          <span className="sp_heart" role="button">
-                            <FontAwesomeIcon
-                              icon={faHeart}
-                              className="heart-hover"
-                              onClick={PetLike}
-                              style={{ color: likeColor }}
-                            />{" "}
-                            Like
-                          </span>
-                        </div>
+                        {state.user ? (
+                          <div className="like_adopt">
+                            <span className="sp_heart" role="button">
+                              <FontAwesomeIcon
+                                icon={faHeart}
+                                className="heart-hover"
+                                onClick={PetLike}
+                                style={{ color: likeColor }}
+                              />{" "}
+                              Like
+                            </span>
+                          </div>
+                        ) : (
+                          <div />
+                        )}
                       </div>
 
                       <hr width="90%" />
@@ -252,21 +256,25 @@ function PetViewPage() {
                         <p>{element.Description}</p>
                       </div>
 
-                      <div className="mb-4">
-                        <button
-                          onClick={sendPetRequest}
-                          className="btn btn-success mx-2"
-                          style={{ color: "white" }}
-                        >
-                          Request now
-                        </button>
-                        <button
-                          className="btn btn-success mx-2"
-                          style={{ color: "white" }}
-                        >
-                          <FontAwesomeIcon icon={faMessage} /> &nbsp;Chat
-                        </button>
-                      </div>
+                      {state.user ? (
+                        <div className="mb-4">
+                          <button
+                            onClick={sendPetRequest}
+                            className="btn btn-success mx-2"
+                            style={{ color: "white" }}
+                          >
+                            Request now
+                          </button>
+                          <button
+                            className="btn btn-success mx-2"
+                            style={{ color: "white" }}
+                          >
+                            <FontAwesomeIcon icon={faMessage} /> &nbsp;Chat
+                          </button>
+                        </div>
+                      ) : (
+                        <div />
+                      )}
                     </article>
                   </main>
                 </div>

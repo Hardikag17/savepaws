@@ -1,6 +1,11 @@
 const express = require("express");
 const { body } = require("express-validator");
-const { Register, Login, Info } = require("../controllers/userRegister");
+const {
+  Register,
+  Login,
+  Info,
+  userInfo,
+} = require("../controllers/userRegister");
 const auth = require("../middleware/auth");
 
 const routes = express.Router();
@@ -19,6 +24,7 @@ routes.post(
   body("password").isString().not().isEmpty(),
   Register
 );
+routes.post("/userInfo", userInfo);
 routes.get("/info", auth, Info);
 routes.get("/:email/forgetpassword");
 
