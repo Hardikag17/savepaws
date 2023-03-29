@@ -41,8 +41,15 @@ function PetViewPage() {
     setimgS(event.target.src);
   };
 
+<<<<<<< HEAD
   const [imgS, setimgS] = useState();
   // `https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`
+=======
+  const [imgS, setimgS] = useState(
+    `https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`
+  );
+  // `https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`
+>>>>>>> a9577ef (dbox review 29th march)
   const { state } = useContext(UserContext);
   // console.log("State ", state.userID);
   const [comment, setComment] = useState("");
