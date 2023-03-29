@@ -11,7 +11,7 @@ const socialRoutes = require("./routes/socialRoutes");
 const optionRoutes = require("./routes/optionRoutes");
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

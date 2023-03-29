@@ -36,29 +36,30 @@ const Register = async (req, res) => {
         res.status(400).send(err);
       });
 
-    const payload = {
-      user: {
-        id: newuser.userId,
-        name: newuser.name,
-        email: newuser.email,
-      },
-    };
+    //   const payload = {
+    //     user: {
+    //       id: newuser.userId,
+    //       name: newuser.name,
+    //       email: newuser.email,
+    //     },
+    //   };
 
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: "7 days" },
-      (err, token) => {
-        if (err) throw err;
-        res.json({
-          token,
-          id: newuser.userId,
-          name: newuser.name,
-          email: newuser.email,
-        });
-      }
-    );
-  } else res.status(400).send("Already, a linked account with these details");
+    //   jwt.sign(
+    //     payload,
+    //     process.env.JWT_SECRET,
+    //     { expiresIn: "7 days" },
+    //     (err, token) => {
+    //       if (err) throw err;
+    //       res.json({
+    //         token,
+    //         userId: newuser.userId,
+    //         name: newuser.name,
+    //         email: newuser.email,
+    //       });
+    //     }
+    //   );
+    // } else res.status(400).send("Already, a linked account with these details");
+  }
 };
 
 const Login = async (req, res) => {
@@ -92,12 +93,18 @@ const Login = async (req, res) => {
       { expiresIn: "30 days" },
       (err, token) => {
         if (err) throw err;
-        res.json({
-          token,
-          id: response[0].userId,
-          name: response[0].name,
-          email: response[0].email,
-        });
+        res
+          .cookie("accesstoken", token, {
+            // sameSite: "strict",
+            // path: "http://localhost:3000/",
+            // domain: "http://localhost:3000/login",
+            httpOnly: true,
+          })
+          .json({
+            userId: response[0].userId,
+            name: response[0].name,
+            email: response[0].email,
+          });
       }
     );
 
