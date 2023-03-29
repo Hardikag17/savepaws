@@ -13,10 +13,11 @@ import { UserContext } from "../utils/userContext";
 export default function RequestCard({ isAdopt, data }) {
   const { state } = useContext(UserContext);
   const [pet, setPet] = useState();
-
   useEffect(() => {
     if (data) getPetByPetID(data?.PetID).then((res) => setPet(res));
-  }, []);
+
+    console.log("pet:", pet);
+  }, [data]);
 
   const backgroundImage =
     "https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9nc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60";
@@ -61,11 +62,25 @@ export default function RequestCard({ isAdopt, data }) {
         {isAdopt ? (
           <div className=" d-flex flex justify-content-around mt-3">
             <div className="text-white mx-1">
-              {data.Status && pet.AdopterID && pet.AdopterID == state.userID ? (
-                <button className=" btn btn-success border-2 ">
-                  <FontAwesomeIcon icon={faCircle} />
-                  Accepted
-                </button>
+              {data.Status &&
+              pet &&
+              pet.AdopterID &&
+              pet.AdopterID == state.userID ? (
+                <div className=" text-black text-center">
+                  <div>
+                    <button className=" btn btn-success border-2 mx-2 ">
+                      <FontAwesomeIcon icon={faCircle} />
+                      &nbsp; Accepted
+                    </button>
+                    <button className="btn btn-dark m-1 text-white mx-2">
+                      <FontAwesomeIcon icon={faMessage} /> &nbsp; Chat
+                    </button>
+                  </div>
+                  <h6 className=" py-2">
+                    Thankyou for joining the paws community. You can always
+                    reach reach us out on mail in case of any queries
+                  </h6>
+                </div>
               ) : (
                 <>
                   <button className=" btn btn-secondary border-2 ">

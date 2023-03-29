@@ -110,7 +110,14 @@ export default function UserRequestCard({ data, requests }) {
                   <FontAwesomeIcon icon={faMessage} /> &nbsp; Chat
                 </button>
                 <button
-                  onClick={acceptAdoptRequest}
+                  onClick={() => {
+                    let response = acceptAdoptRequest(
+                      pet.PetID,
+                      element[0].userId,
+                      state.userID
+                    );
+                    alert(response);
+                  }}
                   className="btn btn-success m-1 text-white mx-1"
                 >
                   Accept

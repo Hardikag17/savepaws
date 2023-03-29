@@ -15,7 +15,6 @@ export default function Requests() {
       let response = res.data;
 
       setuserRequest([response]);
-      console.log(userRequest);
     });
 
     getRequestsByRescuerID(state.userID).then((res) => {
@@ -34,10 +33,7 @@ export default function Requests() {
       <h3>Your Adoption Request</h3>
       <hr />
       <div className=" d-flex">
-        {state.user &&
-        userRequest &&
-        userRequest[0]?.Status === false &&
-        userRequest.length > 0 ? (
+        {state.user && userRequest && userRequest.length > 0 ? (
           [...userRequest].map((element, key) => {
             return <RequestCard data={element} key={key} isAdopt={true} />;
           })
@@ -46,7 +42,7 @@ export default function Requests() {
         )}
       </div>
       <hr />
-      <h3>Your Pet's Requests **(Bug fix needed)</h3>
+      <h3>Your Pet's Requests</h3>
       <hr />
       <div className=" d-flex">
         {state.user &&

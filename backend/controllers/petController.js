@@ -263,8 +263,6 @@ const adoptPet = async (req, res) => {
   try {
     let response = await Pet.find({ PetID: PetID });
 
-    console.log(response);
-
     if (response && response[0].RescuerID == RescuerID && !response[0].Status) {
       // Check PetID and UserID in RequestSchema documents
       try {
@@ -287,7 +285,7 @@ const adoptPet = async (req, res) => {
           });
         }
       } catch (err) {
-        res.status(400).send({ status: "failed", error: err });
+        res.status(400).send({ status: "failed", message: err });
       }
     } else {
       // Something went wrong, Pet cannot be adopted
@@ -296,7 +294,7 @@ const adoptPet = async (req, res) => {
         .send({ status: "failed", message: "Pet cannot be adopted" });
     }
   } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
+    res.status(400).send({ status: "failed", message: err });
   }
 };
 
