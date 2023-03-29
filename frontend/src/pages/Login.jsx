@@ -40,19 +40,32 @@ export default function Login() {
   };
 
   const login = async (data) => {
+    console.log(data);
     try {
-      const res = await axios.post(`${API_ROOT}/user/login`, {
-        email: data.email,
-        password: data.password,
-      });
+      const res = await axios.post(
+        `${API_ROOT}/user/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            authorization: state.token,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(res);
 
       if (res.status === 200) {
         setState({
           user: true,
-          userID: res.data,
+          userID: res.data.userId,
           email: data.email,
-          name: "",
-          token: false,
+          name: res.data.name,
+          token: res.data.token,
         });
 
         navigate("/home");

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --coverage --verbose",
+    "test:CI": "set CI=true &&react-scripts test --env=jsdom --testResultsProcessor=./node_modules/jest-html-reporter",
     "start": "node server.js"
   },
   "author": "Hardik Agarwal & Aditya Grover",
@@ -27,5 +28,8 @@
     "nodemailer": "^6.9.1",
     "nodemailer-express-handlebars": "^6.1.0",
     "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "jest-html-reporter": "^3.7.1"
   }
 }

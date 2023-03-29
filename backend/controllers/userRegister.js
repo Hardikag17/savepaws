@@ -52,7 +52,7 @@ const Register = async (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          id: newuser.userId,
+          userId: newuser.userId,
           name: newuser.name,
           email: newuser.email,
         });
@@ -76,6 +76,8 @@ const Login = async (req, res) => {
       return res.status(400).json({ msg: "Email or password incorrect" });
     }
 
+    console.log(response);
+
     // sendMail(response[0].email, response[0].name);
 
     const payload = {
@@ -94,7 +96,7 @@ const Login = async (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          id: response[0].userId,
+          userId: response[0].userId,
           name: response[0].name,
           email: response[0].email,
         });
