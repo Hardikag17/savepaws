@@ -35,30 +35,6 @@ const Register = async (req, res) => {
       .catch((err) => {
         res.status(400).send(err);
       });
-
-    //   const payload = {
-    //     user: {
-    //       id: newuser.userId,
-    //       name: newuser.name,
-    //       email: newuser.email,
-    //     },
-    //   };
-
-    //   jwt.sign(
-    //     payload,
-    //     process.env.JWT_SECRET,
-    //     { expiresIn: "7 days" },
-    //     (err, token) => {
-    //       if (err) throw err;
-    //       res.json({
-    //         token,
-    //         userId: newuser.userId,
-    //         name: newuser.name,
-    //         email: newuser.email,
-    //       });
-    //     }
-    //   );
-    // } else res.status(400).send("Already, a linked account with these details");
   }
 };
 
@@ -71,7 +47,7 @@ const Login = async (req, res) => {
 
   if (count == 1) {
     let response = await User.find({ email: email });
-    // console.log("Response...", typeof response[0].password);
+
     const isMatch = await bcrypt.compare(password, response[0].password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Email or password incorrect" });
@@ -83,7 +59,7 @@ const Login = async (req, res) => {
 
     const payload = {
       user: {
-        id: response[0].userId,
+        userId: response[0].userId,
         name: response[0].name,
         email: response[0].email,
       },
@@ -109,17 +85,24 @@ const Login = async (req, res) => {
           });
       }
     );
+  } else res.status(400).send("User not found");
+};
 
-    // res.status(200).send(response[0].userId);
-  } else res.send("User not found");
+const Logout = async (req, res) => {
+  try {
+    res.clearCookie("accesstoken");
+    res.status(200).send("Logout Sucessfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
 };
 
 const Info = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.userId).select("-password");
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
@@ -137,4 +120,4 @@ const userInfo = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login, Info, userInfo };
+module.exports = { Register, Login, Logout, Info, userInfo };

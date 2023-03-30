@@ -25,27 +25,33 @@ export default function Navbar() {
     const res = await axios.get(
       `${API_ROOT}/pets?searchText=${event.target.value}`
     );
-    // console.log(res.data);
-    await setPets(res.data);
 
-    // pets.response?.length
-    //   ? [...pets.response].map((val) => {
-    //       console.log("Value..", val);
-    //     })
-    //   : console.log("OOPs! No Pet Found");
+    await setPets(res.data);
   });
 
   const Logout = () => {
-    sessionStorage.clear();
-    setState({
-      user: false,
-      email: "",
-      name: "",
-      userPosts: [],
-      token: false,
-    });
+    try {
+      axios
+        .get(`${API_ROOT}/user/logout`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            sessionStorage.clear();
+            setState({
+              user: false,
+              email: "",
+              name: "",
+              userPosts: [],
+              token: false,
+            });
 
-    navigate("/login");
+            navigate("/");
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const search = (

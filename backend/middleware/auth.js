@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
   // Get token from header
-  const token = req.header("x-auth-token");
+  const token = req.cookies.accesstoken;
 
   // Check if no token
   if (!token) {
@@ -15,6 +15,7 @@ module.exports = function (req, res, next) {
         return res.status(401).json({ msg: "Token is not valid" });
       } else {
         req.user = decoded.user;
+        console.log("User....", req.user);
         next();
       }
     });
