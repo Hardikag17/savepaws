@@ -49,6 +49,38 @@ const uploadImages = async (req, res) => {
   res.status(200).send(petID);
 };
 
+const profileImageUpload = async (req, res) => {
+  console.log(req.body);
+  let file = req.file;
+  let UserID = req.body.UserID;
+  let bucket = "paws-adoption";
+  let contentType = file[0].mimetype;
+
+  console.log(UserID, req.file[0]);
+
+  // if (contentType == "image/jpeg") extension = ".jpeg";
+  // if (contentType == "image/webp") extension = ".webp";
+  // if (contentType == "image/svg") extension = ".svg";
+  // if (contentType == "image/jpg") extension = ".jpg";
+  // if (contentType == "image/png") extension = ".png";
+
+  // try {
+  //   await s3Client.send(
+  //     new PutObjectCommand({
+  //       Bucket: bucket,
+  //       Key: `users/${UserID}${extension}`,
+  //       Body: file[0].buffer,
+  //       ContentType: contentType,
+  //     })
+  //   );
+  //   res.status(200).send(UserID);
+  // } catch (err) {
+  //   res.status(400).send(err);
+  // }
+
+  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.amazonaws.com/users/[FILENAME].jpg
+};
+
 // const getImages = async (req, res) => {
 //   let PetID = req.params.petID;
 //   let bucket = "paws-adoption";
@@ -70,4 +102,4 @@ const uploadImages = async (req, res) => {
 //   res.send(response);
 // };
 
-module.exports = { uploadImages };
+module.exports = { uploadImages, profileImageUpload };

@@ -19,7 +19,7 @@ export default function UserRequestCard({ data, requests }) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     if (data) getPetByPetID(data?.PetID).then((res) => setPet(res));
-
+    console.log(state.UserID);
     if (requests && requests[0]?.Requests) {
       let req = requests[0].Requests;
       setUsers([]);
