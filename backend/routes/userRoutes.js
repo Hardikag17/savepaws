@@ -27,7 +27,7 @@ routes.post(
 );
 routes.get("/logout", Logout);
 routes.post("/userInfo", userInfo);
-routes.get("/info", auth, Info);
+routes.get("/info", Info);
 routes.get("/:email/forgetpassword");
 
 module.exports = routes;

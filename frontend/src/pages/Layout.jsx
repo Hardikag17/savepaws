@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getSessionStotage } from "../utils/storage";
+import { getSessionStorage } from "../utils/storage";
 import { UserContext } from "../utils/userContext";
 
 const Layout = ({ children }) => {
-  const [state, setState] = useState(() => getSessionStotage("state"));
+  const [state, setState] = useState(() =>
+    getSessionStorage().then((res) => setState(res))
+  );
 
   useEffect(() => {
     if (state.user === false) {

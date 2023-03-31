@@ -98,11 +98,29 @@ const Logout = async (req, res) => {
 };
 
 const Info = async (req, res) => {
+  const token = req.cookies.accesstoken;
+
+  // Check if no token
+  if (!token) {
+    return res
+      .status(200)
+      .json({ status: 400, msg: "No token, authorization denied" });
+  }
+
+  // Token
   try {
-    const user = await User.findById(req.user.userId).select("-password");
-    res.status(200).json({ user });
-  } catch (error) {
-    res.status(400).json(error);
+    jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {
+      if (error) {
+        return res.status(200).json({ status: 400, msg: "Not a valid token" });
+      } else {
+        let userId = decoded.user.userId;
+        let user = await User.find({ userId: userId }).select("-password");
+
+        res.status(200).send(user);
+      }
+    });
+  } catch (err) {
+    return res.status(200).json({ status: 400, msg: err });
   }
 };
 
