@@ -23,26 +23,35 @@ export default function Chat() {
       setRoom(res);
       if (res?.length > 0) {
         socket.emit("join_room", room);
-        socket.emit("previous_messages", room);
-        socket.on("previous_messages_list", (data) => {
-          let res = data;
-          if (res) {
-            setMessageList("");
-            res.forEach((element) => {
-              setMessageList((list) => [...list, element]);
-            });
-          }
-        });
+
+        // Bug: Infinite Loop
       }
     });
 
     console.log("prev:", messageList);
-  }, [receiverId, senderId, room, messageList]);
+  }, [receiverId, senderId, room]);
+
+  const getPrevMessages = useCallback(() => {
+    socket.emit("previous_messages", room);
+    socket.on("previous_messages_list", (data) => {
+      let res = data;
+      if (res) {
+        setMessageList("");
+        res.forEach((element) => {
+          setMessageList((list) => [...list, element]);
+        });
+      }
+    });
+  }, [room]);
 
   useEffect(() => {
     setSenderId(state?.userID);
     getMessages();
   }, [state, getMessages]);
+
+  useEffect(() => {
+    getPrevMessages();
+  });
 
   useEffect(() => {
     getUserInfo(receiverId).then((res) => {

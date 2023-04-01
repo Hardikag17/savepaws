@@ -5,8 +5,6 @@ const { mongoose } = require("mongoose");
 const MessageList = [];
 
 module.exports = (socket, io) => {
-  let clientsConnected = [];
-
   if (io.engine.clientsCount > CONNECTIONS_LIMIT) {
     socket.emit("err", { message: "reach the limit of connections" });
     socket.disconnect();
@@ -48,6 +46,7 @@ module.exports = (socket, io) => {
 
   socket.on("join_room", (RoomId) => {
     socket.join(RoomId);
+    // Bug: Infinite Loop
     console.log(`User with ID: ${socket.id} joined room: ${RoomId}`);
   });
 };
