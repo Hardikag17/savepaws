@@ -3,6 +3,9 @@ const { Requests } = require("../models/schemas/requestsSchema");
 const { Social } = require("../models/schemas/socialSchema");
 const { filterPets, search } = require("../utils/search");
 
+const userLocation = { type: "Point", coordinates: [17.4316895, 78.3500999] };
+const maxDistance = 10000; // Maximum distance in meters
+
 /**
  * Get all Pets along with their socials OR Get specific pet along with their social, includes filterOptions in request
  * @param search: string
@@ -17,6 +20,7 @@ const getPets = async (req, res) => {
     gender: null,
     health: null,
     breed: null,
+    point: { lat: null, long: null },
   };
 
   if (req.query.minAge) {
@@ -73,6 +77,11 @@ const getPets = async (req, res) => {
     filterOptions.breed = breed;
   }
 
+  if (req.query.latitude && req.query.longitude) {
+    filterOptions.point.lat = req.query.latitude;
+    filterOptions.point.long = req.query.longitude;
+  }
+
   let response;
   if (searchText && searchText.trim() !== "") {
     response = await search(searchText, filterOptions);
@@ -108,27 +117,16 @@ const getPets = async (req, res) => {
 
 // Add Pet
 const addPet = async (req, res) => {
+  // console.log("Request:", req.body);
   const newPet = new Pet(req.body.data);
+  console.log(newPet);
 
   try {
     await newPet.save();
+    console.log("Request:", req.body);
     res.status(200).send("Pet Successfully added");
   } catch (err) {
     res.send(err);
-  }
-};
-
-const getPetByPetID = async (req, res) => {
-  let PetID = req.params.PetID;
-  try {
-    let response = await Pet.find({ PetID: PetID });
-    res.status(200).send({
-      status: "success",
-      message: `Pets for ${PetID} PetID`,
-      response: response[0],
-    });
-  } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
   }
 };
 
@@ -143,6 +141,20 @@ const getPetsByUserID = async (req, res) => {
       response: response,
     });
   } catch (err) {}
+};
+
+const getPetByPetID = async (req, res) => {
+  let PetID = req.params.PetID;
+  try {
+    let response = await Pet.find({ PetID: PetID });
+    res.status(200).send({
+      status: "success",
+      message: `Pets for ${PetID} PetID`,
+      response: response[0],
+    });
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
 };
 
 // Update Pet
@@ -298,22 +310,6 @@ const adoptPet = async (req, res) => {
   }
 };
 
-const getRequestsByPetID = async (req, res) => {
-  const PetID = req.params.PetID;
-
-  try {
-    let response = await Requests.find({
-      PetID: PetID,
-    });
-
-    if (response) {
-      res.status(200).send({ status: "success", Pet: response[0] });
-    }
-  } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
-  }
-};
-
 const getRequestByUserID = async (req, res) => {
   // Can be only one
   const UserID = req.params.UserID;
@@ -325,6 +321,22 @@ const getRequestByUserID = async (req, res) => {
 
     if (response && response[0].PetID) {
       res.status(200).send({ status: "success", PetID: response[0].PetID });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
+};
+
+const getRequestsByPetID = async (req, res) => {
+  const PetID = req.params.PetID;
+
+  try {
+    let response = await Requests.find({
+      PetID: PetID,
+    });
+
+    if (response) {
+      res.status(200).send({ status: "success", Pet: response[0] });
     }
   } catch (err) {
     res.status(400).send({ status: "failed", error: err });
