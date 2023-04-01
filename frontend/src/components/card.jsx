@@ -35,7 +35,7 @@ export default function Card({
           <div
             className="card__img"
             style={{
-              // backgroundImage: `url('https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg')`,
+              // backgroundImage: `url('https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg')`,
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
@@ -44,21 +44,21 @@ export default function Card({
             }}
           />
           {/* <img
-              src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
+              src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`}
               alt="Card img"
             /> */}
 
           <div
             className="card__img--hover"
             style={{
-              // backgroundImage: `url('https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg')`,
+              // backgroundImage: `url('https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg')`,
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
             }}
           />
           {/* <img
-                src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
+                src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`}
                 alt="card hover img"
               /> */}
           {/* </div> */}

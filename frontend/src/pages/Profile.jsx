@@ -14,14 +14,14 @@ export default function Profile() {
   const [selectedImage, setSelectedImage] = useState(``);
   const { state } = useContext(UserContext);
   const [preview, setPreview] = useState(
-    `https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg` ||
+    `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg` ||
       URL.createObjectURL(selectedImage)
   );
 
   useEffect(() => {
     if (!selectedImage) {
       setPreview(
-        `https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg`
+        `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg`
       );
       return;
     }
@@ -32,11 +32,11 @@ export default function Profile() {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedImage]);
 
-  const uploadImage = async () => {
+  const uploadImage = async (file) => {
     try {
       upload
-        .post(`${API_ROOT}/user/profileimg`)
-        .attach("profileimg", selectedImage)
+        .post(`${API_ROOT}/user/profileimg/${state.userID}`)
+        .attach("profileimg", file)
         .end((err, res) => {
           if (err);
           if (res.text.length > 0) {
@@ -59,6 +59,11 @@ export default function Profile() {
           >
             <img
               src={preview}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src =
+                  "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+              }}
               alt="placeholder profile pic"
               width="200"
               height="200"
@@ -68,7 +73,7 @@ export default function Profile() {
               className="btn edit "
               onChange={(e) => {
                 setSelectedImage(e.target.files[0]);
-                uploadImage();
+                uploadImage(e.target.files[0]);
               }}
               id="file-input"
               name="files"

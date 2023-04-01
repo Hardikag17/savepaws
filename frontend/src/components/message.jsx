@@ -1,4 +1,4 @@
-export default function Message({ type }) {
+export default function Message({ type, text, image, name, time }) {
   const send = (
     <div
       className=" w-50 d-flex align-items-center ms-auto bg-light p-2 my-2 "
@@ -8,14 +8,26 @@ export default function Message({ type }) {
         <img
           type="button"
           data-bs-toggle="dropdown"
-          src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+          src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${image}.jpeg`}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src =
+              "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+          }}
           width="55"
           height="55"
           className="rounded-circle dropdown-toggle"
           alt="Placeholder profile pic"
         />
       </div>
-      <div className=" text-center w-100">text</div>
+      <div className=" text-left w-100 px-3">
+        {text}
+        <div>
+          <h6 style={{ fontSize: "12px" }}>
+            <i>You: {name} &nbsp; time</i>
+          </h6>
+        </div>
+      </div>
     </div>
   );
 
@@ -28,14 +40,26 @@ export default function Message({ type }) {
         <img
           type="button"
           data-bs-toggle="dropdown"
-          src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+          src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${image}.jpeg`}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src =
+              "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+          }}
           width="55"
           height="55"
           className="rounded-circle dropdown-toggle"
           alt="Placeholder profile pic"
         />
       </div>
-      <div className=" text-center w-100">text</div>
+      <div className=" text-left w-100 px-3">
+        {text}
+        <div>
+          <h6 style={{ fontSize: "12px" }}>
+            <i>{name} &nbsp; time</i>
+          </h6>
+        </div>
+      </div>
     </div>
   );
   return type === "send" ? send : receive;

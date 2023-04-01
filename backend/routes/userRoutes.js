@@ -33,7 +33,11 @@ routes.post(
 );
 routes.get("/logout", Logout);
 routes.post("/userInfo", userInfo);
-routes.post("/profileimg", upload.single("profileimg"), profileImageUpload);
+routes.post(
+  "/profileimg/:userId",
+  upload.single("profileimg"),
+  profileImageUpload
+);
 routes.get("/info", Info);
 routes.get("/:email/forgetpassword");
 

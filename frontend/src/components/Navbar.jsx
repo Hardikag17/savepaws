@@ -230,7 +230,7 @@ export default function Navbar() {
           </form> */}
           {search}
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
@@ -238,12 +238,17 @@ export default function Navbar() {
               >
                 Chat
               </Link>
-            </li>
+            </li> */}
             <li className=" px-2 cursor-pointer dropdown">
               <img
                 type="button"
                 data-bs-toggle="dropdown"
-                src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg`}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null;
+                  currentTarget.src =
+                    "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+                }}
                 width="40"
                 height="40"
                 className="rounded-circle dropdown-toggle"

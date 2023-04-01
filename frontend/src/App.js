@@ -57,7 +57,7 @@ const App = () => {
                 }
               />
               <Route path="/petview/:PetID" element={<PetView />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:receiverId" element={<Chat />} />
             </Routes>
           </Suspense>
           {/* Footer */}

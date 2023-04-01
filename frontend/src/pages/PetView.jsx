@@ -19,11 +19,12 @@ import { requestPet } from "../utils/requests";
 import { useParams } from "react-router-dom";
 import { getPetByPetID } from "../utils/pets";
 import Modal from "../components/modal";
+import { useNavigate } from "react-router-dom";
 
 library.add(fab);
 function PetViewPage() {
   const { PetID } = useParams();
-
+  const navigate = useNavigate();
   const [element, setElement] = useState();
   const [petAddModal, setPetAddModal] = useState(false);
   const [message, setMessage] = useState();
@@ -37,7 +38,7 @@ function PetViewPage() {
   };
 
   const [imgS, setimgS] = useState();
-  // `https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`
+  // `https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`
   const { state } = useContext(UserContext);
   // console.log("State ", state.userID);
   const [comment, setComment] = useState("");
@@ -111,7 +112,7 @@ function PetViewPage() {
                           {" "}
                           <img
                             className="cover"
-                            // src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-1.jpg`}
+                            // src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`}
                             onClick={handleOnClick}
                             alt="error"
                           />
@@ -120,7 +121,7 @@ function PetViewPage() {
                           {" "}
                           <img
                             className="cover"
-                            // src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-2.jpg`}
+                            // src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-2.jpg`}
                             onClick={handleOnClick}
                             alt="error"
                           />
@@ -129,7 +130,7 @@ function PetViewPage() {
                           {" "}
                           <img
                             className="cover"
-                            // src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-3.jpg`}
+                            // src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-3.jpg`}
                             onClick={handleOnClick}
                             alt="error"
                           />
@@ -138,7 +139,7 @@ function PetViewPage() {
                           {" "}
                           <img
                             className="cover"
-                            // src={`https://paws-adoption.s3.amazonaws.com/pets/${PetID}-4.jpg`}
+                            // src={`https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-4.jpg`}
                             onClick={handleOnClick}
                             alt="error"
                           />
@@ -268,6 +269,9 @@ function PetViewPage() {
                           <button
                             className="btn btn-success mx-2"
                             style={{ color: "white" }}
+                            onClick={() =>
+                              navigate(`/chat/${element.RescuerID}`)
+                            }
                           >
                             <FontAwesomeIcon icon={faMessage} /> &nbsp;Chat
                           </button>

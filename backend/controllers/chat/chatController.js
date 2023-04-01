@@ -1,5 +1,8 @@
 const { CONNECTIONS_LIMIT } = require("./constants");
-const { Chat } = require("../../models/schemas/chatSchema");
+const { Chat, Text } = require("../../models/schemas/chatSchema");
+const { mongoose } = require("mongoose");
+
+const MessageList = [];
 
 module.exports = (socket, io) => {
   let clientsConnected = [];
@@ -18,10 +21,16 @@ module.exports = (socket, io) => {
   socket.emit("welcome", "Welcome to Paws Adoption Community Chat (MVC Phase)");
 
   socket.on("send_message", async (data) => {
-    let new_Message = new Chat(data);
+    console.log(data);
     try {
       socket.to(data.RoomId).emit("receive_message", data);
-      await new_Message.save();
+      let res = await Chat.updateOne(
+        {
+          RoomId: data.RoomId,
+        },
+        { $push: { texts: { text: data.text, Sender: data.SenderId } } }
+      );
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -31,9 +40,14 @@ module.exports = (socket, io) => {
     console.log("User Disconnected", socket.id);
   });
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
-    console.log(data);
+  socket.on("previous_messages", (RoomId) => {
+    Chat.find({ RoomId: RoomId }).then((response) => {
+      socket.to(RoomId).emit("previous_messages_list", response[0]?.texts);
+    });
+  });
+
+  socket.on("join_room", (RoomId) => {
+    socket.join(RoomId);
+    console.log(`User with ID: ${socket.id} joined room: ${RoomId}`);
   });
 };

@@ -19,3 +19,19 @@ export const getRoom = async (SenderId, RecevierId) => {
     console.log(err);
   }
 };
+
+export const getChats = async (RoomId) => {
+  try {
+    let res = await axios.post(`${API_ROOT}/chat/texts`, {
+      RoomId: RoomId,
+    });
+
+    return res.data.texts;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addChatList = async () => {};
+
+export const getChatList = async (UserId) => {};

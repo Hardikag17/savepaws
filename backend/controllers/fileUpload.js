@@ -50,33 +50,33 @@ const uploadImages = async (req, res) => {
 };
 
 const profileImageUpload = async (req, res) => {
-  console.log(req.body);
   let file = req.file;
-  let UserID = req.body.UserID;
+  let UserID = req.params.userId;
   let bucket = "paws-adoption";
-  let contentType = file[0].mimetype;
+  let contentType = req.file.mimetype;
 
-  console.log(UserID, req.file[0]);
+  console.log(UserID, contentType);
 
-  // if (contentType == "image/jpeg") extension = ".jpeg";
-  // if (contentType == "image/webp") extension = ".webp";
-  // if (contentType == "image/svg") extension = ".svg";
-  // if (contentType == "image/jpg") extension = ".jpg";
-  // if (contentType == "image/png") extension = ".png";
+  if (contentType == "image/jpeg") extension = ".jpeg";
+  if (contentType == "image/webp") extension = ".webp";
+  if (contentType == "image/svg") extension = ".svg";
+  if (contentType == "image/jpg") extension = ".jpg";
+  if (contentType == "image/png") extension = ".png";
 
-  // try {
-  //   await s3Client.send(
-  //     new PutObjectCommand({
-  //       Bucket: bucket,
-  //       Key: `users/${UserID}${extension}`,
-  //       Body: file[0].buffer,
-  //       ContentType: contentType,
-  //     })
-  //   );
-  //   res.status(200).send(UserID);
-  // } catch (err) {
-  //   res.status(400).send(err);
-  // }
+  try {
+    await s3Client.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: `users/${UserID}${extension}`,
+        Body: file.buffer,
+        ContentType: contentType,
+      })
+    );
+
+    res.status(200).send(UserID);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 
   //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.amazonaws.com/users/[FILENAME].jpg
 };
