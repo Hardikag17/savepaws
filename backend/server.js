@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const petRoutes = require("./routes/petRoutes");
 const socialRoutes = require("./routes/socialRoutes");
 const optionRoutes = require("./routes/optionRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 // Chat
 const Chat = require("./controllers/chat/chatController");
@@ -28,6 +29,7 @@ app.use("/user", userRoutes);
 app.use("/pets", petRoutes);
 app.use("/social", socialRoutes);
 app.use("/options", optionRoutes);
+app.use("/chat", chatRoutes);
 
 //PORT
 const PORT = 9000 || process.env.PORT;
@@ -49,7 +51,6 @@ const io = require("socket.io")(server, {
 });
 
 const onConnection = (socket) => {
-  console.log(`Socket started`);
   Chat(socket, io);
 };
 

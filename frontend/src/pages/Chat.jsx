@@ -1,51 +1,104 @@
 import Chatting from "../components/Chatting";
-import { useForm } from "react-hook-form";
 import "../styles/chat.css";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext";
+import { useState } from "react";
+import { getRoom, socket } from "../utils/socket";
+import { useEffect } from "react";
+import { useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { getUserInfo } from "../utils/user";
 
 export default function Chat() {
-  const formSchema = yup.object().shape({
-    message: yup.string().required("message is required"),
+  const { state } = useContext(UserContext);
+  const { receiverId } = useParams();
+  //const [receiverId, setReceiverId] = useState();
+  const [senderId, setSenderId] = useState();
+  const [messageList, setMessageList] = useState([]);
+  const [room, setRoom] = useState();
+  const [receiverInfo, setReceiverInfo] = useState();
+
+  const getMessages = useCallback(async () => {
+    getRoom(senderId, receiverId).then((res) => {
+      setRoom(res);
+      if (res?.length > 0) {
+        socket.emit("join_room", room);
+
+        // Bug: Infinite Loop
+      }
+    });
+
+    console.log("prev:", messageList);
+  }, [receiverId, senderId, room]);
+
+  const getPrevMessages = useCallback(() => {
+    socket.emit("previous_messages", room);
+    socket.on("previous_messages_list", (data) => {
+      let res = data;
+      if (res) {
+        setMessageList("");
+        res.forEach((element) => {
+          setMessageList((list) => [...list, element]);
+        });
+      }
+    });
+  }, [room]);
+
+  useEffect(() => {
+    setSenderId(state?.userID);
+    getMessages();
+  }, [state, getMessages]);
+
+  useEffect(() => {
+    getPrevMessages();
   });
 
-  const formOptions = { resolver: yupResolver(formSchema) };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm(formOptions);
+  useEffect(() => {
+    getUserInfo(receiverId).then((res) => {
+      setReceiverInfo(res[0]);
+    });
+  }, [receiverId]);
 
   return (
-    <div className="chat-component container-fluid d-flex justify-content-between">
+    <div className="chat-component container-fluid d-flex w-100 justify-content-between">
       <div className="userslist w-25 border-2 border-white p-2">
-        <h6>These are users list</h6>
-      </div>
-
-      <div className=" absolute  w-75 p-2 bg-white h-90 d-flex flex-column p-2 m-2 rounded ">
-        <div className=" w-100">
-          <center>
-            <b>text messages will appear here</b>
-          </center>
-          <div className=" w-25">hey!!</div>
-        </div>
-        <div className=" align-self-end w-100 d-flex input-group">
-          <input
-            type="text"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            {...register("message")}
-            className={`form-control form-control-lg  ${
-              errors.name ? "is-invalid" : ""
-            }`}
+        <button
+          className=" btn btn-lg btn-light text-black w-100 text-left"
+          style={{ fontSize: "18px" }}
+          // onClick={() => setReceiverId("g90bm4shlftghf94")}
+        >
+          <img
+            type="button"
+            data-bs-toggle="dropdown"
+            src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${receiverId}.jpeg`}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src =
+                "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+            }}
+            width="55"
+            height="55"
+            className="rounded-circle dropdown-toggle"
+            alt="Placeholder profile pic"
           />
-          <button
-            href="#"
-            class="input-group-append btn btn-success btn-sm text-white px-4"
-          >
-            send
-          </button>
-        </div>
+          &nbsp; &nbsp;
+          {receiverInfo?.name}
+        </button>
+      </div>
+      <div className=" absolute  w-75 bg-white h-90 d-flex flex-column m-2 rounded ">
+        {room && receiverId && senderId ? (
+          <Chatting
+            socket={socket}
+            RoomId={room}
+            previous_messages={messageList}
+            ReceiverId={receiverId}
+            SenderId={senderId}
+            SenderName={state.name}
+            receiverInfo={receiverInfo}
+          />
+        ) : (
+          <div className="text-center margin-auto ">Loading...</div>
+        )}
       </div>
     </div>
   );

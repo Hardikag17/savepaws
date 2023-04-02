@@ -7,9 +7,15 @@ const {
   userInfo,
   Logout,
 } = require("../controllers/userRegister");
+const multer = require("multer");
+const { profileImageUpload } = require("../controllers/fileUpload");
 const auth = require("../middleware/auth");
 
 const routes = express.Router();
+
+// upload images to memoryStorage
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Register & Login
 routes.post(
@@ -27,6 +33,11 @@ routes.post(
 );
 routes.get("/logout", Logout);
 routes.post("/userInfo", userInfo);
+routes.post(
+  "/profileimg/:userId",
+  upload.single("profileimg"),
+  profileImageUpload
+);
 routes.get("/info", Info);
 routes.get("/:email/forgetpassword");
 
