@@ -1,7 +1,9 @@
 import "../styles/Landing.css";
-import axios from "axios";
 import LoadingCard from "../components/loadingCard";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+// import NearbyPetsMap from "./Map";
+import axios from "axios";
+import { API_ROOT } from "../api-config";
 
 export default function Landing() {
   const [tab, setTab] = useState(0);
@@ -15,6 +17,34 @@ export default function Landing() {
     { state: 1, value: dummyCards },
     { state: 2, value: dummyCards },
   ];
+
+  const [userLocation, setUserLocation] = useState(null);
+  const [pets, setPets] = useState([]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLocation([position.coords.latitude, position.coords.longitude]);
+    });
+  }, []);
+
+  const nearByPets = async () => {
+    try {
+      const pets = await axios.get(
+        `${API_ROOT}/pets?latitude=${userLocation[0]}&longitude=${userLocation[1]}`
+      );
+      // console.log(pets.data.response);
+      setPets(pets.data.response);
+    } catch (err) {
+      console.log("Something went wrong!!!");
+    }
+  };
+
+  useEffect(() => {
+    nearByPets();
+  }, [userLocation]);
+
+  console.log(pets);
+
   return (
     <div className=" container-fluid ">
       <div className="Landing container-fluid border border-3 border-success shadow-lg my-4 rounded">
@@ -66,6 +96,14 @@ export default function Landing() {
         <div className="help-img rounded"></div>
       </div>
       <br />
+
+      {/* <div>
+        {userLocation && pets.length > 0 ? (
+          <NearbyPetsMap userLocation={userLocation} nearbyPets={pets} />
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div> */}
     </div>
   );
 }

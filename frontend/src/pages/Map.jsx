@@ -1,34 +1,56 @@
 import React, { useState, useEffect } from "react";
-import L from "leaflet";
+import GoogleMapReact from "google-map-react";
 
-const Map = ({ userLocation, pets }) => {
+const NearbyPetsMap = ({ userLocation, nearbyPets }) => {
   const [map, setMap] = useState(null);
+  const [userMarker, setUserMarker] = useState(null);
+  const [petMarkers, setPetMarkers] = useState([]);
 
   useEffect(() => {
-    // Initialize the map
-    const map = L.map("map").setView(userLocation, 12);
+    if (map) {
+      // Add a marker for the user's location
+      const userMarker = new window.google.maps.Marker({
+        position: userLocation,
+        map: map,
+      });
+      setUserMarker(userMarker);
 
-    // Add the tile layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors",
-      maxZoom: 18,
-    }).addTo(map);
+      // Add markers for the nearby pets
+      const petMarkers = nearbyPets.map((pet) => {
+        const marker = new window.google.maps.Marker({
+          position: {
+            lat: pet.location.coordinates[1],
+            lng: pet.location.coordinates[0],
+          },
+          map: map,
+        });
+        marker.addListener("click", () => {
+          // Show a popup with more information about the pet
+          const infoWindow = new window.google.maps.InfoWindow({
+            content: pet.name,
+          });
+          infoWindow.open(map, marker);
+        });
+        return marker;
+      });
+      setPetMarkers(petMarkers);
+    }
+  }, [map, userLocation, nearbyPets]);
 
-    // Add a marker for the user's location
-    L.marker(userLocation).addTo(map).bindPopup("Your location");
-
-    // Add markers for the nearby pets
-    pets.forEach((pet) => {
-      const { name, location, distance } = pet;
-      const marker = L.marker(location).addTo(map);
-      marker.bindPopup(`${name}<br>Distance: ${distance.toFixed(2)} meters`);
-    });
-
+  const handleApiLoaded = (map, maps) => {
     setMap(map);
-  }, [userLocation, pets]);
+  };
 
-  return <div id="map" style={{ height: "500px" }}></div>;
+  return (
+    <div style={{ height: "400px", width: "100%" }}>
+      <GoogleMapReact
+        // bootstrapURLKeys={{ key: "AIzaSyBx4f2VPFGSc40dtxhpzkvqRHx-FzT5hvk" }}
+        defaultCenter={userLocation}
+        defaultZoom={12}
+        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+      />
+    </div>
+  );
 };
 
-export default Map;
+export default NearbyPetsMap;

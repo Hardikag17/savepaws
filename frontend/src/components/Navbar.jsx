@@ -16,8 +16,6 @@ export default function Navbar() {
     else setOverlay(false);
 
     setState({ ...state, overlay: overlay });
-
-    console.log("overlay:", state.overlay);
   }, [searchText, overlay]);
 
   const getPets = useCallback(async (event) => {
@@ -28,6 +26,26 @@ export default function Navbar() {
 
     await setPets(res.data);
   });
+
+  const search = (
+    <div className="d-flex mx-auto" role="search">
+      <input
+        className="form-control me-3"
+        style={{ width: "250px" }}
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        value={searchText}
+        onChange={getPets}
+      />
+      <button
+        className="btn btn-success btn-lg banner-btn"
+        style={{ fontSize: "15px" }}
+      >
+        Search
+      </button>
+    </div>
+  );
 
   const Logout = () => {
     try {
@@ -53,26 +71,6 @@ export default function Navbar() {
       console.log(err);
     }
   };
-
-  const search = (
-    <div className="d-flex mx-auto" role="search">
-      <input
-        className="form-control me-3"
-        style={{ width: "250px" }}
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-        value={searchText}
-        onChange={getPets}
-      />
-      <button
-        className="btn btn-success btn-lg banner-btn"
-        style={{ fontSize: "15px" }}
-      >
-        Search
-      </button>
-    </div>
-  );
 
   const notLoggedIn = (
     <nav className="navbar navbar-expand-lg bg-light sticky-top z-5">

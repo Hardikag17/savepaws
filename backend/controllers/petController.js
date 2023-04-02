@@ -3,9 +3,6 @@ const { Requests } = require("../models/schemas/requestsSchema");
 const { Social } = require("../models/schemas/socialSchema");
 const { filterPets, search } = require("../utils/search");
 
-const userLocation = { type: "Point", coordinates: [17.4316895, 78.3500999] };
-const maxDistance = 10000; // Maximum distance in meters
-
 /**
  * Get all Pets along with their socials OR Get specific pet along with their social, includes filterOptions in request
  * @param search: string
@@ -146,7 +143,12 @@ const getPetsByUserID = async (req, res) => {
 const getPetByPetID = async (req, res) => {
   let PetID = req.params.PetID;
   try {
-    let response = await Pet.find({ PetID: PetID });
+    let response = await Pet.find({ PetID: PetID }).populate({
+      path: "social",
+      populate: {
+        path: "author",
+      },
+    });
     res.status(200).send({
       status: "success",
       message: `Pets for ${PetID} PetID`,

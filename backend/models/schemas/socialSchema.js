@@ -20,6 +20,10 @@ const socialSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Social = mongoose.model("Social", socialSchema);
