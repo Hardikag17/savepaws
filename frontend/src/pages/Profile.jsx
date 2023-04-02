@@ -14,14 +14,14 @@ export default function Profile() {
   const [selectedImage, setSelectedImage] = useState(``);
   const { state } = useContext(UserContext);
   const [preview, setPreview] = useState(
-    `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg` ||
+    `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg` ||
       URL.createObjectURL(selectedImage)
   );
 
   useEffect(() => {
     if (!selectedImage) {
       setPreview(
-        `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg`
+        `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg`
       );
       return;
     }

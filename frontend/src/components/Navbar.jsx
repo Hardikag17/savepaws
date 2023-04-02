@@ -92,7 +92,7 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
@@ -101,7 +101,7 @@ export default function Navbar() {
               >
                 Help
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
@@ -175,7 +175,7 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
@@ -184,7 +184,7 @@ export default function Navbar() {
               >
                 Help
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
@@ -241,7 +241,7 @@ export default function Navbar() {
               <img
                 type="button"
                 data-bs-toggle="dropdown"
-                src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userId}.jpeg`}
+                src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg`}
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null;
                   currentTarget.src =
