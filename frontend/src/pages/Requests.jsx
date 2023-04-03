@@ -1,4 +1,5 @@
 import RequestCard from "../components/requestCard";
+import UserRequestCard from "../components/userRequestsCard";
 import { getRequestByUserID, getRequestsByRescuerID } from "../utils/requests";
 import { useContext } from "react";
 import { UserContext } from "../utils/userContext";
@@ -12,6 +13,7 @@ export default function Requests() {
   useEffect(() => {
     getRequestByUserID(state.userID).then((res) => {
       let response = res.data;
+
       setuserRequest([response]);
     });
 
@@ -40,11 +42,14 @@ export default function Requests() {
         )}
       </div>
       <hr />
-      <h3>Your Pet's Requests **(Bug fix needed)</h3>
+      <h3>Your Pet's Requests</h3>
       <hr />
       <div className=" d-flex">
-        {state.user && requests && requests.length > 0 ? (
-          <RequestCard data={requests} />
+        {state.user &&
+        requests &&
+        requests.Status === false &&
+        requests.Requests.length > 0 ? (
+          <UserRequestCard requests={userRequest} data={requests} />
         ) : (
           <div />
         )}

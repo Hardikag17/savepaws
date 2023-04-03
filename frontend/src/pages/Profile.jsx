@@ -2,11 +2,52 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { UserContext } from "../utils/userContext";
 import "../styles/profile.css";
+import upload from "superagent";
+import { useState, useEffect, useContext } from "react";
+import { API_ROOT } from "../api-config";
 
 library.add(fab);
 
 export default function Profile() {
+  const [selectedImage, setSelectedImage] = useState(``);
+  const { state } = useContext(UserContext);
+  const [preview, setPreview] = useState(
+    `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg` ||
+      URL.createObjectURL(selectedImage)
+  );
+
+  useEffect(() => {
+    if (!selectedImage) {
+      setPreview(
+        `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg`
+      );
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedImage);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedImage]);
+
+  const uploadImage = async (file) => {
+    try {
+      upload
+        .post(`${API_ROOT}/user/profileimg/${state.userID}`)
+        .attach("profileimg", file)
+        .end((err, res) => {
+          if (err);
+          if (res.text.length > 0) {
+            console.log("Profile Image updated");
+          } else {
+            alert("Something went wrong, Please try again later");
+          }
+        });
+    } catch (err) {}
+  };
+
   return (
     <div id="Profile">
       <div className="profile-box container mt-3">
@@ -17,24 +58,36 @@ export default function Profile() {
             style={{ backgroundColor: "antiquewhite" }}
           >
             <img
-              src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+              src={preview}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src =
+                  "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+              }}
               alt="placeholder profile pic"
               width="200"
               height="200"
               className="rounded-circle "
             />
-            <button
-              onClick={() => console.log("Profile image edit")}
+            <input
               className="btn edit "
-            >
+              onChange={(e) => {
+                setSelectedImage(e.target.files[0]);
+                uploadImage(e.target.files[0]);
+              }}
+              id="file-input"
+              name="files"
+              type="file"
+            />
+            {/* <button onClick={() => console.log("Profile image edit")}>
               <FontAwesomeIcon icon={faPenToSquare} />
-            </button>
+            </button> */}
           </div>
           <div className="details">
             <div className="personal-details">
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <div>
-                  <h1>Personal</h1>
+                  <h3>Personal</h3>
                 </div>
                 <div>
                   <a
@@ -149,7 +202,7 @@ export default function Profile() {
           </div>
         </div>
         <div className=" container">
-          <h1>Recent Activity</h1>
+          <h3>Recent Activity</h3>
           <hr />
           <div>Here is the previous post cards.</div>
           <hr />

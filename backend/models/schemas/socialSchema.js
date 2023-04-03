@@ -11,7 +11,6 @@ const socialSchema = new Schema({
   unique Id of the pet
   */
 
-  petID: String,
   likes: [String],
   petId: { type: String },
   comments: {
@@ -20,6 +19,10 @@ const socialSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

@@ -6,10 +6,7 @@ import { UserContext } from "../utils/userContext";
 function PrivateRoute({ children }) {
   const { state } = useContext(UserContext);
 
-  // Add your own authentication on the below line.
-  const isLoggedIn = state.user;
-
-  return isLoggedIn ? <>{children}</> : <Navigate to="/login" />;
+  return state.user === true ? <>{children}</> : <Navigate to="/login" />;
 }
 
 export default PrivateRoute;

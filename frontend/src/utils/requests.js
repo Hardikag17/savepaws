@@ -33,7 +33,7 @@ export const getRequestsByRescuerID = async (RescuerID) => {
    */
   try {
     let res = await axios.get(`${API_ROOT}/pets/requests/rescuer/${RescuerID}`);
-    console.log("res:", res.data.Requests);
+
     if (res.data.Requests) return res.data.Requests;
     else return {};
   } catch (err) {
@@ -52,5 +52,20 @@ export const requestPet = async (PetID, UserID) => {
     console.log(err);
   }
 };
+
+export const acceptAdoptRequest = async (PetID, UserID, RescuerID) => {
+  try {
+    let res = await axios.post(`${API_ROOT}/pets/adopt`, {
+      PetID: PetID,
+      UserID: UserID,
+      RescuerID: RescuerID,
+    });
+    console.log(res.data.message);
+    return res.data.message;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const rejectAdoptRequest = () => {};
 
 // export const deleteRequest = async () => {};

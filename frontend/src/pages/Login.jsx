@@ -40,19 +40,23 @@ export default function Login() {
   };
 
   const login = async (data) => {
+    console.log(data);
     try {
-      const res = await axios.post(`${API_ROOT}/user/login`, {
-        email: data.email,
-        password: data.password,
-      });
+      const res = await axios.post(
+        `${API_ROOT}/user/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true }
+      );
 
       if (res.status === 200) {
         setState({
           user: true,
-          userID: res.data,
+          userID: res.data.userId,
           email: data.email,
-          name: "",
-          token: false,
+          name: res.data.name,
         });
 
         navigate("/home");

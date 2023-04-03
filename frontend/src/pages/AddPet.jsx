@@ -31,6 +31,9 @@ export default function AddPet() {
   const [gender, setgender] = useState(null);
   const [age, setage] = useState(null);
   const [type, settype] = useState(null);
+  const [lat, setlat] = useState(null);
+  const [long, setlong] = useState(null);
+  const [currlocation, setlocation] = useState(null);
 
   const formSchema = yup.object().shape({
     Name: yup
@@ -126,6 +129,27 @@ export default function AddPet() {
     //return () => URL.revokeObjectURL(objectUrl);
   }, [selectedImages]);
 
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation not supported");
+    } else {
+      console.log("loading...");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setlat(position.coords.latitude);
+          setlong(position.coords.longitude);
+        },
+        () => {
+          console.log("Unable to get the location");
+        }
+      );
+    }
+    setlocation({ lat, long });
+
+    console.log("Latitude", lat);
+    console.log("longitude", long);
+  };
+
   const onSubmit = (data) => {
     if (selectedImages.length < 4) alert("Please select images");
     else {
@@ -138,6 +162,10 @@ export default function AddPet() {
       data.PhotoAmt = selectedImages.length;
       data.Age = age.value;
       data.RescuerID = pet.RescuerID;
+      data.location = {
+        type: "Point",
+        coordinates: [lat, long],
+      };
       uploadImages(data);
     }
   };
@@ -170,6 +198,7 @@ export default function AddPet() {
   const newPetData = async (data) => {
     // add new pet
     try {
+      // console.log("Data..", data);
       const res = await axios.post(`${API_ROOT}/pets/addpet`, { data });
       console.log(res);
       if (res.status == 200) setPetAddModal(true);
@@ -480,11 +509,13 @@ export default function AddPet() {
                       errors.Address ? "is-invalid" : ""
                     }`}
                     aria-label="Address:"
+                    value={currlocation}
                   ></textarea>
                   <span
                     role="button"
                     className="input-group-text cursor-pointer"
                     id="basic-addon2"
+                    onClick={getLocation}
                   >
                     Click me &nbsp; <FontAwesomeIcon icon={faLocationDot} />
                   </span>

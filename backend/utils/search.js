@@ -6,6 +6,38 @@ const mongoose = require("mongoose");
 const filterPets = async (pets, filterOptions) => {
   let res = pets;
 
+  if (filterOptions.point) {
+    const userlocation = {
+      type: "Point",
+      coordinates: [
+        parseFloat(filterOptions.point.lat),
+        parseFloat(filterOptions.point.long),
+      ],
+    };
+
+    try {
+      const result = await Pet.aggregate([
+        {
+          $geoNear: {
+            near: userlocation,
+            distanceField: "distance",
+            maxDistance: 10000,
+            spherical: true,
+          },
+        },
+        {
+          $sort: {
+            distance: 1,
+          },
+        },
+      ]);
+
+      res = result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (filterOptions.minAge) {
     let minAge = filterOptions.minAge;
     res = res.filter((x) => x.Age > minAge);

@@ -6,9 +6,11 @@ const {
   updateLikes,
   updateComments,
   updateSocial,
+  getSocial,
 } = require("../controllers/socialController");
 
 routes.get("/", get);
+routes.get("/:PetID/getSocial", getSocial);
 routes.post("/:PetID/like", updateLikes);
 routes.post("/:PetID/comment", updateComments);
 routes.post("/:PetID/social", updateSocial);

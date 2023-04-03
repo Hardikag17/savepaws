@@ -12,12 +12,12 @@ export default function Footer() {
     <footer className=" footer bg-light text-center container-fluid bottom-0 text-black d-flex lg:flex-row :flex-column justify-content-between  lg:px-8 sm:px-4 py-2 ">
       <div className="text-center d-flex flex text-center align-items-center justify-content-start me-6 w-50">
         <h6 className=" px-3">
-          <Link className="nav-link active" aria-current="page" to="/">
+          <Link className="nav-link active" aria-current="page" to="/home">
             Adopt
           </Link>
         </h6>
         <h6 className=" px-3">
-          <Link className="nav-link active" aria-current="page" to="/">
+          <Link className="nav-link active" aria-current="page" to="/profile">
             Profile
           </Link>
         </h6>
@@ -27,12 +27,20 @@ export default function Footer() {
           </Link>
         </h6>
         <h6 className=" px-3">
-          <Link className="nav-link active" aria-current="page" to="/">
+          <Link
+            className="nav-link active"
+            aria-current="page"
+            to="https://github.com/Hardikag17/savepaws"
+          >
             Team
           </Link>
         </h6>
         <h6 className=" px-3">
-          <Link className="nav-link active" aria-current="page" to="/">
+          <Link
+            className="nav-link active"
+            aria-current="page"
+            to="https://github.com/Hardikag17/savepaws"
+          >
             Contribute
           </Link>
         </h6>

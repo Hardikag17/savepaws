@@ -17,6 +17,7 @@ const getPets = async (req, res) => {
     gender: null,
     health: null,
     breed: null,
+    point: { lat: null, long: null },
   };
 
   if (req.query.minAge) {
@@ -73,6 +74,11 @@ const getPets = async (req, res) => {
     filterOptions.breed = breed;
   }
 
+  if (req.query.latitude && req.query.longitude) {
+    filterOptions.point.lat = req.query.latitude;
+    filterOptions.point.long = req.query.longitude;
+  }
+
   let response;
   if (searchText && searchText.trim() !== "") {
     response = await search(searchText, filterOptions);
@@ -108,27 +114,16 @@ const getPets = async (req, res) => {
 
 // Add Pet
 const addPet = async (req, res) => {
+  // console.log("Request:", req.body);
   const newPet = new Pet(req.body.data);
+  console.log(newPet);
 
   try {
     await newPet.save();
+    console.log("Request:", req.body);
     res.status(200).send("Pet Successfully added");
   } catch (err) {
     res.send(err);
-  }
-};
-
-const getPetByPetID = async (req, res) => {
-  let PetID = req.params.PetID;
-  try {
-    let response = await Pet.find({ PetID: PetID });
-    res.status(200).send({
-      status: "success",
-      message: `Pets for ${PetID} PetID`,
-      response: response[0],
-    });
-  } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
   }
 };
 
@@ -143,6 +138,25 @@ const getPetsByUserID = async (req, res) => {
       response: response,
     });
   } catch (err) {}
+};
+
+const getPetByPetID = async (req, res) => {
+  let PetID = req.params.PetID;
+  try {
+    let response = await Pet.find({ PetID: PetID }).populate({
+      path: "social",
+      populate: {
+        path: "author",
+      },
+    });
+    res.status(200).send({
+      status: "success",
+      message: `Pets for ${PetID} PetID`,
+      response: response[0],
+    });
+  } catch (err) {
+    res.status(400).send({ status: "failed", error: err });
+  }
 };
 
 // Update Pet
@@ -263,8 +277,6 @@ const adoptPet = async (req, res) => {
   try {
     let response = await Pet.find({ PetID: PetID });
 
-    console.log(response);
-
     if (response && response[0].RescuerID == RescuerID && !response[0].Status) {
       // Check PetID and UserID in RequestSchema documents
       try {
@@ -287,13 +299,30 @@ const adoptPet = async (req, res) => {
           });
         }
       } catch (err) {
-        res.status(400).send({ status: "failed", error: err });
+        res.status(400).send({ status: "failed", message: err });
       }
     } else {
       // Something went wrong, Pet cannot be adopted
       res
         .status(200)
         .send({ status: "failed", message: "Pet cannot be adopted" });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "failed", message: err });
+  }
+};
+
+const getRequestByUserID = async (req, res) => {
+  // Can be only one
+  const UserID = req.params.UserID;
+
+  try {
+    let response = await Requests.find({
+      Requests: { $elemMatch: { $in: UserID } },
+    });
+
+    if (response && response[0].PetID) {
+      res.status(200).send({ status: "success", PetID: response[0].PetID });
     }
   } catch (err) {
     res.status(400).send({ status: "failed", error: err });
@@ -316,23 +345,6 @@ const getRequestsByPetID = async (req, res) => {
   }
 };
 
-const getRequestByUserID = async (req, res) => {
-  // Can be only one
-  const UserID = req.params.UserID;
-
-  try {
-    let response = await Requests.find({
-      Requests: { $elemMatch: { $in: UserID } },
-    });
-
-    if (response && response[0].PetID) {
-      res.status(200).send({ status: "success", PetID: response[0].PetID });
-    }
-  } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
-  }
-};
-
 const getRequestsByRescuerID = async (req, res) => {
   const RescuerID = req.params.RescuerID;
 
@@ -341,6 +353,7 @@ const getRequestsByRescuerID = async (req, res) => {
 
   try {
     let response = await Pet.find({ RescuerID: RescuerID });
+
     if (response && response.length > 0) {
       response.forEach((Pet) => {
         Requests.find({ PetID: Pet.PetID }).then((response) => {

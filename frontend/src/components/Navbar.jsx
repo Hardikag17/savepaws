@@ -16,8 +16,6 @@ export default function Navbar() {
     else setOverlay(false);
 
     setState({ ...state, overlay: overlay });
-
-    console.log("overlay:", state.overlay);
   }, [searchText, overlay]);
 
   const getPets = useCallback(async (event) => {
@@ -25,28 +23,9 @@ export default function Navbar() {
     const res = await axios.get(
       `${API_ROOT}/pets?searchText=${event.target.value}`
     );
-    // console.log(res.data);
+
     await setPets(res.data);
-
-    // pets.response?.length
-    //   ? [...pets.response].map((val) => {
-    //       console.log("Value..", val);
-    //     })
-    //   : console.log("OOPs! No Pet Found");
   });
-
-  const Logout = () => {
-    sessionStorage.clear();
-    setState({
-      user: false,
-      email: "",
-      name: "",
-      userPosts: [],
-      token: false,
-    });
-
-    navigate("/login");
-  };
 
   const search = (
     <div className="d-flex mx-auto" role="search">
@@ -68,6 +47,31 @@ export default function Navbar() {
     </div>
   );
 
+  const Logout = () => {
+    try {
+      axios
+        .get(`${API_ROOT}/user/logout`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            sessionStorage.clear();
+            setState({
+              user: false,
+              email: "",
+              name: "",
+              userPosts: [],
+              token: false,
+            });
+
+            navigate("/");
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const notLoggedIn = (
     <nav className="navbar navbar-expand-lg bg-light sticky-top z-5">
       <div className="container-fluid">
@@ -88,7 +92,7 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
@@ -97,7 +101,7 @@ export default function Navbar() {
               >
                 Help
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
@@ -111,7 +115,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/home"
+                to="/analytics"
               >
                 Analytics
               </Link>
@@ -171,7 +175,7 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
@@ -180,7 +184,7 @@ export default function Navbar() {
               >
                 Help
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
@@ -194,7 +198,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/home"
+                to="/analytics"
               >
                 Analytics
               </Link>
@@ -228,7 +232,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/"
+                to="/chats"
               >
                 Chat
               </Link>
@@ -237,7 +241,12 @@ export default function Navbar() {
               <img
                 type="button"
                 data-bs-toggle="dropdown"
-                src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg`}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null;
+                  currentTarget.src =
+                    "https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg";
+                }}
                 width="40"
                 height="40"
                 className="rounded-circle dropdown-toggle"

@@ -51,6 +51,12 @@ const petSchema = new Schema(
       type: Number,
       // enum: [, "Minor Injury", "Serious Injury", "Not Specified"],
     },
+
+    location: {
+      type: { type: String },
+      coordinates: [Number],
+    },
+
     State: Number,
     City: String,
     Pincode: Number,
@@ -60,8 +66,6 @@ const petSchema = new Schema(
     },
     PhotoAmt: {
       type: Number,
-      max: 4,
-      min: 1,
     },
     /*
   Adoption status
@@ -81,6 +85,8 @@ const petSchema = new Schema(
   },
   { timestamps: true }
 );
+
+petSchema.index({ location: "2dsphere" });
 
 const Pet = mongoose.model("Pet", petSchema);
 
