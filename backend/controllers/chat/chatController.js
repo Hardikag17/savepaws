@@ -38,15 +38,14 @@ module.exports = (socket, io) => {
     console.log("User Disconnected", socket.id);
   });
 
-  socket.on("previous_messages", (RoomId) => {
-    Chat.find({ RoomId: RoomId }).then((response) => {
-      socket.to(RoomId).emit("previous_messages_list", response[0]?.texts);
-    });
-  });
+  // socket.on("previous_messages", async (RoomId) => {
+  //   let response = await Chat.find({ RoomId: RoomId });
+  //   console.log(response);
+  //   socket.to(RoomId).emit("previous_messages_list", response[0]?.texts);
+  // });
 
   socket.on("join_room", (RoomId) => {
     socket.join(RoomId);
-    // Bug: Infinite Loop
     console.log(`User with ID: ${socket.id} joined room: ${RoomId}`);
   });
 };

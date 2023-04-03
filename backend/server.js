@@ -12,7 +12,7 @@ const petRoutes = require("./routes/petRoutes");
 const socialRoutes = require("./routes/socialRoutes");
 const optionRoutes = require("./routes/optionRoutes");
 const chatRoutes = require("./routes/chatRoutes");
-
+const analyticsRoute = require("./routes/analyticsRoute");
 // Chat
 const Chat = require("./controllers/chat/chatController");
 
@@ -30,6 +30,7 @@ app.use("/pets", petRoutes);
 app.use("/social", socialRoutes);
 app.use("/options", optionRoutes);
 app.use("/chat", chatRoutes);
+app.use("/analytics", analyticsRoute);
 
 //PORT
 const PORT = 9000 || process.env.PORT;

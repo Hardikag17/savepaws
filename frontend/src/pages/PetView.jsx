@@ -288,7 +288,9 @@ function PetViewPage() {
                             className="btn btn-success mx-2"
                             style={{ color: "white" }}
                             onClick={() =>
-                              navigate(`/chat/${element.RescuerID}`)
+                              navigate(
+                                `/chat/${element.RescuerID}/${element.PetID}`
+                              )
                             }
                           >
                             <FontAwesomeIcon icon={faMessage} /> &nbsp;Chat

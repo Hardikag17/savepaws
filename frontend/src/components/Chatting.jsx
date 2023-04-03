@@ -5,6 +5,7 @@ import * as yup from "yup";
 import Message from "../components/message";
 import { useState } from "react";
 import { useEffect } from "react";
+import { addChatList } from "../utils/socket";
 
 export default function Chatting({
   RoomId,
@@ -14,8 +15,9 @@ export default function Chatting({
   socket,
   SenderName,
   receiverInfo,
+  petId,
 }) {
-  const [messageList, setMessageList] = useState([previous_messages[0]]);
+  const [messageList, setMessageList] = useState(previous_messages);
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -30,10 +32,11 @@ export default function Chatting({
       RecevierId: ReceiverId,
       text: data.message,
     };
-    console.log(message);
+
     socket.emit("send_message", message);
-    setMessageList((list) => [...list, message]);
-    console.log("messafe list", messageList, previous_messages);
+    let temp = { text: message.text, Sender: message.SenderId };
+    setMessageList((list) => [...list, temp]);
+    addChatList(SenderId, ReceiverId, petId);
   };
 
   const formSchema = yup.object().shape({
@@ -76,9 +79,9 @@ export default function Chatting({
         </center>
       </div>
       <div className=" overflow-auto">
-        {previous_messages.length > 0 ? (
+        {messageList.length > 0 ? (
           <div className=" p-2  ">
-            {previous_messages.map((el) => {
+            {messageList.map((el) => {
               return (
                 <div>
                   {el.Sender == SenderId ? (

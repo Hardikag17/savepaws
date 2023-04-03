@@ -15,7 +15,12 @@ const ChatListSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Connections: [String],
+  Connections: [
+    {
+      UserId: String,
+      PetID: String,
+    },
+  ],
 });
 
 const ChatList = mongoose.model("chatList", ChatListSchema);
