@@ -107,7 +107,7 @@ const getPets = async (req, res) => {
 
   //console.log("response", response);
 
-  return res.json({
+  return res.status(200).json({
     response: response,
   });
 };

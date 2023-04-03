@@ -3,7 +3,7 @@ const { body, query } = require("express-validator");
 const routes = express.Router();
 const {
   get,
-  updateLikes,
+  getLikes,
   updateComments,
   updateSocial,
   getSocial,
@@ -11,7 +11,7 @@ const {
 
 routes.get("/", get);
 routes.get("/:PetID/getSocial", getSocial);
-routes.post("/:PetID/like", updateLikes);
+routes.get("/:PetID/like", getLikes);
 routes.post("/:PetID/comment", updateComments);
 routes.post("/:PetID/social", updateSocial);
 

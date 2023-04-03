@@ -31,11 +31,15 @@ function PetViewPage() {
   const [element, setElement] = useState();
   const [petAddModal, setPetAddModal] = useState(false);
   const [message, setMessage] = useState();
-  useEffect(() => {
-    getPetByPetID(PetID).then((res) => setElement(res));
+  useEffect(
+    () => {
+      getPetByPetID(PetID).then((res) => setElement(res));
 
-    updatedSocialList();
-  }, [PetID]);
+      updatedSocialList();
+    },
+    [PetID],
+    [socialList]
+  );
 
   const handleOnClick = (event) => {
     setimgS(event.target.src);
@@ -69,12 +73,12 @@ function PetViewPage() {
   };
 
   const newComment = async (SocialData) => {
-    console.log(SocialData);
     try {
       const res = await axios.post(
         `${API_ROOT}/social/${SocialData.PetID}/social`,
         { SocialData }
       );
+      updatedSocialList();
     } catch (error) {
       console.log(error);
     }
@@ -88,8 +92,6 @@ function PetViewPage() {
     } catch (err) {
       console.log(err);
     }
-
-    // console.log("New Function", res);
   };
 
   const clear = () => {
