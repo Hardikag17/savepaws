@@ -9,6 +9,7 @@ import Layout from "./pages/Layout";
 import Requests from "./pages/Requests";
 import Footer from "./components/footer";
 import Landing from "./pages/Landing";
+import Analytics from "./pages/Analytics";
 
 const Main = lazy(() => import("./pages/Main"));
 const Register = lazy(() => import("./pages/Register"));
@@ -59,6 +60,7 @@ const App = () => {
               <Route path="/petview/:PetID" element={<PetView />} />
               <Route path="/chat/:receiverId/:petId" element={<Chat />} />
               <Route path="/chats" element={<Chat />} />
+              <Route path="/analytics" element={<Analytics />} />
             </Routes>
           </Suspense>
           {/* Footer */}

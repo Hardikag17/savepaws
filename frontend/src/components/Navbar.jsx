@@ -115,7 +115,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/home"
+                to="/analytics"
               >
                 Analytics
               </Link>
@@ -198,7 +198,7 @@ export default function Navbar() {
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/home"
+                to="/analytics"
               >
                 Analytics
               </Link>
@@ -228,15 +228,15 @@ export default function Navbar() {
           </form> */}
           {search}
           <ul className="navbar-nav mr-auto mr-2 mr-lg-0">
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link
                 onClick={() => setSearchText("")}
                 className="nav-link active"
-                to="/chat"
+                to="/chats"
               >
                 Chat
               </Link>
-            </li> */}
+            </li>
             <li className=" px-2 cursor-pointer dropdown">
               <img
                 type="button"

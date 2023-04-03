@@ -20,8 +20,10 @@ const addChatList = async (req, res) => {
 
 const getChatList = async (req, res) => {
   const UserId = req.params.UserId;
+  console.log(UserId);
   try {
     let response = await ChatList.find({ UserId: UserId });
+    console.log(response);
     res.status(200).send({ ChatList: response[0].Connections });
   } catch (err) {
     res.status(400).send(err);

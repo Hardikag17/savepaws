@@ -5,6 +5,7 @@ import * as yup from "yup";
 import Message from "../components/message";
 import { useState } from "react";
 import { useEffect } from "react";
+import { addChatList } from "../utils/socket";
 
 export default function Chatting({
   RoomId,
@@ -35,6 +36,7 @@ export default function Chatting({
     socket.emit("send_message", message);
     let temp = { text: message.text, Sender: message.SenderId };
     setMessageList((list) => [...list, temp]);
+    addChatList(SenderId, ReceiverId, petId);
   };
 
   const formSchema = yup.object().shape({

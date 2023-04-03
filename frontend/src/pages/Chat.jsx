@@ -42,6 +42,7 @@ export default function Chat() {
             setMessageList((list) => [...list, temp]);
           })
         );
+
         // Bug: Infinite Loop
       }
     });
@@ -76,6 +77,9 @@ export default function Chat() {
                 onClick={() => {
                   setReceiverId(el);
                   getMessages();
+                  getUserInfo(el).then((res) => {
+                    setReceiverInfo(res[0]);
+                  });
                 }}
               >
                 <img
@@ -128,7 +132,7 @@ export default function Chat() {
             socket={socket}
             RoomId={room}
             previous_messages={messageList}
-            ReceiverId={ReceiverId}
+            ReceiverId={ReceiverId !== receiverId ? receiverId : ReceiverId}
             SenderId={senderId}
             SenderName={state.name}
             receiverInfo={receiverInfo}
