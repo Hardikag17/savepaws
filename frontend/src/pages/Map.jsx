@@ -1,56 +1,60 @@
 import React, { useState, useEffect } from "react";
-import GoogleMapReact from "google-map-react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { Icon } from "leaflet";
 
-const NearbyPetsMap = ({ userLocation, nearbyPets }) => {
-  const [map, setMap] = useState(null);
-  const [userMarker, setUserMarker] = useState(null);
-  const [petMarkers, setPetMarkers] = useState([]);
+import "../styles/map.css";
 
-  useEffect(() => {
-    if (map) {
-      // Add a marker for the user's location
-      const userMarker = new window.google.maps.Marker({
-        position: userLocation,
-        map: map,
-      });
-      setUserMarker(userMarker);
+const Map = ({ userLocation, pets }) => {
+  const icon = new Icon({
+    iconUrl: "/assets/icon.svg",
+    iconSize: [50, 50],
+  });
 
-      // Add markers for the nearby pets
-      const petMarkers = nearbyPets.map((pet) => {
-        const marker = new window.google.maps.Marker({
-          position: {
-            lat: pet.location.coordinates[1],
-            lng: pet.location.coordinates[0],
-          },
-          map: map,
-        });
-        marker.addListener("click", () => {
-          // Show a popup with more information about the pet
-          const infoWindow = new window.google.maps.InfoWindow({
-            content: pet.name,
-          });
-          infoWindow.open(map, marker);
-        });
-        return marker;
-      });
-      setPetMarkers(petMarkers);
-    }
-  }, [map, userLocation, nearbyPets]);
-
-  const handleApiLoaded = (map, maps) => {
-    setMap(map);
-  };
+  const user = new Icon({
+    iconUrl: "/assets/user.svg",
+    iconSize: [50, 50],
+  });
 
   return (
-    <div style={{ height: "400px", width: "100%" }}>
-      <GoogleMapReact
-        // bootstrapURLKeys={{ key: "AIzaSyBx4f2VPFGSc40dtxhpzkvqRHx-FzT5hvk" }}
-        defaultCenter={userLocation}
-        defaultZoom={12}
-        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-      />
+    <div className=" container-fluid mb-5">
+      <MapContainer center={userLocation} zoom={12} scrollWheelZoom={false}>
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={[userLocation[0], userLocation[1]]} icon={user}>
+          <Popup>
+            <div>
+              <h6>
+                <i>You</i>
+              </h6>
+            </div>
+          </Popup>
+        </Marker>
+        {pets.map((loc, i) => (
+          <Marker
+            key={i}
+            position={[
+              loc.location.coordinates[0],
+              loc.location.coordinates[1],
+            ]}
+            icon={icon}
+          >
+            <Popup>
+              <div>
+                <h6>
+                  <b>Name:</b> {loc.Name}
+                </h6>
+                <h6>
+                  <b>Distance:</b> {(loc.distance / 1000).toFixed(2)} Km
+                </h6>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
     </div>
   );
 };
 
-export default NearbyPetsMap;
+export default Map;

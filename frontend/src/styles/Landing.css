@@ -1,5 +1,6 @@
 .Landing {
   animation: animate 16s ease-in-out infinite;
+  font-family: "Cormorant", serif;
   background-size: cover;
   color: white;
   height: 80vh;

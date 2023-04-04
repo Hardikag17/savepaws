@@ -40,16 +40,10 @@ export default function AddPet() {
       .string()
       .required("Name is mandatory")
       .max(15, "Max length of name must be less then 15"),
-    Description: yup
-      .string()
-      .required("Description is mandatory")
-      // .min(20, "Description must be atleast 20 char long")
-      .max(50, "Max Length of Description must be 50"),
-    Address: yup
-      .string()
-      .required("Address is required")
-      .min(20, "Address must be atleast 20 char long")
-      .max(80, "Max Length of Description must be 80"),
+    Description: yup.string().required("Description is mandatory"),
+    // .min(20, "Description must be atleast 20 char long")
+    // .max(50, "Max Length of Description must be 50"),
+    Address: yup.string().required("Address is required"),
     City: yup.string().required("City is required"),
     State: yup.number().required("State is mandatory"),
     Pincode: yup.number().required("Pincode is mandatory"),
@@ -509,7 +503,7 @@ export default function AddPet() {
                       errors.Address ? "is-invalid" : ""
                     }`}
                     aria-label="Address:"
-                    value={currlocation}
+                    // value={currlocation}
                   ></textarea>
                   <span
                     role="button"
