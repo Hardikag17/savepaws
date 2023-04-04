@@ -2,7 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faHeart, faComments } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../utils/userContext";
 import truncateString from "../utils/truncate";
+import { API_ROOT } from "../api-config";
+import axios from "axios";
 import "../styles/card.css";
 
 library.add(fab);
@@ -14,6 +18,29 @@ export default function Card({
   postedOn,
   PetID,
 }) {
+  const { state } = useContext(UserContext);
+  const [likeColor, setlikeColor] = useState();
+  const [likes, setlikes] = useState(0);
+
+  useEffect(() => {
+    getlikes();
+  });
+
+  const getlikes = async () => {
+    try {
+      await axios
+        .get(`${API_ROOT}/social/${PetID}/${state.userID}/like`)
+        .then((res) => {
+          setlikes(res.data.count);
+          if (res.data.status) {
+            setlikeColor("red");
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="cards">
       <section className="cards container-fluid">
@@ -21,8 +48,13 @@ export default function Card({
           <div className="card__info-hover">
             <a id="heart">
               <span className="like">
-                <FontAwesomeIcon icon={faHeart} className="heart-hover" />
-                Like
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className="heart-hover"
+                  style={{ color: likeColor }}
+                />
+                &nbsp;
+                {likes} Like
               </span>
             </a>
             <div className="card__clock-info">
@@ -75,6 +107,7 @@ export default function Card({
               </a>
               <span className="comments px-2">
                 <FontAwesomeIcon icon={faComments} />
+                &nbsp;
                 {comments} Comments
               </span>
             </span>

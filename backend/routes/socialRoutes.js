@@ -11,7 +11,7 @@ const {
 
 routes.get("/", get);
 routes.get("/:PetID/getSocial", getSocial);
-routes.get("/:PetID/like", getLikes);
+routes.get("/:PetID/:UserID/like", getLikes);
 routes.post("/:PetID/comment", updateComments);
 routes.post("/:PetID/social", updateSocial);
 

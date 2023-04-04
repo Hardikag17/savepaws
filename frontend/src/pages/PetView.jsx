@@ -36,6 +36,7 @@ function PetViewPage() {
       getPetByPetID(PetID).then((res) => setElement(res));
 
       updatedSocialList();
+      getlikes();
     },
     [PetID],
     [socialList]
@@ -51,18 +52,37 @@ function PetViewPage() {
   // console.log("State ", state.userID);
   const [comment, setComment] = useState("");
   const [likeColor, setlikeColor] = useState();
+  const [likes, setlikes] = useState(0);
   const handleOnChange = (event) => {
     setComment(event.target.value);
   };
 
   const PetLike = () => {
-    setlikeColor("red");
+    if (likeColor == null) {
+      setlikeColor("red");
+      setlikes(likes + 1);
+    } else {
+      setlikeColor();
+      setlikes(likes - 1);
+    }
+  };
+
+  const getlikes = async () => {
+    try {
+      await axios
+        .get(`${API_ROOT}/social/${PetID}/${state.userID}/like`)
+        .then((res) => {
+          console.log("likes", res.data);
+          setlikes(res.data.count);
+          if (res.data.status) {
+            setlikeColor("red");
+          }
+        });
+    } catch (err) {}
   };
 
   const addComment = () => {
     clear();
-    // console.log("comment", comment);
-    // console.log(likeColor == "red" ? element.RescuerID : 5);
     const SocialData = {
       comment: comment,
       likes: likeColor == "red" ? state.userID : null,
@@ -86,7 +106,7 @@ function PetViewPage() {
 
   const updatedSocialList = async () => {
     try {
-      axios.get(`${API_ROOT}/social/${PetID}/getSocial`).then((res) => {
+      await axios.get(`${API_ROOT}/social/${PetID}/getSocial`).then((res) => {
         setSocialList(res.data);
       });
     } catch (err) {
@@ -185,7 +205,7 @@ function PetViewPage() {
                                 onClick={PetLike}
                                 style={{ color: likeColor }}
                               />{" "}
-                              Like
+                              {likes} Likes
                             </span>
                           </div>
                         ) : (
@@ -307,14 +327,16 @@ function PetViewPage() {
 
             <article className="pet mt-5">
               <div className="pet-body px-4">
-                <h3>Comments</h3>
+                <h3 style={{ paddingTop: "15px" }}>
+                  <FontAwesomeIcon
+                    icon={faComments}
+                    style={{ color: "#25511f" }}
+                  />
+                  &nbsp; Comments
+                </h3>
 
-                <div className="comments container">
-                  <div
-                    className="scrollspy-example comment-widgets mb-30"
-                    data-bs-spy="scroll"
-                    data-bs-offset="0"
-                  >
+                <div className="comments-list container">
+                  <div className="comment-widgets mb-30" data-bs-offset="0">
                     {socialList.map((res) => {
                       return (
                         <div className="d-flex flex-row justify-contents-between align-items-center comment-row">
@@ -343,7 +365,11 @@ function PetViewPage() {
                         </div>
                       );
                     })}
+                  </div>
+                </div>
 
+                <div className="comments container">
+                  <div className="comment-widgets-add mb-30" data-bs-offset="0">
                     <div className="p-2">
                       <div className="d-flex flex-row align-items-start">
                         <img

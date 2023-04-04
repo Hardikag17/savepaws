@@ -51,8 +51,12 @@ export default function Main() {
             description={element.description}
             rescuerId={element.RescuerID}
             PetID={element.PetID}
-            comments=" 5"
-            postedOn="4/3/2023"
+            comments={element.social.length}
+            postedOn={
+              element.createdAt
+                ? new Date(element.createdAt).toLocaleDateString()
+                : "01/03/2023"
+            }
           />
         </div>
       </Link>

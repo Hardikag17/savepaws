@@ -5,10 +5,28 @@ const { User } = require("../models/schemas/userSchema");
 const get = async (req, res) => {};
 
 const getLikes = async (req, res) => {
-  const petId = req.params.PetID;
-  const social = await Social.find({ petId: petId }).populate({
-    path: "author",
-  });
+  try {
+    let count = 0;
+    let status = false;
+    const petId = req.params.PetID;
+    const userId = req.params.UserID;
+    const social = await Social.find({ petId: petId }).populate({
+      path: "author",
+    });
+    const likes = social[social.length - 1]?.likes;
+    likes?.map((like) => {
+      if (like) {
+        count++;
+      }
+      if (like === userId) {
+        status = true;
+      }
+    });
+
+    res.status(200).send({ count, status });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const updateComments = async (req, res) => {};
