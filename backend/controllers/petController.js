@@ -40,12 +40,11 @@ const getPets = async (req, res) => {
   }
   if (req.query.gender) {
     let gender;
-    gender = req.query.gender;
-    gender = gender.toUpperCase();
+    gender = parseInt(req.query.gender);
 
-    if (gender === "MALE") gender = 1;
-    else if (gender === "FEMALE") gender = 2;
-    else gender = 3;
+    // if (gender === "MALE") gender = 1;
+    // else if (gender === "FEMALE") gender = 2;
+    // else gender = 3;
 
     filterOptions.gender = gender;
   }
@@ -56,10 +55,10 @@ const getPets = async (req, res) => {
 
     console.log(health);
 
-    if (health === "HEALTHY") health = 1;
-    else if (health === "MINOR INJURY") health = 2;
-    else if (health === "SERIOUS INJURY") health = 3;
-    else health = 4;
+    // if (health === "HEALTHY") health = 1;
+    // else if (health === "MINOR INJURY") health = 2;
+    // else if (health === "SERIOUS INJURY") health = 3;
+    // else health = 4;
 
     filterOptions.health = health;
   }
@@ -78,6 +77,7 @@ const getPets = async (req, res) => {
     filterOptions.point.lat = req.query.latitude;
     filterOptions.point.long = req.query.longitude;
   }
+  console.log("Options....", filterOptions);
 
   let response;
   if (searchText && searchText.trim() !== "") {

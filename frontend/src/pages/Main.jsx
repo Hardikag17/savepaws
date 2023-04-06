@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { getPets } from "../utils/pets";
 import {
   faBackwardStep,
   faForwardStep,
@@ -22,21 +23,58 @@ export default function Main() {
   const [page, setPage] = useState(1);
   const [element, setElement] = useState();
   const [isLoading, setLoading] = useState(true);
+  const [url, seturl] = useState();
+  const [filter, setFilter] = useState({
+    maxAge: 100,
+    minAge: 0,
+    gender: null,
+    breed: null,
+    health: null,
+  });
 
-  const getPets = useCallback(async () => {
-    const res = await axios.get(`http://localhost:9000/pets?page=${page}`);
-    setPosts(res.data.response);
-    setLoading(false);
-  }, [page]);
+  // console.log("In main..", filter);
+
+  useState(() => {
+    if (filter.gender) {
+      seturl();
+      getPets(page, url).then((res) => console.log(res));
+    }
+  }, [filter]);
+
+  // const getPets = (filter) => {
+  //   console.log("change", filter);
+  // const url = `http://localhost:9000/pets?page=${page}&&minAge=${filter.minAge}&&maxAge=${filter.maxAge}`;
+  // console.log(filter);
+  // if (filter.gender > 0) {
+  //   console.log("here...");
+  //   url += `&&gender=${filter.gender}`;
+  // }
+
+  // if (filter.breed > 0) {
+  //   url += `&&breed=${filter.breed}`;
+  // }
+
+  // if (filter.health > 0) {
+  //   url += `&&health=${filter.health}`;
+  // }
+
+  // const res = await axios.get(
+  //   `http://localhost:9000/pets?page=${page}&&minAge=${filter.minAge}&&maxAge=${filter.maxAge}`
+  // );
+
+  // const res = await axios.get(url);
+  //setPosts(res.data.response);
+  //setLoading(false);
+  // };
 
   const showCard = (element, value) => {
     setCard(value + 1);
     setElement(element);
   };
 
-  useEffect(() => {
-    getPets();
-  }, []);
+  // useEffect(() => {
+  //   getPets();
+  // }, [filter]);
 
   const dummyCards = [...Array(12)].map((_, index) => (
     <LoadingCard key={index} />
@@ -62,13 +100,17 @@ export default function Main() {
       </Link>
     );
   });
-
+  // console.log("In main...", filter);
   return (
     <div id="Main" style={{ backgroundColor: "#FFF", height: "100%" }}>
       {card === 0 ? (
         <div className="dashboard">
           <div className="filterOptions">
-            <SideBar />
+            <SideBar
+              filter={filter}
+              setFilter={setFilter}
+              getPets={getPets()}
+            />
           </div>
           <div className="cards d-flex flex-column">
             <div>

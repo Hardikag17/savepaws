@@ -11,10 +11,11 @@
 }
 
 .filterOptions {
-  width: 30%;
+  width: 45%;
   display: flex;
   justify-content: center;
   border: 1px solid rgba(0, 128, 0, 0.214);
+  background-color: #f2e6db;
 }
 
 @media screen and (max-width: 900px) {
