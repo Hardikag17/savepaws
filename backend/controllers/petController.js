@@ -370,6 +370,24 @@ const getRequestsByRescuerID = async (req, res) => {
   }
 };
 
+const getRecentAdded = async (req, res) => {
+  try {
+    const getPets = await Pet.find({});
+    res.send(getPets.slice(-3));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getRecentUpdated = async (req, res) => {
+  try {
+    const pets = await Pet.find().sort({ timpestamp: -1 }).limit(3);
+    res.send(pets);
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+};
+
 module.exports = {
   getPets,
   addPet,
@@ -383,4 +401,6 @@ module.exports = {
   getRequestByUserID,
   getRequestsByRescuerID,
   adoptPet,
+  getRecentUpdated,
+  getRecentAdded,
 };

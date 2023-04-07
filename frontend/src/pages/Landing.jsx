@@ -1,22 +1,22 @@
 import "../styles/Landing.css";
 import LoadingCard from "../components/loadingCard";
+import Card from "../components/card";
 import React, { useState, useEffect } from "react";
 import Map from "./Map";
 import axios from "axios";
 import { API_ROOT } from "../api-config";
+import { Link } from "react-router-dom";
 
 export default function Landing() {
   const [tab, setTab] = useState(0);
+  const [recentpost, setrecentpost] = useState([]);
+  const [updatepost, setupdatepost] = useState([]);
+  const [updateisLoading, setupdateLoading] = useState(false);
+  const [recentisLoading, setrecentLoading] = useState(true);
 
   const dummyCards = [...Array(3)].map((_, index) => (
     <LoadingCard key={index} />
   ));
-
-  const tabs = [
-    { state: 0, value: dummyCards },
-    { state: 1, value: dummyCards },
-    { state: 2, value: dummyCards },
-  ];
 
   const [userLocation, setUserLocation] = useState(null);
   const [pets, setPets] = useState([]);
@@ -39,11 +39,81 @@ export default function Landing() {
     }
   };
 
+  const recentAddedPets = async () => {
+    try {
+      const res = await axios.get(`${API_ROOT}/pets/recentAddedPets`);
+      // console.log("Recent Added", res.data);
+      setrecentpost(res.data);
+      setrecentLoading(false);
+    } catch (err) {
+      console.log("Something went wrong");
+    }
+  };
+
+  const recentcards = recentpost.map((element, key) => {
+    return (
+      <Link to={`/petview/${element.PetID}`}>
+        <div key={key}>
+          <Card
+            name={element.Name}
+            description={element.description}
+            rescuerId={element.RescuerID}
+            PetID={element.PetID}
+            comments={element.social.length}
+            postedOn={
+              element.createdAt
+                ? new Date(element.createdAt).toLocaleDateString()
+                : "01/03/2023"
+            }
+          />
+        </div>
+      </Link>
+    );
+  });
+
+  const recentUpdatedPets = async (req, res) => {
+    try {
+      const res = await axios.get(`${API_ROOT}/pets/recentUpdatedPets`);
+      console.log("Updated", res.data);
+      setupdatepost(res.data);
+      setupdateLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const updatedCards = updatepost.map((element, key) => {
+    return (
+      <Link to={`/petview/${element.PetID}`}>
+        <div key={key}>
+          <Card
+            name={element.Name}
+            description={element.description}
+            rescuerId={element.RescuerID}
+            PetID={element.PetID}
+            comments={element.social.length}
+            postedOn={
+              element.createdAt
+                ? new Date(element.createdAt).toLocaleDateString()
+                : "01/03/2023"
+            }
+          />
+        </div>
+      </Link>
+    );
+  });
+
+  const tabs = [
+    { state: 0, value: recentisLoading ? dummyCards : recentcards },
+    { state: 1, value: updateisLoading ? dummyCards : updatedCards },
+    { state: 2, value: dummyCards },
+  ];
+
   useEffect(() => {
     nearByPets();
+    recentAddedPets();
+    recentUpdatedPets();
   }, [userLocation]);
-
-  console.log(pets);
 
   return (
     <div className=" container-fluid ">
@@ -68,7 +138,9 @@ export default function Landing() {
       <div className=" container-fluid content-cards">
         <div className=" d-flex flex justify-content-center container lg:w-50 w-100 rounded py-1 bg-light">
           <button
-            onClick={() => setTab(0)}
+            onClick={() => {
+              setTab(0);
+            }}
             class="btn btn-light btn-lg text-black  lg:mx-3 mx-0"
           >
             <b> New Cuties</b>
@@ -77,8 +149,9 @@ export default function Landing() {
             onClick={() => setTab(1)}
             class="btn btn-light btn-lg text-black mx-3"
           >
-            <b>Urgent Help</b>
+            <b>Recently loved</b>
           </button>
+
           <button
             onClick={() => setTab(2)}
             class="btn btn-light btn-lg text-black mx-3"

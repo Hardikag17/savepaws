@@ -12,6 +12,8 @@ const {
   getRequestByUserID,
   getRequestsByRescuerID,
   adoptPet,
+  getRecentUpdated,
+  getRecentAdded,
 } = require("../controllers/petController");
 const { uploadImages } = require("../controllers/fileUpload");
 
@@ -24,6 +26,8 @@ const upload = multer({ storage: storage });
 // Pet
 routes.get("/", getPets);
 routes.get("/pet/:PetID", getPetByPetID);
+routes.get("/recentUpdatedPets", getRecentUpdated);
+routes.get("/recentAddedPets", getRecentAdded);
 routes.get("/user/:UserID", getPetsByUserID);
 routes.get("/requests/pet/:PetID", getRequestsByPetID);
 routes.get("/requests/user/:UserID", getRequestByUserID);
