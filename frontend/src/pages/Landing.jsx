@@ -163,13 +163,13 @@ export default function Landing() {
           {tabs[tab].value}
         </div>
       </div>
-      <div className=" flex container-fluid content-help d-flex w-100 justify-content-between m-0">
+      {/* <div className=" flex container-fluid content-help d-flex w-100 justify-content-between m-0">
         <div className=" help-text">Text</div>
         <div className="help-img rounded"></div>
-      </div>
+      </div> */}
       <br />
       <h4 className="d-flex flex justify-context-center">
-        <i>Find pets near your location</i>
+        <i>- Find pets near your location -</i>
       </h4>
       <br />
 

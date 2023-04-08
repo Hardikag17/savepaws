@@ -22,7 +22,7 @@ export default function Chat() {
   useEffect(() => {
     if (state.userID) {
       getChatList(state.userID).then((res) => {
-        // setChatList([]);
+        setChatList([]);
         console.log("res", res);
         res.forEach((el) => {
           setChatList((list) => [...list, el.UserId]);
@@ -61,6 +61,7 @@ export default function Chat() {
 
   useEffect(() => {
     getUserInfo(ReceiverId).then((res) => {
+      console.log("receiver info", res);
       setReceiverInfo(res[0]);
     });
   }, [ReceiverId]);
@@ -68,8 +69,9 @@ export default function Chat() {
   return (
     <div className="chat-component container-fluid d-flex w-100 justify-content-between">
       <div className="userslist w-25 border-2 border-white p-2">
-        {ChatList.length > 0 ? (
+        {!receiverId && ChatList.length > 0 ? (
           ChatList.map((el) => {
+            console.log("here", el);
             return (
               <button
                 className=" btn btn-lg btn-light text-black w-100 text-left"
@@ -105,7 +107,12 @@ export default function Chat() {
           <button
             className=" btn btn-lg btn-light text-black w-100 text-left"
             style={{ fontSize: "18px" }}
-            // onClick={() => setReceiverId("g90bm4shlftghf94")}
+            onClick={() => {
+              setReceiverId(receiverId);
+              getUserInfo(receiverId).then((res) => {
+                setReceiverInfo(res[0]);
+              });
+            }}
           >
             <img
               type="button"
@@ -126,7 +133,7 @@ export default function Chat() {
           </button>
         )}
       </div>
-      <div className=" absolute  w-75 bg-white h-90 d-flex flex-column m-2 rounded ">
+      <div className="  w-75 bg-white h-90 d-flex flex-column m-2 rounded ">
         {room && ReceiverId && senderId && messageList.length > 0 ? (
           <Chatting
             socket={socket}

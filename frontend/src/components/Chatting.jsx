@@ -19,6 +19,8 @@ export default function Chatting({
 }) {
   const [messageList, setMessageList] = useState(previous_messages);
 
+  console.log("receiver info", receiverInfo);
+
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
