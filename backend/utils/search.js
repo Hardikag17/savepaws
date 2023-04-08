@@ -88,7 +88,11 @@ const search = async (searchText, filterOptions, page, limit) => {
 
   if (searchText == "") {
     res = await Pet.find({
-      ...Options,
+      $and: [
+        { Age: { $gte: filterOptions.minAge } },
+        { Age: { $lte: filterOptions.maxAge } },
+        { ...Options },
+      ],
     })
       .skip(skip)
       .limit(limit);
