@@ -12,8 +12,8 @@ const { filterPets, search } = require("../utils/search");
 const getPets = async (req, res) => {
   let searchText = req.query.searchText;
   let filterOptions = {
-    minAge: null,
-    maxAge: null,
+    minAge: 1,
+    maxAge: 100,
     gender: null,
     health: null,
     breed: null,
@@ -41,35 +41,16 @@ const getPets = async (req, res) => {
   if (req.query.gender) {
     let gender;
     gender = parseInt(req.query.gender);
-
-    // if (gender === "MALE") gender = 1;
-    // else if (gender === "FEMALE") gender = 2;
-    // else gender = 3;
-
     filterOptions.gender = gender;
   }
   if (req.query.health) {
     let health;
-    health = req.query.health;
-    health = health.toUpperCase();
-
-    console.log(health);
-
-    // if (health === "HEALTHY") health = 1;
-    // else if (health === "MINOR INJURY") health = 2;
-    // else if (health === "SERIOUS INJURY") health = 3;
-    // else health = 4;
-
+    health = parseInt(req.query.health);
     filterOptions.health = health;
   }
   if (req.query.breed) {
     let breed;
-    breed = req.query.breed;
-    breed = breed.toUpperCase();
-
-    if (breed === "HUSKY") breed = 1;
-    else breed = 2;
-
+    breed = parseInt(req.query.breed);
     filterOptions.breed = breed;
   }
 
@@ -77,16 +58,10 @@ const getPets = async (req, res) => {
     filterOptions.point.lat = req.query.latitude;
     filterOptions.point.long = req.query.longitude;
   }
-  console.log("Options....", filterOptions);
 
   let response;
-  if (searchText && searchText.trim() !== "") {
-    response = await search(searchText, filterOptions);
-  } else {
-    response = await search("", filterOptions);
-  }
-
   // Pagination
+
   let limit = parseInt(req.query.limit);
   if (!limit) {
     limit = 12;
@@ -97,15 +72,19 @@ const getPets = async (req, res) => {
     page = 1;
   }
 
-  const pageCount = Math.ceil(response.length / limit);
-
-  if (page > pageCount) {
-    page = pageCount;
+  if (searchText && searchText.trim() !== "") {
+    response = await search(searchText, filterOptions, page, limit);
+  } else {
+    response = await search("", filterOptions, page, limit);
   }
 
-  response = response.slice(page * limit - limit, page * limit);
+  // const pageCount = Math.ceil(response.length / limit);
 
-  //console.log("response", response);
+  // if (page > pageCount) {
+  //   page = pageCount;
+  // }
+
+  // response = response.slice(page * limit - limit, page * limit);
 
   return res.status(200).json({
     response: response,
@@ -372,7 +351,7 @@ const getRequestsByRescuerID = async (req, res) => {
 
 const getRecentAdded = async (req, res) => {
   try {
-    const getPets = await Pet.find({});
+    const getPets = await Pet.find({}).sort({ updatedAt: -1 }).limit(3);
     res.send(getPets.slice(-3));
   } catch (err) {
     console.log(err);

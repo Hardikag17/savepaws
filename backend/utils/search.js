@@ -66,32 +66,43 @@ const filterPets = async (pets, filterOptions) => {
   return res;
 };
 
-const search = async (searchText, filterOptions) => {
+const search = async (searchText, filterOptions, page, limit) => {
   let res;
-  let data = await Pet.find({});
-  let miniSearch = new MiniSearch({
-    idField: "_id",
-    fields: ["Name"], // fields to index for full-text search
-    storeFields: [
-      "PetID",
-      "Name",
-      "Description",
-      "Age",
-      "Health",
-      "RescuerID",
-      "Gender",
-      "Breed",
-      "Color1",
-    ], // fields to return with search results
-    searchOptions: { prefix: true },
-  });
+  let skip = page * limit - limit;
 
-  miniSearch.addAll(data);
-  if (searchText == "") res = data;
-  else res = miniSearch.search(searchText);
+  console.log(filterOptions);
 
-  if (filterOptions) {
-    res = filterPets(res, filterOptions);
+  let Options = {
+    Gender: filterOptions.gender,
+    Health: filterOptions.health,
+    Breed1: filterOptions.breed,
+  };
+
+  console.log("filterOptions:", Options);
+
+  Object.keys(Options).forEach(
+    (key) => Options[key] === null && delete Options[key]
+  );
+
+  console.log("filterOptions:", Options);
+
+  if (searchText == "") {
+    res = await Pet.find({
+      ...Options,
+    })
+      .skip(skip)
+      .limit(limit);
+  } else {
+    res = await Pet.find({
+      $and: [
+        { $text: { $search: searchText } },
+        { Age: { $gte: filterOptions.minAge } },
+        { Age: { $lte: filterOptions.maxAge } },
+        { ...Options },
+      ],
+    })
+      .skip(skip)
+      .limit(limit);
   }
   return res;
 };

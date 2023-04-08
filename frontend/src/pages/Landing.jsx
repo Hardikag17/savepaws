@@ -42,7 +42,7 @@ export default function Landing() {
   const recentAddedPets = async () => {
     try {
       const res = await axios.get(`${API_ROOT}/pets/recentAddedPets`);
-      // console.log("Recent Added", res.data);
+      console.log("Recent Added", res.data);
       setrecentpost(res.data);
       setrecentLoading(false);
     } catch (err) {
@@ -173,11 +173,11 @@ export default function Landing() {
       </h4>
       <br />
 
-      {userLocation && pets.length > 0 ? (
+      {/* {userLocation && pets.length > 0 ? (
         <Map userLocation={userLocation} pets={pets} />
       ) : (
         <p>Loading...</p>
-      )}
+      )} */}
     </div>
   );
 }

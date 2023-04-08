@@ -30,12 +30,29 @@ export const adoptPet = async (pet, UserID) => {
   else return true;
 };
 
-export const getPets = async (page, url) => {
-  console.log("getPets:", page, url);
-  try {
-    let res = await axios.get(`${API_ROOT}/pets?page=${page}${url}`);
-    return res.data.response;
-  } catch (err) {
-    console.log(err);
-  }
-};
+// export const getPets = async (options) => {
+//   let filter = options.filter;
+//   let page = options.page;
+
+//   var url = `${API_ROOT}/pets?page=${page}&&minAge=${filter.minAge}&&maxAge=${filter.maxAge}`;
+//   if (filter.gender > 0) {
+//     url += `&&gender=${filter.gender}`;
+//   }
+
+//   if (filter.breed > 0) {
+//     url += `&&breed=${filter.breed}`;
+//   }
+
+//   if (filter.health > 0) {
+//     url += `&&health=${filter.health}`;
+//   }
+
+//   console.log("url:", url);
+
+//   try {
+//     let res = await axios.get(url);
+//     return res.data.response;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
