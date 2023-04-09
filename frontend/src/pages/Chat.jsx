@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { getUserInfo } from "../utils/user";
+import truncateString from "../utils/truncate";
 
 export default function Chat() {
   const { state } = useContext(UserContext);
@@ -23,10 +24,12 @@ export default function Chat() {
     if (state.userID) {
       getChatList(state.userID).then((res) => {
         setChatList([]);
-        console.log("res", res);
+        console.log(res);
         res.forEach((el) => {
-          setChatList((list) => [...list, el.UserId]);
+          setChatList((list) => [...list, el]);
         });
+
+        console.log("res", ChatList);
       });
     }
   }, [state]);
@@ -46,8 +49,6 @@ export default function Chat() {
         // Bug: Infinite Loop
       }
     });
-
-    console.log("prev:", messageList);
   }, [ReceiverId, senderId, room]);
 
   useEffect(() => {
@@ -55,13 +56,8 @@ export default function Chat() {
     getMessages();
   }, [state, getMessages]);
 
-  // useEffect(() => {
-  //   getPrevMessages();
-  // });
-
   useEffect(() => {
     getUserInfo(ReceiverId).then((res) => {
-      console.log("receiver info", res);
       setReceiverInfo(res[0]);
     });
   }, [ReceiverId]);
@@ -69,17 +65,16 @@ export default function Chat() {
   return (
     <div className="chat-component container-fluid d-flex w-100 justify-content-between">
       <div className="userslist w-25 border-2 border-white p-2">
-        {!receiverId && ChatList.length > 0 ? (
+        {receiverId === undefined && ChatList.length > 0 ? (
           ChatList.map((el) => {
-            console.log("here", el);
             return (
               <button
                 className=" btn btn-lg btn-light text-black w-100 text-left"
                 style={{ fontSize: "18px" }}
                 onClick={() => {
-                  setReceiverId(el);
+                  setReceiverId(el.UserId);
                   getMessages();
-                  getUserInfo(el).then((res) => {
+                  getUserInfo(el.UserId).then((res) => {
                     setReceiverInfo(res[0]);
                   });
                 }}
@@ -87,7 +82,7 @@ export default function Chat() {
                 <img
                   type="button"
                   data-bs-toggle="dropdown"
-                  src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${ReceiverId}.jpeg`}
+                  src={` https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${el.UserId}.jpeg`}
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null;
                     currentTarget.src =
@@ -99,7 +94,7 @@ export default function Chat() {
                   alt="Placeholder profile pic"
                 />
                 &nbsp; &nbsp;
-                {el.UserId}
+                {truncateString(el?.UserId, 7)}
               </button>
             );
           })

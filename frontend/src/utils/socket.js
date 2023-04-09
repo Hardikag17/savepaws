@@ -59,13 +59,23 @@ export const addChatList = async (UserId, ConnectionId, PetID) => {
   }
 };
 
+function uniqByKeepLast(data, key) {
+  return [...new Map(data.map((x) => [key(x), x])).values()];
+}
+
 export const getChatList = async (UserId) => {
   try {
     let res = await axios.get(`${API_ROOT}/chat/chatlist/${UserId}`, {
       withCredentials: true,
     });
-    console.log("here", res.data);
-    return res.data.ChatList;
+    res = res.data.ChatList;
+    Object.keys(res).forEach((el) => delete res[el]._id);
+    res = uniqByKeepLast(res, (el) => el.UserId);
+    res = res.filter((el) => {
+      if (Object.keys(el).length !== 0) return true;
+      return false;
+    });
+    return res;
   } catch (err) {
     console.log(err);
   }

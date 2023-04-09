@@ -7,12 +7,14 @@ import "../styles/profile.css";
 import upload from "superagent";
 import { useState, useEffect, useContext } from "react";
 import { API_ROOT } from "../api-config";
+import { getUserInfo } from "../utils/user";
 
 library.add(fab);
 
 export default function Profile() {
   const [selectedImage, setSelectedImage] = useState(``);
   const { state } = useContext(UserContext);
+  const [userInfo, setUserInfo] = useState();
   const [preview, setPreview] = useState(
     `https://paws-adoption.s3.ap-south-1.amazonaws.com/users/${state.userID}.jpeg` ||
       URL.createObjectURL(selectedImage)
@@ -47,6 +49,13 @@ export default function Profile() {
         });
     } catch (err) {}
   };
+
+  useEffect(() => {
+    getUserInfo(state.userID).then((res) => {
+      console.log(res);
+      setUserInfo(res[0]);
+    });
+  });
 
   return (
     <div id="Profile">
@@ -105,7 +114,8 @@ export default function Profile() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="User's Name"
+                    placeholder={userInfo?.name}
+                    value={userInfo?.name}
                     aria-label="Recipient's username"
                     aria-describedby="basic-addon2"
                     disabled
@@ -122,21 +132,40 @@ export default function Profile() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="User's email"
+                    placeholder={userInfo?.email}
+                    value={userInfo?.email}
                     aria-label="Recipient's username"
                     aria-describedby="basic-addon2"
                     disabled
                   />
                 </div>
                 <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={userInfo?.mobile}
+                    value={userInfo?.mobile}
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    disabled
+                  />
+                  <span
+                    role="button"
+                    className="input-group-text cursor-pointer"
+                    id="basic-addon2"
+                  >
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </span>
+                </div>
+                {/* <div className="input-group mb-3">
                   <span className="input-group-text">Address:</span>
                   <textarea
                     className="form-control"
                     aria-label="Address:"
                     disabled
                   ></textarea>
-                </div>
-                <div className="input-group mb-3 ">
+                </div> */}
+                {/* <div className="input-group mb-3 ">
                   <span className="input-group-text">+91</span>
                   <input
                     className="form-control"
@@ -195,7 +224,7 @@ export default function Profile() {
                   >
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
             <hr />
