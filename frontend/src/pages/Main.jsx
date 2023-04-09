@@ -188,13 +188,22 @@ export default function Main() {
                         min={min}
                         max={max}
                         onChange={({ min, max }) => {
-                          setmin(min);
-                          setmax(max);
-                          let a = filter;
-                          a.minAge = min;
-                          a.maxAge = max;
-                          if (filter.maxAge !== max || filter.minAge !== min)
+                          if (max !== filter.maxAge || min !== filter.minAge) {
+                            setFilter({
+                              ...filter,
+                              minAge: 0,
+                              maxAge: 100,
+                            });
+
+                            let a = filter;
+                            a.minAge = min;
+                            a.maxAge = max;
+                            console.log(a);
+
                             getPets();
+                            setmin(min);
+                            setmax(max);
+                          }
                         }}
                       />
                     )}
