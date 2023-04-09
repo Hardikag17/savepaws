@@ -73,7 +73,31 @@ const updateSocial = async (req, res) => {
   pet.social.push(Activity);
   await Activity.save();
   await pet.save();
+
   res.status(200).send(pet);
 };
 
-module.exports = { get, getSocial, getLikes, updateComments, updateSocial };
+const deleteSocial = async (req, res) => {
+  try {
+    const petId = req.params.PetID;
+    const socialId = req.params.socialId;
+
+    let response = await Pet.updateMany(
+      { PetID: petId },
+      { $pullAll: { social: [socialId] } }
+    );
+    await Social.findByIdAndDelete(socialId);
+    res.send("successfully deleted social");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
+  get,
+  getSocial,
+  getLikes,
+  updateComments,
+  updateSocial,
+  deleteSocial,
+};

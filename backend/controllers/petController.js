@@ -252,8 +252,6 @@ const deleteRequest = async (req, res) => {
           { $pullAll: { Requests: [UserID] } }
         );
 
-        console.log(response);
-
         res.status(200).send({
           status: "success",
           message: "UserID successfully pulled",
@@ -358,10 +356,8 @@ const getRequestsByRescuerID = async (req, res) => {
     let response = await Pet.find({ RescuerID: RescuerID });
 
     if (response && response.length > 0) {
-      response.forEach((Pet) => {
-        Requests.find({ PetID: Pet.PetID }).then((response) => {
-          res.status(200).send({ status: "success", Requests: response[0] });
-        });
+      Requests.find({ PetID: response[0].PetID }).then((response) => {
+        res.status(200).send({ status: "success", Requests: response[0] });
       });
     } else {
       res
@@ -394,7 +390,6 @@ const getRecentUpdated = async (req, res) => {
 const getmostpopular = async (req, res) => {
   try {
     const pets = await Pet.find().sort({ "social.length": -1 }).limit(3);
-    console.log(pets);
     res.send(pets);
   } catch (err) {
     console.log(err);

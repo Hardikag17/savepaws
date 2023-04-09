@@ -49,7 +49,7 @@ function PetViewPage() {
   const [imgS, setimgS] = useState();
   // `https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/${PetID}-1.jpg`
   const { state } = useContext(UserContext);
-  // console.log("State ", state.userID);
+
   const [comment, setComment] = useState("");
   const [likeColor, setlikeColor] = useState();
   const [likes, setlikes] = useState(0);
@@ -72,7 +72,6 @@ function PetViewPage() {
       await axios
         .get(`${API_ROOT}/social/${PetID}/${state.userID}/like`)
         .then((res) => {
-          console.log("likes", res.data);
           setlikes(res.data.count);
           if (res.data.status) {
             setlikeColor("red");
@@ -98,6 +97,7 @@ function PetViewPage() {
         `${API_ROOT}/social/${SocialData.PetID}/social`,
         { SocialData }
       );
+
       updatedSocialList();
     } catch (error) {
       console.log(error);
@@ -122,6 +122,15 @@ function PetViewPage() {
     let res = await requestPet(PetID, state.userID);
     setMessage(res);
     setPetAddModal(true);
+  };
+
+  const deleteSocial = async (socialId) => {
+    try {
+      await axios.get(`${API_ROOT}/social/${PetID}/${socialId}/deletesocial`);
+      updatedSocialList();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -229,16 +238,16 @@ function PetViewPage() {
                           <li>Age: {element.Age} </li>
                           <li>
                             gender:{" "}
-                            {element.Gender ? (
+                            {element.Gender == 1 ? (
                               <span>Male</span>
                             ) : (
-                              <div>
+                              <>
                                 {element.Gender == 2 ? (
                                   <span>Female</span>
                                 ) : (
                                   <span>Not Sure</span>
                                 )}
-                              </div>
+                              </>
                             )}
                           </li>
                           <li>Breed: {element.Breed1} </li>
@@ -362,6 +371,14 @@ function PetViewPage() {
                               {res.comments}
                             </p>
                           </div>
+                          {state.userID === res.author.userId && (
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => deleteSocial(res._id)}
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                       );
                     })}
