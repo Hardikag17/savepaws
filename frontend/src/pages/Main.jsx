@@ -12,7 +12,6 @@ import {
   faForwardStep,
 } from "@fortawesome/free-solid-svg-icons";
 import LoadingCard from "../components/loadingCard";
-import "../styles/sidebar.css";
 import { getBreedOptions } from "../utils/options";
 import Select from "react-select";
 import MultiRangeSlider from "../components/MultiRangeSlider";
@@ -127,174 +126,190 @@ export default function Main() {
     <div id="Main" style={{ backgroundColor: "#FFF", height: "100%" }}>
       {card === 0 ? (
         <div className="dashboard">
-          <div className="filterOptions">
-            <div className="sidebar px-3">
-              <div className="d-flex flex-sm-column flex-row flex-nowrap  align-items-center ">
-                <ul className="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                  <li className="nav-item">
-                    <a
-                      href="#"
-                      className="nav-link py-3 px-2"
-                      title=""
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      data-bs-original-title="filterOption1"
-                      onClick={() => setgenderOpen(!genderOpen)}
-                    >
-                      Gender
-                    </a>
-                    {genderOpen && (
-                      <Select
-                        options={genderOptions}
-                        defaultValue={filter.gender}
-                        placeholder="Select Gender"
-                        onChange={(e) => {
+          <div className="filterOptions sticky-top z-0 fixed ">
+            <div className="d-flex flex-sm-column flex-row flex-nowrap  align-items-center w-100 sticky-top ">
+              <ul className="nav px-3  options w-100 nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center sticky-top">
+                <li className="nav-item">
+                  <a
+                    href="#"
+                    className="nav-link py-3 px-2"
+                    title=""
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="filterOption1"
+                    onClick={() => {
+                      setgenderOpen(!genderOpen);
+                      sethealthopen(false);
+                      setageOpen(false);
+                      setbreedOpen(false);
+                    }}
+                  >
+                    Gender
+                  </a>
+                  {genderOpen && (
+                    <Select
+                      options={genderOptions}
+                      defaultValue={filter.gender}
+                      placeholder="Select Gender"
+                      onChange={(e) => {
+                        setFilter({
+                          ...filter,
+                          gender: e.value,
+                        });
+                        let a = filter;
+                        a.gender = e.value;
+                        getPets();
+                      }}
+                      isSearchable={true}
+                      isClearable
+                      noOptionsMessage={() => "Sorry no such gender found"}
+                      styles={{
+                        control: (baseStyles, state, defaultStyles) => ({
+                          ...defaultStyles,
+                          ...baseStyles,
+                          width: 180,
+                          borderColor: state.isFocused ? "green" : "green",
+                        }),
+                      }}
+                    />
+                  )}
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="nav-link py-3 px-2"
+                    title=""
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Dashboard"
+                    onClick={() => {
+                      setageOpen(!ageOpen);
+                      setgenderOpen(false);
+                      sethealthopen(false);
+                      setbreedOpen(false);
+                    }}
+                  >
+                    Age
+                  </a>
+                  {ageOpen && (
+                    <MultiRangeSlider
+                      min={min}
+                      max={max}
+                      onChange={({ min, max }) => {
+                        if (max !== filter.maxAge || min !== filter.minAge) {
                           setFilter({
                             ...filter,
-                            gender: e.value,
+                            minAge: 0,
+                            maxAge: 100,
                           });
-                          let a = filter;
-                          a.gender = e.value;
-                          getPets();
-                        }}
-                        isSearchable={true}
-                        isClearable
-                        noOptionsMessage={() => "Sorry no such gender found"}
-                        styles={{
-                          control: (baseStyles, state, defaultStyles) => ({
-                            ...defaultStyles,
-                            ...baseStyles,
-                            width: 180,
-                            borderColor: state.isFocused ? "green" : "green",
-                          }),
-                        }}
-                      />
-                    )}
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="nav-link py-3 px-2"
-                      title=""
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      data-bs-original-title="Dashboard"
-                      onClick={() => setageOpen(!ageOpen)}
-                    >
-                      Age
-                    </a>
-                    {ageOpen && (
-                      <MultiRangeSlider
-                        min={min}
-                        max={max}
-                        onChange={({ min, max }) => {
-                          if (max !== filter.maxAge || min !== filter.minAge) {
-                            setFilter({
-                              ...filter,
-                              minAge: 0,
-                              maxAge: 100,
-                            });
 
-                            let a = filter;
-                            a.minAge = min;
-                            a.maxAge = max;
-                            console.log(a);
+                          let a = filter;
+                          a.minAge = min;
+                          a.maxAge = max;
+                          console.log(a);
 
-                            getPets();
-                            setmin(min);
-                            setmax(max);
-                          }
-                        }}
-                      />
-                    )}
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="nav-link py-3 px-2"
-                      title=""
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      data-bs-original-title="Products"
-                      onClick={() => setbreedOpen(!breedOpen)}
-                    >
-                      Breed
-                    </a>
-                    {breedOpen && (
-                      <Select
-                        options={breedOptions}
-                        defaultValue={filter.value}
-                        placeholder="Select Breed"
-                        onChange={(e) => {
-                          console.log("breed", e.value);
-                          setFilter({
-                            ...filter,
-                            breed: e.value,
-                          });
-                          let a = filter;
-                          a.breed = e.value;
-                          console.log(a);
                           getPets();
-                        }}
-                        isSearchable={true}
-                        isClearable
-                        noOptionsMessage={() => "Sorry no such breed found"}
-                        styles={{
-                          control: (baseStyles, state, defaultStyles) => ({
-                            ...defaultStyles,
-                            ...baseStyles,
-                            width: 180,
-                            borderColor: state.isFocused ? "green" : "green",
-                          }),
-                        }}
-                      />
-                    )}
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="nav-link py-3 px-2"
-                      title=""
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      data-bs-original-title="Customers"
-                      onClick={() => sethealthopen(!healthOpen)}
-                    >
-                      Health
-                    </a>
-                    {healthOpen && (
-                      <Select
-                        options={healthOptions}
-                        defaultValue={filter.health}
-                        placeholder="Select Health"
-                        onChange={(e) => {
-                          setFilter({
-                            ...filter,
-                            health: e.value,
-                          });
-                          let a = filter;
-                          a.health = e.value;
-                          console.log(a);
-                          getPets();
-                        }}
-                        isSearchable={true}
-                        isClearable
-                        noOptionsMessage={() =>
-                          "Sorry no such health type found"
+                          setmin(min);
+                          setmax(max);
                         }
-                        styles={{
-                          control: (baseStyles, state, defaultStyles) => ({
-                            ...defaultStyles,
-                            ...baseStyles,
-                            width: 180,
-                            borderColor: state.isFocused ? "green" : "green",
-                          }),
-                        }}
-                      />
-                    )}
-                  </li>
-                </ul>
-              </div>
+                      }}
+                    />
+                  )}
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="nav-link py-3 px-2"
+                    title=""
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Products"
+                    onClick={() => {
+                      setbreedOpen(!breedOpen);
+                      setgenderOpen(false);
+                      sethealthopen(false);
+                      setageOpen(false);
+                    }}
+                  >
+                    Breed
+                  </a>
+                  {breedOpen && (
+                    <Select
+                      options={breedOptions}
+                      defaultValue={filter.value}
+                      placeholder="Select Breed"
+                      onChange={(e) => {
+                        console.log("breed", e.value);
+                        setFilter({
+                          ...filter,
+                          breed: e.value,
+                        });
+                        let a = filter;
+                        a.breed = e.value;
+                        console.log(a);
+                        getPets();
+                      }}
+                      isSearchable={true}
+                      isClearable
+                      noOptionsMessage={() => "Sorry no such breed found"}
+                      styles={{
+                        control: (baseStyles, state, defaultStyles) => ({
+                          ...defaultStyles,
+                          ...baseStyles,
+                          width: 180,
+                          borderColor: state.isFocused ? "green" : "green",
+                        }),
+                      }}
+                    />
+                  )}
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="nav-link py-3 px-2"
+                    title=""
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Customers"
+                    onClick={() => {
+                      sethealthopen(!healthOpen);
+                      setgenderOpen(false);
+                      setageOpen(false);
+                      setbreedOpen(false);
+                    }}
+                  >
+                    Health
+                  </a>
+                  {healthOpen && (
+                    <Select
+                      options={healthOptions}
+                      defaultValue={filter.health}
+                      placeholder="Select Health"
+                      onChange={(e) => {
+                        setFilter({
+                          ...filter,
+                          health: e.value,
+                        });
+                        let a = filter;
+                        a.health = e.value;
+                        console.log(a);
+                        getPets();
+                      }}
+                      isSearchable={true}
+                      isClearable
+                      noOptionsMessage={() => "Sorry no such health type found"}
+                      styles={{
+                        control: (baseStyles, state, defaultStyles) => ({
+                          ...defaultStyles,
+                          ...baseStyles,
+                          width: 180,
+                          borderColor: state.isFocused ? "green" : "green",
+                        }),
+                      }}
+                    />
+                  )}
+                </li>
+              </ul>
             </div>
           </div>
           <div className="cards d-flex flex-column">

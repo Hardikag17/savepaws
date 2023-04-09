@@ -196,7 +196,7 @@ const requestPet = async (req, res) => {
 
         if (response.length > 0 && response[0].Requests.length > 0) {
           // User has already requested somewhere else
-          res.status(400).send({
+          res.status(200).send({
             status: "success",
             message: "User has already requested in the below PetID",
             response: response[0].PetID,
@@ -222,15 +222,15 @@ const requestPet = async (req, res) => {
               message: "UserID successfully pushed",
             });
           } catch (err) {
-            res.status(400).send({ status: "failed", error: err });
+            res.status(400).send({ status: "failed", message: err });
           }
         }
       } catch (err) {
-        res.status(400).send({ status: "failed", error: err });
+        res.status(400).send({ status: "failed", message: err });
       }
     }
   } catch (err) {
-    res.status(400).send({ status: "failed", error: err });
+    res.status(400).send({ status: "failed", message: err });
   }
 };
 

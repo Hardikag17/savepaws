@@ -1048,7 +1048,7 @@ a[class*="pet"]:hover .title {
 } */
 
 .comments-list {
-  height: 400px;
+  max-height: 50vh !important;
   flex: 1;
   overflow-y: scroll;
 }
