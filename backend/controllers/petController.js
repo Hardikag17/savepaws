@@ -60,8 +60,8 @@ const getPets = async (req, res) => {
   }
 
   let response;
-  // Pagination
 
+  // Pagination
   let limit = parseInt(req.query.limit);
   if (!limit) {
     limit = 12;
@@ -77,14 +77,6 @@ const getPets = async (req, res) => {
   } else {
     response = await search("", filterOptions, page, limit);
   }
-
-  // const pageCount = Math.ceil(response.length / limit);
-
-  // if (page > pageCount) {
-  //   page = pageCount;
-  // }
-
-  // response = response.slice(page * limit - limit, page * limit);
 
   return res.status(200).json({
     response: response,

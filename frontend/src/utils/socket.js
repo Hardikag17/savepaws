@@ -10,10 +10,14 @@ export const socket = io.connect(URL);
 export const getRoom = async (SenderId, RecevierId) => {
   console.log("getRoom", SenderId, RecevierId);
   try {
-    let res = await axios.post(`${API_ROOT}/chat/room`, {
-      SenderId: SenderId,
-      RecevierId: RecevierId,
-    });
+    let res = await axios.post(
+      `${API_ROOT}/chat/room`,
+      {
+        SenderId: SenderId,
+        RecevierId: RecevierId,
+      },
+      { withCredentials: true }
+    );
 
     return res.data.roomId;
   } catch (err) {
@@ -23,9 +27,13 @@ export const getRoom = async (SenderId, RecevierId) => {
 
 export const getChats = async (RoomId) => {
   try {
-    let res = await axios.post(`${API_ROOT}/chat/texts`, {
-      RoomId: RoomId,
-    });
+    let res = await axios.post(
+      `${API_ROOT}/chat/texts`,
+      {
+        RoomId: RoomId,
+      },
+      { withCredentials: true }
+    );
     console.log("Chats", res);
     return res.data.texts;
   } catch (err) {
@@ -35,11 +43,15 @@ export const getChats = async (RoomId) => {
 
 export const addChatList = async (UserId, ConnectionId, PetID) => {
   try {
-    let res = await axios.post(`${API_ROOT}/chat/chatlist/add`, {
-      UserId,
-      ConnectionId,
-      PetID,
-    });
+    let res = await axios.post(
+      `${API_ROOT}/chat/chatlist/add`,
+      {
+        UserId,
+        ConnectionId,
+        PetID,
+      },
+      { withCredentials: true }
+    );
 
     return res.status;
   } catch (err) {
@@ -49,7 +61,9 @@ export const addChatList = async (UserId, ConnectionId, PetID) => {
 
 export const getChatList = async (UserId) => {
   try {
-    let res = await axios.get(`${API_ROOT}/chat/chatlist/${UserId}`);
+    let res = await axios.get(`${API_ROOT}/chat/chatlist/${UserId}`, {
+      withCredentials: true,
+    });
     console.log("here", res.data);
     return res.data.ChatList;
   } catch (err) {

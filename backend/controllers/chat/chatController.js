@@ -1,8 +1,5 @@
 const { CONNECTIONS_LIMIT } = require("./constants");
 const { Chat, Text } = require("../../models/schemas/chatSchema");
-const { mongoose } = require("mongoose");
-
-const MessageList = [];
 
 module.exports = (socket, io) => {
   if (io.engine.clientsCount > CONNECTIONS_LIMIT) {
@@ -37,12 +34,6 @@ module.exports = (socket, io) => {
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });
-
-  // socket.on("previous_messages", async (RoomId) => {
-  //   let response = await Chat.find({ RoomId: RoomId });
-  //   console.log(response);
-  //   socket.to(RoomId).emit("previous_messages_list", response[0]?.texts);
-  // });
 
   socket.on("join_room", (RoomId) => {
     socket.join(RoomId);

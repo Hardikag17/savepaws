@@ -4,8 +4,6 @@ const Schema = mongoose.Schema;
 
 const User = require("./userSchema");
 
-// const commentSchema = new Schema({ userId: String, content: String });
-
 const socialSchema = new Schema({
   /*
   unique Id of the pet

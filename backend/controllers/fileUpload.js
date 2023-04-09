@@ -44,7 +44,7 @@ const uploadImages = async (req, res) => {
     );
   }
 
-  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.amazonaws.com/pets/[FILENAME].jpg
+  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.ap-south-1.amazonaws.com/pets/[FILENAME].jpg
 
   res.status(200).send(petID);
 };
@@ -54,8 +54,6 @@ const profileImageUpload = async (req, res) => {
   let UserID = req.params.userId;
   let bucket = "paws-adoption";
   let contentType = req.file.mimetype;
-
-  console.log(UserID, contentType);
 
   if (contentType == "image/jpeg") extension = ".jpeg";
   if (contentType == "image/webp") extension = ".webp";
@@ -78,28 +76,7 @@ const profileImageUpload = async (req, res) => {
     res.status(400).send(err);
   }
 
-  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.amazonaws.com/users/[FILENAME].jpg
+  //  Public url to access aws-s3 uploads - aws-s3 Image url - https://paws-adoption.s3.ap-south-1.amazonaws.com/users/[FILENAME].jpg
 };
-
-// const getImages = async (req, res) => {
-//   let PetID = req.params.petID;
-//   let bucket = "paws-adoption";
-//   let response = await Pet.find({ PetID: PetID });
-//   let PhotoAmt = response[0].PhotoAmt;
-
-//   var Images = [];
-//   for (var i = 0; i < PhotoAmt; i++) {
-//     response = await s3Client.send(
-//       new GetObjectCommand({
-//         Bucket: bucket,
-//         Key: `pets/${PetID}-2.jpg`,
-//       })
-//     );
-
-//     //Images.push(response);
-//   }
-
-//   res.send(response);
-// };
 
 module.exports = { uploadImages, profileImageUpload };

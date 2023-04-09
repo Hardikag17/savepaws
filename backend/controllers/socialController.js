@@ -51,7 +51,6 @@ const updateSocial = async (req, res) => {
   var newS = {};
 
   if (newSocial.length <= 0) {
-    console.log("IN 1st");
     newS = {
       petId: pid,
       likes: [req.body.SocialData.likes],
@@ -59,7 +58,6 @@ const updateSocial = async (req, res) => {
       author: user._id,
     };
   } else {
-    console.log("IN 2nd");
     newS = {
       petId: pid,
       comments: req.body.SocialData.comment,
