@@ -344,7 +344,7 @@ function PetViewPage() {
                   &nbsp; Comments
                 </h3>
 
-                <div className="comments-list container">
+                <div className="comments-list container-fluid">
                   <div className="comment-widgets mb-30" data-bs-offset="0">
                     {socialList.map((res) => {
                       return (
@@ -385,7 +385,7 @@ function PetViewPage() {
                   </div>
                 </div>
 
-                <div className="comments container">
+                <div className="comments container-fluid">
                   <div className="comment-widgets-add mb-30" data-bs-offset="0">
                     <div className="p-2">
                       <div className="d-flex flex-row align-items-start">

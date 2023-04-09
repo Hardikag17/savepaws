@@ -14,7 +14,7 @@ export default function Analytics() {
   const [metrics, setMetrics] = useState([]);
   useEffect(() => {
     getMetrics().then((res) => setMetrics(res));
-  });
+  }, []);
 
   const [userLocation, setUserLocation] = useState(null);
   const [pets, setPets] = useState([]);
@@ -81,7 +81,7 @@ export default function Analytics() {
           className=" px-2 btn btn-light text-success border border-success border-2 "
           style={{ fontSize: "28px" }}
         >
-          <b>Pets: {metrics[0]} </b>
+          <b>Pets: {metrics ? metrics[0] : <div />} </b>
         </h3>
 
         <h3
@@ -111,14 +111,11 @@ export default function Analytics() {
           className="container relative  d-flex align-items-center text-center justify-content-center"
           style={{
             width: "65%",
+            height: "auto",
           }}
         >
           {userLocation && pets.length > 0 ? (
-            <Map
-              userLocation={userLocation}
-              pets={pets}
-              style={{ height: "20px" }}
-            />
+            <Map userLocation={userLocation} pets={pets} />
           ) : (
             <p>Loading...</p>
           )}

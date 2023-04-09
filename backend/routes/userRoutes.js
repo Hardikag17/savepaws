@@ -6,6 +6,7 @@ const {
   Info,
   userInfo,
   Logout,
+  editProfile,
 } = require("../controllers/userRegister");
 const multer = require("multer");
 const { profileImageUpload } = require("../controllers/fileUpload");
@@ -38,6 +39,7 @@ routes.post(
   upload.single("profileimg"),
   profileImageUpload
 );
+routes.post("/editprofile", editProfile);
 routes.get("/info", Info);
 routes.get("/:email/forgetpassword");
 

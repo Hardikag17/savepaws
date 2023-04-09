@@ -4,13 +4,17 @@ const addChatList = async (req, res) => {
   const ConnectionId = req.body.ConnectionId;
   const PetID = req.body.PetID;
   try {
-    let response = await ChatList.findOneAndUpdate(
+    await ChatList.findOneAndUpdate(
       { UserId: UserId },
       { $push: { Connections: { UserId: ConnectionId, PetID: PetID } } },
       { upsert: true }
     );
 
-    console.log(response);
+    await ChatList.findOneAndUpdate(
+      { UserId: ConnectionId },
+      { $push: { Connections: { UserId: UserId, PetID: PetID } } },
+      { upsert: true }
+    );
 
     res.status(200).send("Successfully saved");
   } catch (err) {
