@@ -54,7 +54,7 @@ export default function Card({
                   style={{ color: likeColor }}
                 />
                 &nbsp;
-                {likes} Like
+                {likes} Likes
               </span>
             </a>
             <div className="card__clock-info">

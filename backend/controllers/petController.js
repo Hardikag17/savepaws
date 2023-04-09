@@ -1,7 +1,7 @@
 const { Pet } = require("../models/schemas/petSchema");
 const { Requests } = require("../models/schemas/requestsSchema");
 const { Social } = require("../models/schemas/socialSchema");
-const { filterPets, search } = require("../utils/search");
+const { search } = require("../utils/search");
 
 /**
  * Get all Pets along with their socials OR Get specific pet along with their social, includes filterOptions in request
@@ -89,6 +89,38 @@ const getPets = async (req, res) => {
   return res.status(200).json({
     response: response,
   });
+};
+
+const getNearPets = async (req, res) => {
+  const userlocation = {
+    type: "Point",
+    coordinates: [
+      parseFloat(req.query.latitude),
+      parseFloat(req.query.longitude),
+    ],
+  };
+
+  try {
+    const result = await Pet.aggregate([
+      {
+        $geoNear: {
+          near: userlocation,
+          distanceField: "distance",
+          maxDistance: 10000,
+          spherical: true,
+        },
+      },
+      {
+        $sort: {
+          distance: 1,
+        },
+      },
+    ]);
+
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // Add Pet
@@ -367,11 +399,22 @@ const getRecentUpdated = async (req, res) => {
   }
 };
 
+const getmostpopular = async (req, res) => {
+  try {
+    const pets = await Pet.find().sort({ "social.length": -1 }).limit(3);
+    console.log(pets);
+    res.send(pets);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getPets,
   addPet,
   updatePet,
   deletePet,
+  getNearPets,
   getPetByPetID,
   getPetsByUserID,
   requestPet,
@@ -382,4 +425,5 @@ module.exports = {
   adoptPet,
   getRecentUpdated,
   getRecentAdded,
+  getmostpopular,
 };

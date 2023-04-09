@@ -11,8 +11,10 @@ export default function Landing() {
   const [tab, setTab] = useState(0);
   const [recentpost, setrecentpost] = useState([]);
   const [updatepost, setupdatepost] = useState([]);
-  const [updateisLoading, setupdateLoading] = useState(false);
+  const [popularpost, setpopularpost] = useState([]);
+  const [updateisLoading, setupdateLoading] = useState(true);
   const [recentisLoading, setrecentLoading] = useState(true);
+  const [popularisLoading, setpopularLoading] = useState(true);
 
   const dummyCards = [...Array(3)].map((_, index) => (
     <LoadingCard key={index} />
@@ -30,10 +32,9 @@ export default function Landing() {
   const nearByPets = async () => {
     try {
       const pets = await axios.get(
-        `${API_ROOT}/pets?latitude=${userLocation[0]}&longitude=${userLocation[1]}`
+        `${API_ROOT}/pets/getNearPets?latitude=${userLocation[0]}&&longitude=${userLocation[1]}`
       );
-      // console.log(pets.data.response);
-      setPets(pets.data.response);
+      setPets(pets.data);
     } catch (err) {
       console.log("Something went wrong!!!");
     }
@@ -42,7 +43,6 @@ export default function Landing() {
   const recentAddedPets = async () => {
     try {
       const res = await axios.get(`${API_ROOT}/pets/recentAddedPets`);
-      console.log("Recent Added", res.data);
       setrecentpost(res.data);
       setrecentLoading(false);
     } catch (err) {
@@ -74,7 +74,6 @@ export default function Landing() {
   const recentUpdatedPets = async (req, res) => {
     try {
       const res = await axios.get(`${API_ROOT}/pets/recentUpdatedPets`);
-      console.log("Updated", res.data);
       setupdatepost(res.data);
       setupdateLoading(false);
     } catch (err) {
@@ -103,16 +102,48 @@ export default function Landing() {
     );
   });
 
+  const popularPets = async (req, res) => {
+    try {
+      const res = await axios.get(`${API_ROOT}/pets/getmostpopular`);
+      setpopularpost(res.data);
+      setpopularLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const popularCards = popularpost.map((element, key) => {
+    return (
+      <Link to={`/petview/${element.PetID}`}>
+        <div key={key}>
+          <Card
+            name={element.Name}
+            description={element.description}
+            rescuerId={element.RescuerID}
+            PetID={element.PetID}
+            comments={element.social.length}
+            postedOn={
+              element.createdAt
+                ? new Date(element.createdAt).toLocaleDateString()
+                : "01/03/2023"
+            }
+          />
+        </div>
+      </Link>
+    );
+  });
+
   const tabs = [
     { state: 0, value: recentisLoading ? dummyCards : recentcards },
     { state: 1, value: updateisLoading ? dummyCards : updatedCards },
-    { state: 2, value: dummyCards },
+    { state: 2, value: popularisLoading ? dummyCards : popularCards },
   ];
 
   useEffect(() => {
     nearByPets();
     recentAddedPets();
     recentUpdatedPets();
+    popularPets();
   }, [userLocation]);
 
   return (
@@ -156,7 +187,7 @@ export default function Landing() {
             onClick={() => setTab(2)}
             class="btn btn-light btn-lg text-black mx-3"
           >
-            <b>Our '23 Goals</b>
+            <b>Popular Pets</b>
           </button>
         </div>
         <div className=" d-flex flex justify-content-center my-5">
@@ -173,11 +204,11 @@ export default function Landing() {
       </h4>
       <br />
 
-      {/* {userLocation && pets.length > 0 ? (
+      {userLocation && pets.length > 0 ? (
         <Map userLocation={userLocation} pets={pets} />
       ) : (
         <p>Loading...</p>
-      )} */}
+      )}
     </div>
   );
 }

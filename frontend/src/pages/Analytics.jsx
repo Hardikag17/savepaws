@@ -3,6 +3,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { useEffect } from "react";
 import { getMetrics } from "../utils/analytics";
+import Map from "./Map";
+import axios from "axios";
+import { API_ROOT } from "../api-config";
 import "../styles/analytics.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -11,6 +14,31 @@ export default function Analytics() {
   const [metrics, setMetrics] = useState([]);
   useEffect(() => {
     getMetrics().then((res) => setMetrics(res));
+  });
+
+  const [userLocation, setUserLocation] = useState(null);
+  const [pets, setPets] = useState([]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLocation([position.coords.latitude, position.coords.longitude]);
+    });
+  }, []);
+
+  const nearByPets = async () => {
+    try {
+      const pets = await axios.get(
+        `${API_ROOT}/pets/getNearPets?latitude=${userLocation[0]}&&longitude=${userLocation[1]}`
+      );
+      setPets(pets.data);
+    } catch (err) {
+      console.log(err);
+      console.log("Something went wrong!!!");
+    }
+  };
+
+  useEffect(() => {
+    nearByPets();
   });
 
   const data = {
@@ -75,18 +103,25 @@ export default function Analytics() {
           <b>Pets helped: {metrics[1]}</b>
         </h3>
       </div>
-      <div className=" d-flex flex p-4" style={{ height: "65vh" }}>
+      <div className=" d-flex flex p-4" style={{ height: "auto" }}>
         <div className=" m-auto p-2 m-auto chart">
           <Pie data={data} />
         </div>
         <div
-          className="  p-2 d-flex align-items-center text-center justify-content-center"
+          className="container relative  d-flex align-items-center text-center justify-content-center"
           style={{
             width: "65%",
-            backgroundColor: "antiquewhite",
           }}
         >
-          map
+          {userLocation && pets.length > 0 ? (
+            <Map
+              userLocation={userLocation}
+              pets={pets}
+              style={{ height: "20px" }}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </div>
     </div>

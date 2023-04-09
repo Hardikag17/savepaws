@@ -155,7 +155,6 @@ export default function Main() {
                           });
                           let a = filter;
                           a.gender = e.value;
-                          console.log(a);
                           getPets();
                         }}
                         isSearchable={true}
@@ -194,7 +193,6 @@ export default function Main() {
                           let a = filter;
                           a.minAge = min;
                           a.maxAge = max;
-                          console.log(a);
                           if (filter.maxAge !== max || filter.minAge !== min)
                             getPets();
                         }}
@@ -219,6 +217,7 @@ export default function Main() {
                         defaultValue={filter.value}
                         placeholder="Select Breed"
                         onChange={(e) => {
+                          console.log("breed", e.value);
                           setFilter({
                             ...filter,
                             breed: e.value,
